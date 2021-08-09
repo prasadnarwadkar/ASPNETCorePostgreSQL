@@ -1,0 +1,149 @@
+﻿@model DataAccessLayer.Models.Unnaturaldeaths
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Unnaturaldeaths</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="TimeOfPostmortemExamination" class="control-label"></label>
+                <input asp-for="TimeOfPostmortemExamination" class="form-control" />
+                <span asp-validation-for="TimeOfPostmortemExamination" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Sex" class="control-label"></label>
+                <input asp-for="Sex" class="form-control" />
+                <span asp-validation-for="Sex" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SceneOfDeath" class="control-label"></label>
+                <input asp-for="SceneOfDeath" class="form-control" />
+                <span asp-validation-for="SceneOfDeath" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PoliceStation" class="control-label"></label>
+                <input asp-for="PoliceStation" class="form-control" />
+                <span asp-validation-for="PoliceStation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PoliceCaseNo" class="control-label"></label>
+                <input asp-for="PoliceCaseNo" class="form-control" />
+                <span asp-validation-for="PoliceCaseNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PlaceOfExamination" class="control-label"></label>
+                <input asp-for="PlaceOfExamination" class="form-control" />
+                <span asp-validation-for="PlaceOfExamination" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Nationality" class="control-label"></label>
+                <input asp-for="Nationality" class="form-control" />
+                <span asp-validation-for="Nationality" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="InformantRelationToDeceased" class="control-label"></label>
+                <input asp-for="InformantRelationToDeceased" class="form-control" />
+                <span asp-validation-for="InformantRelationToDeceased" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="InformantName" class="control-label"></label>
+                <input asp-for="InformantName" class="form-control" />
+                <span asp-validation-for="InformantName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImformantCidNo" class="control-label"></label>
+                <input asp-for="ImformantCidNo" class="form-control" />
+                <span asp-validation-for="ImformantCidNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="History" class="control-label"></label>
+                <input asp-for="History" class="form-control" />
+                <span asp-validation-for="History" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GeneralExternalInformation" class="control-label"></label>
+                <input asp-for="GeneralExternalInformation" class="form-control" />
+                <span asp-validation-for="GeneralExternalInformation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Dzongkhag" class="control-label"></label>
+                <input asp-for="Dzongkhag" class="form-control" />
+                <span asp-validation-for="Dzongkhag" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DeceasedName" class="control-label"></label>
+                <input asp-for="DeceasedName" class="form-control" />
+                <span asp-validation-for="DeceasedName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateOfPostmortemExamination" class="control-label"></label>
+                <input asp-for="DateOfPostmortemExamination" class="form-control" />
+                <span asp-validation-for="DateOfPostmortemExamination" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CidOrPassport" class="control-label"></label>
+                <input asp-for="CidOrPassport" class="form-control" />
+                <span asp-validation-for="CidOrPassport" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Age" class="control-label"></label>
+                <input asp-for="Age" class="form-control" />
+                <span asp-validation-for="Age" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Isactive" class="control-label"></label>
+                <input asp-for="Isactive" class="form-control" />
+                <span asp-validation-for="Isactive" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Transactedby" class="control-label"></label>
+                <input asp-for="Transactedby" class="form-control" />
+                <span asp-validation-for="Transactedby" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Transacteddate" class="control-label"></label>
+                <input asp-for="Transacteddate" class="form-control" />
+                <span asp-validation-for="Transacteddate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Remark" class="control-label"></label>
+                <input asp-for="Remark" class="form-control" />
+                <span asp-validation-for="Remark" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Lastchanged" class="control-label"></label>
+                <input asp-for="Lastchanged" class="form-control" />
+                <span asp-validation-for="Lastchanged" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Version" class="control-label"></label>
+                <input asp-for="Version" class="form-control" />
+                <span asp-validation-for="Version" class="text-danger"></span>
+            </div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

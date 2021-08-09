@@ -1,0 +1,173 @@
+﻿@model IEnumerable<Common.UnnaturalDeathsDto>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TimeOfPostmortemExamination)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Sex)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SceneOfDeath)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PoliceStation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PoliceCaseNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PlaceOfExamination)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nationality)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InformantRelationToDeceased)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InformantName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ImformantCidNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.History)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GeneralExternalInformation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Dzongkhag)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DeceasedName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateOfPostmortemExamination)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CidOrPassport)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Age)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Isactive)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Transactedby)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Transacteddate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Remark)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Lastchanged)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Version)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TimeOfPostmortemExamination)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sex)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SceneOfDeath)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PoliceStation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PoliceCaseNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PlaceOfExamination)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nationality)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InformantRelationToDeceased)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InformantName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ImformantCidNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.History)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GeneralExternalInformation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Dzongkhag)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DeceasedName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateOfPostmortemExamination)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CidOrPassport)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Age)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Isactive)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Transactedby)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Transacteddate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Remark)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Lastchanged)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Version)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

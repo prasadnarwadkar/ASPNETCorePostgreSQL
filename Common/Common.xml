@@ -1,0 +1,178 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Common</name>
+    </assembly>
+    <members>
+        <member name="T:Common.FHIR.FHIRPatient">
+            <summary>
+            Patient table for FHIR
+            </summary>
+        </member>
+        <member name="T:Common.FHIR.FHIRPractitioner">
+            <summary>
+            Practitioner table for FHIR
+            </summary>
+        </member>
+        <member name="T:Common.FHIR.FHIRImmunization">
+            <summary>
+            Immunization table for FHIR
+            </summary>
+        </member>
+        <member name="T:Common.FHIR.FHIRObservation">
+            <summary>
+            Observation table for FHIR
+            </summary>
+        </member>
+        <member name="T:Common.FHIR.PatientQueryParameters">
+            <summary>
+            Query parameters/Search filters for Patient
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.PatientQueryParameters.given">
+            <summary>
+            Given names e.g. James, Clark etc. 
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.PatientQueryParameters.family">
+            <summary>
+            Family name e.g. Johnson.
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.PatientQueryParameters.identifier">
+            <summary>
+            Business Identifier (not the same as logical id set by FHIR server internally)
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.PatientQueryParameters.id">
+            <summary>
+            Logical id set by FHIR server internally
+            </summary>
+        </member>
+        <member name="T:Common.FHIR.ImmunizationQueryParameters">
+            <summary>
+            Query parameters/Search filters for Immunization
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.ImmunizationQueryParameters.patient">
+            <summary>
+            Reference to the patient.
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.ImmunizationQueryParameters.date">
+            <summary>
+            Date that can be parsed. If this cannot be parsed 
+            successfully, it won't be used in query.
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.ImmunizationQueryParameters.identifier">
+            <summary>
+            Business Identifier (not the same as logical id set by FHIR server internally)
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.ImmunizationQueryParameters.id">
+            <summary>
+            Logical id set by FHIR server internally
+            </summary>
+        </member>
+        <member name="T:Common.FHIR.ObservationQueryParameters">
+            <summary>
+            Query parameters/Search filters for Observation
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.ObservationQueryParameters.subject">
+            <summary>
+            Subject of the observation (e.g. patient)
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.ObservationQueryParameters.category">
+            <summary>
+            The classification of the type of observation laboratory, 
+            vital-signs or social-history.
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.ObservationQueryParameters.date">
+            <summary>
+            Obtained datetime. If the obtained element is a date range, a date that falls in the range.
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.ObservationQueryParameters.identifier">
+            <summary>
+            Business Identifier (not the same as logical id set by FHIR server internally)
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.ObservationQueryParameters.id">
+            <summary>
+            Logical id set by FHIR server internally
+            </summary>
+        </member>
+        <member name="T:Common.FHIR.PractitionerQueryParameters">
+            <summary>
+            Query parameters/Search filters for Practitioner
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.PractitionerQueryParameters.given">
+            <summary>
+            Given names e.g. James, Clark etc. 
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.PractitionerQueryParameters.family">
+            <summary>
+            Family name e.g. Johnson.
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.PractitionerQueryParameters.identifier">
+            <summary>
+            Business Identifier (not the same as logical id set by FHIR server internally)
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.PractitionerQueryParameters.id">
+            <summary>
+            Logical id set by FHIR server internally
+            </summary>
+        </member>
+        <member name="T:Common.FHIR.Practitioner">
+            <summary>
+            FHIR Practitioner resource. A practitioner is someone who practices medicine 
+            for treating patients. They can be general medicine practitioners or specialists in some
+            healthcare discipline.
+            </summary>
+        </member>
+        <member name="T:Common.FHIR.Immunization">
+            <summary>
+            Immunization resource is intended to cover the recording of current and historical administration 
+            of vaccines to patients.
+            </summary>
+        </member>
+        <member name="T:Common.FHIR.Observation">
+            <summary>
+            As per HL7 org, Observations are central elements in healthcare. They are used to support diagnosis, monitor progress, 
+            determine baselines and patterns and even capture demographic characteristics. 
+            Most observations are simple name/value pair assertions with some metadata, but some observations group other observations together logically, 
+            or even are multi-component observations.
+            </summary>
+        </member>
+        <member name="T:Common.FHIR.Quantity">
+            <summary>
+            Indicates values with quantity, unit 
+            for vital signs etc.
+            </summary>
+        </member>
+        <member name="T:Common.FHIR.Patient">
+            <summary>
+            FHIR Patient class.
+            </summary>
+        </member>
+        <member name="T:Common.IPatientRepository">
+            <summary>
+            Simple CRUD operations.
+            </summary>
+        </member>
+        <member name="T:Common.PatientDto">
+            <summary>
+            Dto class for Patient entity. Never use EF Core entities directly
+            in BLL or DAL.
+            </summary>
+        </member>
+    </members>
+</doc>

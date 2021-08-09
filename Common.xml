@@ -1,0 +1,518 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Common</name>
+    </assembly>
+    <members>
+        <member name="T:Common.FHIR.Constants">
+            <summary>
+            Magic Strings 
+            </summary>
+        </member>
+        <member name="T:Common.FHIR.PatientQueryParameters">
+            <summary>
+            Query parameters/Search filters for Patient
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.PatientQueryParameters.given">
+            <summary>
+            Given names e.g. James, Clark etc. 
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.PatientQueryParameters.family">
+            <summary>
+            Family name e.g. Johnson.
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.PatientQueryParameters.identifier">
+            <summary>
+            Business Identifier (not the same as logical id set by FHIR server internally)
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.PatientQueryParameters.idsystem">
+            <summary>
+            identifier system
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.PatientQueryParameters.id">
+            <summary>
+            Logical id set by FHIR server internally
+            </summary>
+        </member>
+        <member name="T:Common.FHIR.OrganizationQueryParameters">
+            <summary>
+            Query parameters/Search filters for Organization
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.OrganizationQueryParameters.name">
+            <summary>
+            A portion of the organization's name or alias
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.OrganizationQueryParameters.address">
+            <summary>
+            A server defined search that may match any of the string fields in the Address, 
+            including line, city, district, state, country, postalCode, and/or text
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.OrganizationQueryParameters.identifier">
+            <summary>
+            Business Identifier (not the same as logical id set by FHIR server internally)
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.OrganizationQueryParameters.id">
+            <summary>
+            Logical id set by FHIR server internally
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.OrganizationQueryParameters.type">
+            <summary>
+            A code for the type of organization
+            </summary>
+        </member>
+        <member name="T:Common.FHIR.ImmunizationQueryParameters">
+            <summary>
+            Query parameters/Search filters for Immunization
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.ImmunizationQueryParameters.patient">
+            <summary>
+            Reference to the patient.
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.ImmunizationQueryParameters.date">
+            <summary>
+            Date that can be parsed. If this cannot be parsed 
+            successfully, it won't be used in query.
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.ImmunizationQueryParameters.identifier">
+            <summary>
+            Business Identifier (not the same as logical id set by FHIR server internally)
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.ImmunizationQueryParameters.id">
+            <summary>
+            Logical id set by FHIR server internally
+            </summary>
+        </member>
+        <member name="T:Common.FHIR.EncounterQueryParameters">
+            <summary>
+            Query parameters/Search filters for Encounter
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.EncounterQueryParameters.subject">
+            <summary>
+            Subject of the encounter.
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.EncounterQueryParameters.date">
+            <summary>
+            A date within the period the Encounter lasted
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.EncounterQueryParameters.identifier">
+            <summary>
+            Business Identifier (not the same as logical id set by FHIR server internally)
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.EncounterQueryParameters.id">
+            <summary>
+            Logical id set by FHIR server internally
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.EncounterQueryParameters.Class">
+            <summary>
+            Classification of patient encounter
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.EncounterQueryParameters.type">
+            <summary>
+            Specific type of encounter
+            </summary>
+        </member>
+        <member name="T:Common.FHIR.ObservationQueryParameters">
+            <summary>
+            Query parameters/Search filters for Observation
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.ObservationQueryParameters.subject">
+            <summary>
+            Subject of the observation (e.g. patient)
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.ObservationQueryParameters.category">
+            <summary>
+            The classification of the type of observation laboratory, 
+            vital-signs or social-history.
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.ObservationQueryParameters.date">
+            <summary>
+            Obtained datetime. If the obtained element is a date range, a date that falls in the range.
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.ObservationQueryParameters.identifier">
+            <summary>
+            Business Identifier (not the same as logical id set by FHIR server internally)
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.ObservationQueryParameters.id">
+            <summary>
+            Logical id set by FHIR server internally
+            </summary>
+        </member>
+        <member name="T:Common.FHIR.DiagnosticReportQueryParameters">
+            <summary>
+            Query parameters/Search filters for Diagnostic Report
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.DiagnosticReportQueryParameters.subject">
+            <summary>
+            Subject of the Diagnostic Report (e.g. patient)
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.DiagnosticReportQueryParameters.category">
+            <summary>
+            The classification of the type of Diagnostic Report
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.DiagnosticReportQueryParameters.date">
+            <summary>
+            Issued datetime. If the issued element is a date range, a date that falls in the range.
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.DiagnosticReportQueryParameters.identifier">
+            <summary>
+            Business Identifier (not the same as logical id set by FHIR server internally)
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.DiagnosticReportQueryParameters.id">
+            <summary>
+            Logical id set by FHIR server internally
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.DiagnosticReportQueryParameters.result">
+            <summary>
+            Reference to the result in the Diagnostic Report
+            </summary>
+        </member>
+        <member name="T:Common.FHIR.ProcedureQueryParameters">
+            <summary>
+            Query parameters/Search filters for Procedure
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.ProcedureQueryParameters.subject">
+            <summary>
+            Subject of the procedure (e.g. patient)
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.ProcedureQueryParameters.category">
+            <summary>
+            The classification of the type of procedure
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.ProcedureQueryParameters.date">
+            <summary>
+            Performed datetime. If the performed element is a date range, a date that falls in the range.
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.ProcedureQueryParameters.identifier">
+            <summary>
+            Business Identifier (not the same as logical id set by FHIR server internally)
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.ProcedureQueryParameters.id">
+            <summary>
+            Logical id set by FHIR server internally
+            </summary>
+        </member>
+        <member name="T:Common.FHIR.PractitionerQueryParameters">
+            <summary>
+            Query parameters/Search filters for Practitioner
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.PractitionerQueryParameters.given">
+            <summary>
+            Given names e.g. James, Clark etc. 
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.PractitionerQueryParameters.family">
+            <summary>
+            Family name e.g. Johnson.
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.PractitionerQueryParameters.identifier">
+            <summary>
+            Business Identifier (not the same as logical id set by FHIR server internally)
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.PractitionerQueryParameters.id">
+            <summary>
+            Logical id set by FHIR server internally
+            </summary>
+        </member>
+        <member name="T:Common.FHIR.Practitioner">
+            <summary>
+            FHIR Practitioner resource. A practitioner is someone who practices medicine 
+            for treating patients. They can be general medicine practitioners or specialists in some
+            healthcare discipline.
+            </summary>
+        </member>
+        <member name="T:Common.FHIR.Immunization">
+            <summary>
+            Immunization resource is intended to cover the recording of current and historical administration 
+            of vaccines to patients.
+            </summary>
+        </member>
+        <member name="T:Common.FHIR.Observation">
+            <summary>
+            As per HL7 org, Observations are central elements in healthcare. They are used to support diagnosis, monitor progress, 
+            determine baselines and patterns and even capture demographic characteristics. 
+            Most observations are simple name/value pair assertions with some metadata, but some observations group other observations together logically, 
+            or even are multi-component observations.
+            </summary>
+        </member>
+        <member name="T:Common.FHIR.DiagnosticReport">
+            <summary>
+            As per HL7 org, a diagnostic report is the set of information that is typically provided 
+            by a diagnostic service when investigations are complete. 
+            The information includes a mix of atomic results, text reports, images, and codes. 
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.DiagnosticReport.subject">
+            <summary>
+            The subject of this diagnosis report - usually, but not always, the patient.
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.DiagnosticReport.encounter">
+            <summary>
+            Health care event when test ordered
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.DiagnosticReport.issued">
+            <summary>
+            Time the report is issued.
+            An instant in time in the format YYYY-MM-DDThh:mm:ss.sss+zz:zz 
+            (e.g. 2015-02-07T13:28:17.239+02:00 or 2017-01-01T00:00:00Z). 
+            A system log kind of format is needed to accurately know when the report was generated or issued.
+            The time shall specify at least to the second and shall include a time zone.
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.DiagnosticReport.performer">
+            <summary>
+            Responsible Diagnostic Service who performed these diagnoses.
+            Could be a list of references.
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.DiagnosticReport.result">
+            <summary>
+            Observations
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.DiagnosticReport.conclusionCode">
+            <summary>
+            Codes for the clinical conclusion of test results
+            </summary>
+        </member>
+        <member name="T:Common.FHIR.Procedure">
+            <summary>
+            As per HL7 org, Procedure resource is used to record the details of current and historical procedures performed on or for a patient. 
+            A procedure is an activity that is performed on, with, or for a patient as part of the provision of care. 
+            Examples include surgical procedures, diagnostic procedures, endoscopic procedures, biopsies, 
+            counseling, physiotherapy, personal support services, adult day care services, 
+            non-emergency transportation, home modification, exercise, etc. 
+            Procedures may be performed by a healthcare professional, a service provider, 
+            a friend or relative or in some cases by the patient themselves.
+            </summary>
+        </member>
+        <member name="T:Common.FHIR.AllergyIntolerance">
+            <summary>
+            AllergyIntolerance denotes a risk of harmful or undesirable, physiological response 
+            which is unique to an individual and is associated with an exposure to a substance.
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.AllergyIntolerance.clinicalStatus">
+            <summary>
+            Whether it is resolved, active/inactive
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.AllergyIntolerance.verificationStatus">
+            <summary>
+            Whether the allergy or intolerance is verified/confirmed.
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.AllergyIntolerance.category">
+            <summary>
+            Category of allergy/intolerance. e.g. food | medication | environment | biologic
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.AllergyIntolerance.recorder">
+            <summary>
+            Who recorded this sensitivity or reaction?
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.AllergyIntolerance.asserter">
+            <summary>
+            /// <summary>
+            Source of the information of the allergy
+            </summary>
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.AllergyIntolerance.lastOccurrence">
+            <summary>
+            Date(/time) of last known occurrence of a reaction
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.AllergyIntolerance.note">
+            <summary>
+            Additional text not captured in other fields
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.AllergyIntolerance.reaction">
+            <summary>
+            Reactions to the substance or allergies noted
+            </summary>
+        </member>
+        <member name="T:Common.FHIR.AllergyIntoleranceQueryParameters">
+            <summary>
+            Search parameters for AllergyIntolerance.
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.AllergyIntoleranceQueryParameters.asserter">
+            <summary>
+            AllergyIntolerance.asserter
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.AllergyIntoleranceQueryParameters.category">
+            <summary>
+            AllergyIntolerance.category
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.AllergyIntoleranceQueryParameters.clinicalstatus">
+            <summary>
+            AllergyIntolerance.clinicalStatus
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.AllergyIntoleranceQueryParameters.code">
+            <summary>
+            AllergyIntolerance.code | AllergyIntolerance.reaction.substance
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.AllergyIntoleranceQueryParameters.criticality">
+            <summary>
+            AllergyIntolerance.criticality
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.AllergyIntoleranceQueryParameters.date">
+            <summary>
+            AllergyIntolerance.recordedDate in yyyy-MM-dd format.
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.AllergyIntoleranceQueryParameters.identifier">
+            <summary>
+            AllergyIntolerance.identifier
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.AllergyIntoleranceQueryParameters.onset">
+            <summary>
+            AllergyIntolerance.reaction.onset in yyyy-MM-dd format.
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.AllergyIntoleranceQueryParameters.patient">
+            <summary>
+            AllergyIntolerance.patient
+            </summary>
+        </member>
+        <member name="T:Common.FHIR.Reaction">
+            <summary>
+            Records reaction or allergy to a substance.
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.Reaction.substance">
+            <summary>
+            Specific substance or pharmaceutical product 
+            considered to be responsible for event
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.Reaction.manifestation">
+            <summary>
+            Clinical symptoms/signs associated with the Event
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.Reaction.description">
+            <summary>
+            Description of the event as a whole
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.Reaction.onset">
+            <summary>
+            Date(/time) when manifestations showed
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.Reaction.severity">
+            <summary>
+            mild | moderate | severe (serverity of the event as a whole)
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.Reaction.exposureRoute">
+            <summary>
+            How the subject was exposed to the substance
+            </summary>
+        </member>
+        <member name="P:Common.FHIR.Reaction.note">
+            <summary>
+            Notes
+            </summary>
+        </member>
+        <member name="T:Common.FHIR.Annotation">
+            <summary>
+            Annotation on the specific record.
+            </summary>
+        </member>
+        <member name="T:Common.FHIR.Encounter">
+            <summary>
+            As per HL7 org, Encounter resource is not to be used to store appointment information. Rather the Appointment resource is intended to be used for that. 
+            Appointment is used for establishing a date for the encounter, while Encounter resource is applicable to information 
+            about the actual Encounter, i.e., the patient showing up.
+            </summary>
+        </member>
+        <member name="T:Common.FHIR.Quantity">
+            <summary>
+            Indicates values with quantity, unit 
+            for vital signs etc.
+            </summary>
+        </member>
+        <member name="T:Common.FHIR.Organization">
+            <summary>
+            FHIR Organization class.
+            </summary>
+        </member>
+        <member name="T:Common.FHIR.Contact">
+            <summary>
+            Contact details of a resource such as Organization or Patient. 
+            </summary>
+        </member>
+        <member name="T:Common.FHIR.Patient">
+            <summary>
+            FHIR Patient class.
+            </summary>
+        </member>
+        <member name="T:Common.IPatientRepository">
+            <summary>
+            Simple CRUD operations.
+            </summary>
+        </member>
+        <member name="T:Common.IUnnaturalDeathsRepository">
+            <summary>
+            Simple CRUD operations.
+            </summary>
+        </member>
+        <member name="T:Common.PatientDto">
+            <summary>
+            Dto class for Patient entity. Never use EF Core entities directly
+            in BLL or DAL.
+            </summary>
+        </member>
+    </members>
+</doc>
