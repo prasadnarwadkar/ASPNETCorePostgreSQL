@@ -13,3 +13,28 @@ PM> dotnet ef dbcontext scaffold "Host=localhost;Database=identitywithpgsql;User
 - ASP.NET Core MVC
 - Entity Framework Core
 - [PostgreSQL Driver for .NET Core](https://www.npgsql.org/)
+
+## EF Core
+With Entity Framework Core, the code becomes simple to maintain.
+
+Getting a list of objects is very simple. No raw SQL queries.
+
+```
+        private readonly identitywithpgsqlContext _context;
+
+        public UnnaturalDeathsRepositoryEFCore(identitywithpgsqlContext context)
+        {
+            _context = context;
+        }
+
+        public async Task<IList<UnnaturalDeathsDto>> GetListAsync()
+        {
+            var listFromEF =  await _context.Unnaturaldeaths.ToListAsync();
+            var list = new List<UnnaturalDeathsDto>();
+
+            foreach (var death in listFromEF)
+            {
+                list.Add(new UnnaturalDeathsDto {
+
+```
+
