@@ -82,7 +82,8 @@ namespace DataAccessLayer
                 TimeOfPostmortemExamination = item.TimeOfPostmortemExamination,
                 Transactedby = item.Transactedby,
                 Transacteddate = item.Transacteddate,
-                Version = item.Version
+                Version = item.Version,
+                Id = item.Id
             });
 
             return await _context.SaveChangesAsync();

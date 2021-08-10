@@ -15,14 +15,14 @@
         <div class="col-md-3">
             <div class="form-group">
                 <label asp-for="TimeOfPostmortemExamination" class="control-label">Postmortem Examination Time</label>
-                <input asp-for="TimeOfPostmortemExamination" class="form-control" type="time" />
+                <input asp-for="TimeOfPostmortemExamination" class="form-control" type="time" required />
                 <span asp-validation-for="TimeOfPostmortemExamination" class="text-danger"></span>
             </div>
         </div>
         <div class="col-md-3">
             <div class="form-group">
                 <label asp-for="DateOfPostmortemExamination" class="control-label">Postmortem Examination Date</label>
-                <input asp-for="DateOfPostmortemExamination" class="form-control" />
+                <input asp-for="DateOfPostmortemExamination" class="form-control" required/>
                 <span asp-validation-for="DateOfPostmortemExamination" class="text-danger"></span>
             </div>
         </div>

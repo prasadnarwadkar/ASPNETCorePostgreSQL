@@ -91,9 +91,10 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Views
                     SceneOfDeath = death.SceneOfDeath,
                     Sex = death.Sex.ToString(),
                     TimeOfPostmortemExamination = death.TimeOfPostmortemExamination,
-                    Transactedby = death.Transactedby,
-                    Transacteddate = death.Transacteddate,
-                    Version = death.Version
+                    Transactedby = User.Identity.Name,
+                    Transacteddate = DateTime.UtcNow,
+                    Version = 1,
+                    Id = Guid.NewGuid()
                 });
 
                 return RedirectToAction(nameof(Index), "UnnaturalDeaths");
@@ -127,7 +128,7 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Views
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Address,Age,CidOrPassport,DateOfPostmortemExamination," +
+        public async Task<IActionResult> Edit(Guid id, [Bind("Address,Age,Id,CidOrPassport,DateOfPostmortemExamination," +
                                                        "DeceasedName,Dzongkhag,GeneralExternalInformation," +
                                                         "History,ImformantCidNo,InformantName,InformantRelationToDeceased," +
                                                         "Isactive,Lastchanged,Nationality,PlaceOfExamination," +
