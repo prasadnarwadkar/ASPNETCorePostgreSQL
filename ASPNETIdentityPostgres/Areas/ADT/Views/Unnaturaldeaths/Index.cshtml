@@ -9,26 +9,26 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<table class="table table-bordered">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.TimeOfPostmortemExamination)
+                Time Of Postmortem Examination
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Sex)
+                Gender
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SceneOfDeath)
+                Scene of Death
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PoliceStation)
+                Police Station
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PoliceCaseNo)
+                Police Case Number
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PlaceOfExamination)
+                Place of Examination
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Nationality)
@@ -91,7 +91,9 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.TimeOfPostmortemExamination)
+                
+                @Html.Raw(item.TimeOfPostmortemExamination.Value.ToString("HH:mm:ssz"))
+                
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Sex)

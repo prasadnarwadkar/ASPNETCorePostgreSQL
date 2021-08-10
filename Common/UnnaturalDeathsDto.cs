@@ -6,7 +6,8 @@ using System.Text;
 namespace Common
 {
     
-    public  class UnnaturalDeathsDto { 
+    public  class UnnaturalDeathsDto {
+        
         public DateTimeOffset? TimeOfPostmortemExamination { get; set; }
         public string Sex { get; set; }
         public string SceneOfDeath { get; set; }

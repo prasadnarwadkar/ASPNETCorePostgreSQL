@@ -62,8 +62,7 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Views
                                                         "History,ImformantCidNo,InformantName,InformantRelationToDeceased," +
                                                         "Isactive,Lastchanged,Nationality,PlaceOfExamination," +
                                                         "PoliceCaseNo,PoliceStation,Remark," +
-                                                        "SceneOfDeath,Sex,TimeOfPostmortemExamination,Transactedby," +
-                                                        "Transacteddate,Version")] Unnaturaldeaths death)
+                                                        "SceneOfDeath,Sex,TimeOfPostmortemExamination")] Unnaturaldeaths death)
         {
 
 
@@ -133,8 +132,7 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Views
                                                         "History,ImformantCidNo,InformantName,InformantRelationToDeceased," +
                                                         "Isactive,Lastchanged,Nationality,PlaceOfExamination," +
                                                         "PoliceCaseNo,PoliceStation,Remark," +
-                                                        "SceneOfDeath,Sex,TimeOfPostmortemExamination,Transactedby" +
-                                                        "Transacteddate,Version")] Unnaturaldeaths death)
+                                                        "SceneOfDeath,Sex,TimeOfPostmortemExamination")] Unnaturaldeaths death)
         {
             if (id != death.Id)
             {

@@ -1,134 +1,170 @@
 ﻿@model Common.UnnaturalDeathsDto
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Register an unnatural death";
 }
 
-<h1>Create</h1>
+<h1>Register an unnatural death</h1>
 
-<h4>Unnaturaldeaths</h4>
+
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<form asp-action="Create">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="row">
+        <div class="col-md-3">
             <div class="form-group">
-                <label asp-for="TimeOfPostmortemExamination" class="control-label"></label>
-                <input asp-for="TimeOfPostmortemExamination" class="form-control" />
+                <label asp-for="TimeOfPostmortemExamination" class="control-label">Postmortem Examination Time</label>
+                <input asp-for="TimeOfPostmortemExamination" class="form-control" type="time" />
                 <span asp-validation-for="TimeOfPostmortemExamination" class="text-danger"></span>
             </div>
+        </div>
+        <div class="col-md-3">
             <div class="form-group">
-                <label asp-for="Sex" class="control-label"></label>
-                <input asp-for="Sex" class="form-control" />
-                <span asp-validation-for="Sex" class="text-danger"></span>
+                <label asp-for="DateOfPostmortemExamination" class="control-label">Postmortem Examination Date</label>
+                <input asp-for="DateOfPostmortemExamination" class="form-control" />
+                <span asp-validation-for="DateOfPostmortemExamination" class="text-danger"></span>
             </div>
+        </div>
+        
+        
+
+        <div class="col-md-3">
             <div class="form-group">
-                <label asp-for="SceneOfDeath" class="control-label"></label>
+                <label asp-for="SceneOfDeath" class="control-label">Scene of Death</label>
                 <input asp-for="SceneOfDeath" class="form-control" />
                 <span asp-validation-for="SceneOfDeath" class="text-danger"></span>
             </div>
+        </div>
+        <div class="col-md-3">
+            <label asp-for="PoliceCaseNo" class="control-label">Police Case No</label>
+            <input asp-for="PoliceCaseNo" class="form-control" />
+            <span asp-validation-for="PoliceCaseNo" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
             <div class="form-group">
-                <label asp-for="PoliceStation" class="control-label"></label>
-                <input asp-for="PoliceStation" class="form-control" />
-                <span asp-validation-for="PoliceStation" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PoliceCaseNo" class="control-label"></label>
-                <input asp-for="PoliceCaseNo" class="form-control" />
-                <span asp-validation-for="PoliceCaseNo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PlaceOfExamination" class="control-label"></label>
+                <label asp-for="PlaceOfExamination" class="control-label">Place Of Examination</label>
                 <input asp-for="PlaceOfExamination" class="form-control" />
                 <span asp-validation-for="PlaceOfExamination" class="text-danger"></span>
             </div>
+        </div>
+        <div class="col-md-3">
             <div class="form-group">
                 <label asp-for="Nationality" class="control-label"></label>
                 <input asp-for="Nationality" class="form-control" />
                 <span asp-validation-for="Nationality" class="text-danger"></span>
             </div>
+        </div>
+        <div class="col-md-3">
             <div class="form-group">
-                <label asp-for="InformantRelationToDeceased" class="control-label"></label>
+                <label asp-for="InformantRelationToDeceased" class="control-label">Relation of the Informant To the Deceased</label>
                 <input asp-for="InformantRelationToDeceased" class="form-control" />
                 <span asp-validation-for="InformantRelationToDeceased" class="text-danger"></span>
             </div>
+        </div>
+        <div class="col-md-3">
             <div class="form-group">
-                <label asp-for="InformantName" class="control-label"></label>
+                <label asp-for="InformantName" class="control-label">Name of the informant</label>
                 <input asp-for="InformantName" class="form-control" />
                 <span asp-validation-for="InformantName" class="text-danger"></span>
             </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
             <div class="form-group">
-                <label asp-for="ImformantCidNo" class="control-label"></label>
+                <label asp-for="ImformantCidNo" class="control-label">CID of the Informant</label>
                 <input asp-for="ImformantCidNo" class="form-control" />
                 <span asp-validation-for="ImformantCidNo" class="text-danger"></span>
             </div>
+        </div>
+        <div class="col-md-3">
             <div class="form-group">
                 <label asp-for="History" class="control-label"></label>
                 <input asp-for="History" class="form-control" />
                 <span asp-validation-for="History" class="text-danger"></span>
             </div>
+        </div>
+        <div class="col-md-3">
             <div class="form-group">
-                <label asp-for="GeneralExternalInformation" class="control-label"></label>
+                <label asp-for="GeneralExternalInformation" class="control-label">General External Information</label>
                 <input asp-for="GeneralExternalInformation" class="form-control" />
                 <span asp-validation-for="GeneralExternalInformation" class="text-danger"></span>
             </div>
+        </div>
+        <div class="col-md-3">
             <div class="form-group">
-                <label asp-for="Dzongkhag" class="control-label"></label>
-                <input asp-for="Dzongkhag" class="form-control" />
+                <label lang="dz" asp-for="Dzongkhag" class="control-label">Dzongkhag</label>
+                <input asp-for="Dzongkhag" class="form-control" lang="dz" />
                 <span asp-validation-for="Dzongkhag" class="text-danger"></span>
             </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
             <div class="form-group">
-                <label asp-for="DeceasedName" class="control-label"></label>
+                <label asp-for="DeceasedName" class="control-label">Name of the Deceased</label>
                 <input asp-for="DeceasedName" class="form-control" />
                 <span asp-validation-for="DeceasedName" class="text-danger"></span>
             </div>
+        </div>
+        <div class="col-md-3">
+
+
             <div class="form-group">
-                <label asp-for="DateOfPostmortemExamination" class="control-label"></label>
-                <input asp-for="DateOfPostmortemExamination" class="form-control" />
-                <span asp-validation-for="DateOfPostmortemExamination" class="text-danger"></span>
+                <label asp-for="Sex" class="control-label">Gender</label>
+                <select asp-for="Sex" class="form-control" required>
+                    <option value="Select">Select Gender</option>
+                    <option value="F">Female</option>
+                    <option value="M">Male</option>
+                    <option value="O">Other</option>
+                </select>
+                <span asp-validation-for="Sex" class="text-danger"></span>
             </div>
+
+        </div>
+        <div class="col-md-3">
             <div class="form-group">
-                <label asp-for="CidOrPassport" class="control-label"></label>
+                <label asp-for="CidOrPassport" class="control-label">CID/Passport Number</label>
                 <input asp-for="CidOrPassport" class="form-control" />
                 <span asp-validation-for="CidOrPassport" class="text-danger"></span>
             </div>
+        </div>
+        <div class="col-md-3">
             <div class="form-group">
                 <label asp-for="Age" class="control-label"></label>
                 <input asp-for="Age" class="form-control" />
                 <span asp-validation-for="Age" class="text-danger"></span>
             </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
             <div class="form-group">
                 <label asp-for="Address" class="control-label"></label>
                 <input asp-for="Address" class="form-control" />
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Transactedby" class="control-label"></label>
-                <input asp-for="Transactedby" class="form-control" />
-                <span asp-validation-for="Transactedby" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Transacteddate" class="control-label"></label>
-                <input asp-for="Transacteddate" class="form-control" />
-                <span asp-validation-for="Transacteddate" class="text-danger"></span>
-            </div>
+        </div>
+        
+        
+        <div class="col-md-3">
             <div class="form-group">
                 <label asp-for="Remark" class="control-label"></label>
                 <input asp-for="Remark" class="form-control" />
                 <span asp-validation-for="Remark" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Version" class="control-label"></label>
-                <input asp-for="Version" class="form-control" />
-                <span asp-validation-for="Version" class="text-danger"></span>
-            </div>
-            
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
+
     </div>
-</div>
+    
+
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
+</form>
 
 <div>
     <a asp-action="Index">Back to List</a>
