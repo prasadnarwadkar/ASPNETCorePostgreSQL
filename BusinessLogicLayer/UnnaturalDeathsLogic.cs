@@ -1,4 +1,5 @@
 ﻿using Common;
+using Common.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -9,14 +10,14 @@ namespace BusinessLogicLayer
     {
         private IUnnaturalDeathsRepository _UnnaturalDeathsRepository;
         // GET: UnnaturalDeathss
-        public async Task<IList<UnnaturalDeathsDto>> UnnaturalDeathsListAsync()
+        public async Task<IList<UnnaturalDeaths>> UnnaturalDeathsListAsync()
         {
             return await _UnnaturalDeathsRepository.GetListAsync();
         }
 
 
 
-        public async Task<UnnaturalDeathsDto> FindAsync(Guid id)
+        public async Task<UnnaturalDeaths> FindAsync(Guid id)
         {
             return await _UnnaturalDeathsRepository.FindAsync(id);
         }
@@ -26,17 +27,17 @@ namespace BusinessLogicLayer
             _UnnaturalDeathsRepository = repo;
         }
 
-        public async Task<long> InsertAsync(UnnaturalDeathsDto UnnaturalDeaths)
+        public async Task<long> InsertAsync(UnnaturalDeaths UnnaturalDeaths)
         {
             return await _UnnaturalDeathsRepository.AddAsync(UnnaturalDeaths);
         }
 
-        public async Task<long> RemoveAsync(UnnaturalDeathsDto UnnaturalDeaths)
+        public async Task<long> RemoveAsync(UnnaturalDeaths UnnaturalDeaths)
         {
             return await _UnnaturalDeathsRepository.RemoveAsync(UnnaturalDeaths);
         }
 
-        public async Task<long> UpdateAsync(UnnaturalDeathsDto UnnaturalDeaths)
+        public async Task<long> UpdateAsync(UnnaturalDeaths UnnaturalDeaths)
         {
             return await _UnnaturalDeathsRepository.UpdateAsync(UnnaturalDeaths);
         }

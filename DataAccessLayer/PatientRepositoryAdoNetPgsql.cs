@@ -1,5 +1,4 @@
 ﻿using Common;
-using DataAccessLayer.Models;
 using Npgsql;
 using System.Collections.Generic;
 using System.Data;

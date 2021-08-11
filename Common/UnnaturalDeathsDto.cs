@@ -34,6 +34,9 @@ namespace Common
         public DateTime? DateOfPostmortemExamination { get; set; }
         [Required]
         public string CidOrPassport { get; set; }
+
+        [Required]
+        [Range(0, 150)]
         public int? Age { get; set; }
         public string Address { get; set; }
         public bool? Isactive { get; set; }

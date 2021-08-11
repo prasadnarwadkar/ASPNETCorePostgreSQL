@@ -1,12 +1,14 @@
 ﻿@model IEnumerable<Common.Models.UnnaturalDeaths>
 @using Microsoft.AspNetCore.Mvc.ViewFeatures
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 
 
 @{
     ViewData["Title"] = "Unnatural Deaths ";
 }
 
-<h1>List of Deaths that were unnatural</h1>
+<h1>List of Deaths that were unnatural </h1>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/js/moment.min.js"></script>
 
@@ -26,7 +28,7 @@
                 Remark
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Dzongkhag)
+                @Localizer["State"].Value
             </th>
             <th>
                 Scene of Death

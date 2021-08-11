@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace DataAccessLayer.Models
+namespace Common.Models
 {
     public partial class identitywithpgsqlContext : DbContext
     {
@@ -23,7 +23,7 @@ namespace DataAccessLayer.Models
         public virtual DbSet<AspNetUserTokens> AspNetUserTokens { get; set; }
         public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
         public virtual DbSet<Patient> Patient { get; set; }
-        public virtual DbSet<Unnaturaldeaths> Unnaturaldeaths { get; set; }
+        public virtual DbSet<UnnaturalDeaths> Unnaturaldeaths { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -140,7 +140,7 @@ namespace DataAccessLayer.Models
                     .HasColumnType("character varying(100)[]");
             });
 
-            modelBuilder.Entity<Unnaturaldeaths>(entity =>
+            modelBuilder.Entity<UnnaturalDeaths>(entity =>
             {
                 entity.ToTable("unnaturaldeaths");
 

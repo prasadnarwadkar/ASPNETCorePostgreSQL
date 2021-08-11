@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using DataAccessLayer.Models;
+﻿using Common;
+using Common.Models;
 using Microsoft.AspNetCore.Authorization;
-using Common;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Threading.Tasks;
 
 namespace ASPNETIdentityPostgres.Areas.ADT.Views
 {
@@ -62,40 +59,15 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Views
                                                         "History,ImformantCidNo,InformantName,InformantRelationToDeceased," +
                                                         "Isactive,Lastchanged,Nationality,PlaceOfExamination," +
                                                         "PoliceCaseNo,PoliceStation,Remark," +
-                                                        "SceneOfDeath,Sex,TimeOfPostmortemExamination")] Unnaturaldeaths death)
+                                                        "SceneOfDeath,Sex,TimeOfPostmortemExamination")] UnnaturalDeaths death)
         {
 
 
             if (ModelState.IsValid)
             {
-                await _unnaturalDeathsBusinessLogic.InsertAsync(new UnnaturalDeathsDto
-                {
-                    Address = death.Address,
-                    Age = death.Age,
-                    CidOrPassport = death.CidOrPassport,
-                    DateOfPostmortemExamination = death.DateOfPostmortemExamination,
-                    DeceasedName = death.DeceasedName,
-                    Dzongkhag = death.Dzongkhag,
-                    GeneralExternalInformation = death.GeneralExternalInformation,
-                    History = death.History,
-                    ImformantCidNo = death.ImformantCidNo,
-                    InformantName = death.InformantName,
-                    InformantRelationToDeceased = death.InformantRelationToDeceased,
-                    Isactive = death.Isactive,
-                    Lastchanged = death.Lastchanged,
-                    Nationality = death.Nationality,
-                    PlaceOfExamination = death.PlaceOfExamination,
-                    PoliceCaseNo = death.PoliceCaseNo,
-                    PoliceStation = death.PoliceStation,
-                    Remark = death.Remark,
-                    SceneOfDeath = death.SceneOfDeath,
-                    Sex = death.Sex.ToString(),
-                    TimeOfPostmortemExamination = death.TimeOfPostmortemExamination,
-                    Transactedby = User.Identity.Name,
-                    Transacteddate = DateTime.UtcNow,
-                    Version = 1,
-                    Id = Guid.NewGuid()
-                });
+                death.Id = Guid.NewGuid();
+
+                await _unnaturalDeathsBusinessLogic.InsertAsync(death);
 
                 return RedirectToAction(nameof(Index), "UnnaturalDeaths");
             }
@@ -133,7 +105,7 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Views
                                                         "History,ImformantCidNo,InformantName,InformantRelationToDeceased," +
                                                         "Isactive,Lastchanged,Nationality,PlaceOfExamination," +
                                                         "PoliceCaseNo,PoliceStation,Remark," +
-                                                        "SceneOfDeath,Sex,TimeOfPostmortemExamination")] Unnaturaldeaths death)
+                                                        "SceneOfDeath,Sex,TimeOfPostmortemExamination")] UnnaturalDeaths death)
         {
             if (id != death.Id)
             {
@@ -149,34 +121,7 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Views
             {
                 try
                 {
-                    await _unnaturalDeathsBusinessLogic.UpdateAsync(new UnnaturalDeathsDto
-                    {
-                        Address = death.Address,
-                        Age = death.Age,
-                        CidOrPassport = death.CidOrPassport,
-                        DateOfPostmortemExamination = death.DateOfPostmortemExamination,
-                        DeceasedName = death.DeceasedName,
-                        Dzongkhag = death.Dzongkhag,
-                        GeneralExternalInformation = death.GeneralExternalInformation,
-                        History = death.History,
-                        ImformantCidNo = death.ImformantCidNo,
-                        InformantName = death.InformantName,
-                        InformantRelationToDeceased = death.InformantRelationToDeceased,
-                        Isactive = death.Isactive,
-                        Lastchanged = death.Lastchanged,
-                        Nationality = death.Nationality,
-                        PlaceOfExamination = death.PlaceOfExamination,
-                        PoliceCaseNo = death.PoliceCaseNo,
-                        PoliceStation = death.PoliceStation,
-                        Remark = death.Remark,
-                        SceneOfDeath = death.SceneOfDeath,
-                        Sex = death.Sex.ToString(),
-                        TimeOfPostmortemExamination = death.TimeOfPostmortemExamination,
-                        Transactedby = death.Transactedby,
-                        Transacteddate = death.Transacteddate,
-                        Version = death.Version,
-                        Id = death.Id
-                    });
+                    await _unnaturalDeathsBusinessLogic.UpdateAsync(death);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -217,33 +162,7 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Views
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var death = await _unnaturalDeathsBusinessLogic.FindAsync(id);
-            await _unnaturalDeathsBusinessLogic.RemoveAsync(new UnnaturalDeathsDto
-            {
-                Address = death.Address,
-                Age = death.Age,
-                CidOrPassport = death.CidOrPassport,
-                DateOfPostmortemExamination = death.DateOfPostmortemExamination,
-                DeceasedName = death.DeceasedName,
-                Dzongkhag = death.Dzongkhag,
-                GeneralExternalInformation = death.GeneralExternalInformation,
-                History = death.History,
-                ImformantCidNo = death.ImformantCidNo,
-                InformantName = death.InformantName,
-                InformantRelationToDeceased = death.InformantRelationToDeceased,
-                Isactive = death.Isactive,
-                Lastchanged = death.Lastchanged,
-                Nationality = death.Nationality,
-                PlaceOfExamination = death.PlaceOfExamination,
-                PoliceCaseNo = death.PoliceCaseNo,
-                PoliceStation = death.PoliceStation,
-                Remark = death.Remark,
-                SceneOfDeath = death.SceneOfDeath,
-                Sex = death.Sex,
-                TimeOfPostmortemExamination = death.TimeOfPostmortemExamination,
-                Transactedby = death.Transactedby,
-                Transacteddate = death.Transacteddate,
-                Version = death.Version
-            });
+            await _unnaturalDeathsBusinessLogic.RemoveAsync(death);
 
             return RedirectToAction(nameof(Index), "UnnaturalDeaths");
         }

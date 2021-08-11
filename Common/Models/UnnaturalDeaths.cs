@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DataAccessLayer.Models
+namespace Common.Models
 {
-    public partial class Unnaturaldeaths
+    public partial class UnnaturalDeaths
     {
         public DateTimeOffset? TimeOfPostmortemExamination { get; set; }
         public string Sex { get; set; }

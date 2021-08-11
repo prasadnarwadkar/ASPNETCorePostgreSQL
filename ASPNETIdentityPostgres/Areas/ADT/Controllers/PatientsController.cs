@@ -2,9 +2,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Common;
-using DataAccessLayer.Models;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
+using Common.Models;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Http;
+using System;
 
 namespace ASPNETIdentityPostgres
 {
@@ -20,6 +23,17 @@ namespace ASPNETIdentityPostgres
             _patientBusinessLogic = logic;
         }
 
+        [HttpPost]
+        public IActionResult SetLanguage(string culture, string returnUrl)
+        {
+            Response.Cookies.Append(
+                CookieRequestCultureProvider.DefaultCookieName,
+                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+                new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
+            );
+
+            return LocalRedirect(returnUrl);
+        }
         // GET: Patients
         public async Task<IActionResult> Index()
         {

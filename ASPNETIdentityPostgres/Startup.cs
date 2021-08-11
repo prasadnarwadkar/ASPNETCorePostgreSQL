@@ -9,7 +9,8 @@ using Microsoft.Extensions.Hosting;
 using Common;
 using BusinessLogicLayer;
 using DataAccessLayer;
-using DataAccessLayer.Models;
+using Common.Models;
+using Microsoft.AspNetCore.Mvc.Razor;
 
 namespace ASPNETIdentityPostgres
 {
@@ -51,6 +52,21 @@ namespace ASPNETIdentityPostgres
             //    .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddRazorPages().AddRazorRuntimeCompilation();
 
+            #region snippet1    
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+            services.AddMvc()
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+                .AddDataAnnotationsLocalization();
+
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var supportedCultures = new[] { "en-US", "dz-DZ" };
+                options.SetDefaultCulture(supportedCultures[0])
+                    .AddSupportedCultures(supportedCultures)
+                    .AddSupportedUICultures(supportedCultures);
+            });
+            #endregion
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -76,6 +92,13 @@ namespace ASPNETIdentityPostgres
             app.UseAuthentication();
             app.UseAuthorization();
 
+            var supportedCultures = new[] { "en-US", "dz-DZ" };
+            var localizationOptions = new RequestLocalizationOptions().SetDefaultCulture(supportedCultures[1])
+                .AddSupportedCultures(supportedCultures)
+                .AddSupportedUICultures(supportedCultures);
+
+            app.UseRequestLocalization(localizationOptions);
+
             app.UseEndpoints(endpoints =>
             {
                 
@@ -95,6 +118,8 @@ namespace ASPNETIdentityPostgres
                     name: "default",
                     pattern: "{controller=Patients}/{action=Index}/{id?}");
             });
+
+            
         }
     }
 }
