@@ -117,7 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Add" xml:space="preserve">
+    <value>གསརཔ་བཟོ་ནི།</value>
+  </data>
+  <data name="Death" xml:space="preserve">
+    <value>ཤི་རྐྱེན།</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>ཁ་སྐད།</value>
+  </data>
+  <data name="List" xml:space="preserve">
+    <value>ཐོ་ཡིག</value>
+  </data>
+  <data name="Natural" xml:space="preserve">
+    <value>རང་བཞིན། </value>
+  </data>
+  <data name="New" xml:space="preserve">
+    <value>གསརཔ།</value>
+  </data>
+  <data name="Select" xml:space="preserve">
+    <value>གདམ་ཁ་རྐྱབ་ནི།</value>
+  </data>
   <data name="State" xml:space="preserve">
     <value>རྫོང་ཁག།</value>
+  </data>
+  <data name="Unnatural" xml:space="preserve">
+    <value>རང་བཞིན་མིན་པའི།</value>
   </data>
 </root>

@@ -17,7 +17,7 @@
     <form id="selectLanguage" asp-controller="Patients"
           asp-action="SetLanguage" asp-route-returnUrl="@returnUrl"
           method="post" class="form-horizontal" role="form">
-        <label asp-for="@requestCulture.RequestCulture.UICulture.Name">Language:</label> 
+        <label asp-for="@requestCulture.RequestCulture.UICulture.Name">@Localizer["Select"].Value @Localizer["Language"].Value:</label> 
         <select name="culture" onchange="this.form.submit();"  asp-for="@requestCulture.RequestCulture.UICulture.Name" asp-items="cultureItems">
         </select>
     </form>

@@ -1,18 +1,19 @@
 ﻿@model IEnumerable<Common.Models.UnnaturalDeaths>
 @using Microsoft.AspNetCore.Mvc.ViewFeatures
-
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 
 @{
-    ViewData["Title"] = "Unnatural Deaths ";
+    ViewData["Title"] =Localizer["Unnatural"].Value + " " + Localizer["Death"].Value;
 }
 
-<h1>List of Deaths that were unnatural</h1>
+<h1>@Localizer["Unnatural"].Value @Localizer["Death"].Value</h1>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/js/moment.min.js"></script>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<h3>
+    <a asp-action="Create">@Localizer["Add"].Value @Localizer["New"].Value</a>
+</h3>
 <table class="table table-bordered">
     <thead>
         <tr>
@@ -38,8 +39,9 @@
             <th>
                 Place of Examination
             </th>
-
-            Informant's relation with the deceased
+            <th>
+                Informant's relation with the deceased
+            </th>
             <th>
                 Informant Name
             </th>
@@ -87,84 +89,84 @@
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
+            <tr>
+                <td>
 
-                @*@Html.Raw(item.TimeOfPostmortemExamination.Value.ToString("HH:mm:ssz"))*@
-                <p data-momentdate2="@item.TimeOfPostmortemExamination.Value.ToString("s", System.Globalization.CultureInfo.InvariantCulture)"></p>
+                    @*@Html.Raw(item.TimeOfPostmortemExamination.Value.ToString("HH:mm:ssz"))*@
+                    <p data-momentdate2="@item.TimeOfPostmortemExamination.Value.ToString("s", System.Globalization.CultureInfo.InvariantCulture)"></p>
 
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Sex)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Remark)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Dzongkhag)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SceneOfDeath)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PoliceStation)/@Html.DisplayFor(modelItem => item.PoliceCaseNo)
-            </td>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Sex)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Remark)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Dzongkhag)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SceneOfDeath)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PoliceStation)/@Html.DisplayFor(modelItem => item.PoliceCaseNo)
+                </td>
 
-            <td>
-                @Html.DisplayFor(modelItem => item.PlaceOfExamination)
-            </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PlaceOfExamination)
+                </td>
 
-            <td>
-                @Html.DisplayFor(modelItem => item.InformantRelationToDeceased)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.InformantName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImformantCidNo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.History)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.GeneralExternalInformation)
-            </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InformantRelationToDeceased)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InformantName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ImformantCidNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.History)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GeneralExternalInformation)
+                </td>
 
-            <td>
-                @Html.DisplayFor(modelItem => item.DeceasedName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateOfPostmortemExamination)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CidOrPassport)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Age)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address)
-            </td>
-            <td>
-                @Html.CheckBox("isactive", item.Isactive, htmlAttributes: new { @disabled = "disabled" })
-            </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DeceasedName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateOfPostmortemExamination)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CidOrPassport)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Age)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    @Html.CheckBox("isactive", item.Isactive, htmlAttributes: new { @disabled = "disabled" })
+                </td>
 
 
-            <td>
-                @Html.DisplayFor(modelItem => item.Nationality)
-            </td>
-            <td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nationality)
+                </td>
+                <td>
 
-                <p data-momentdate="@item.Lastchanged.Value.ToString("s", System.Globalization.CultureInfo.InvariantCulture)"></p>
+                    <p data-momentdate="@item.Lastchanged.Value.ToString("s", System.Globalization.CultureInfo.InvariantCulture)"></p>
 
-            </td>
+                </td>
 
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
         }
     </tbody>
 </table>

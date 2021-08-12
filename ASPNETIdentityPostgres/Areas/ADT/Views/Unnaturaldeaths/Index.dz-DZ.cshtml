@@ -5,16 +5,16 @@
 
 
 @{
-    ViewData["Title"] = "Unnatural Deaths ";
+    ViewData["Title"] = Localizer["Unnatural"].Value + " " + Localizer["Death"].Value;
 }
 
-<h1>List of Deaths that were unnatural </h1>
+<h1> @Localizer["Unnatural"].Value @Localizer["Death"].Value  </h1>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/js/moment.min.js"></script>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<h3>
+    <a asp-action="Create">@Localizer["Add"].Value </a>
+</h3>
 <table class="table table-bordered">
     <thead>
         <tr>
@@ -40,8 +40,9 @@
             <th>
                 Place of Examination
             </th>
-
-            Informant's relation with the deceased
+            <th>
+                Informant's relation with the deceased
+            </th>
             <th>
                 Informant Name
             </th>
