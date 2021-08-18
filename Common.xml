@@ -508,6 +508,17 @@
             Simple CRUD operations.
             </summary>
         </member>
+        <member name="T:Common.Models.AccessToken">
+            <summary>
+            Represents an access token obtained from
+            an identity server.
+            </summary>
+        </member>
+        <member name="P:Common.Models.AccessToken.access_token">
+            <summary>
+            Actual access token.
+            </summary>
+        </member>
         <member name="T:Common.PatientDto">
             <summary>
             Dto class for Patient entity. Never use EF Core entities directly

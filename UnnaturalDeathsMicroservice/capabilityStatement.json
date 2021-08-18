@@ -1,0 +1,511 @@
+{
+  "resourceType": "CapabilityStatement",
+  "version": "1.0.0.0",
+  "name": "Example.Fhir",
+  "experimental": false,
+  "date": "2020-09-16",
+  "publisher": "Prasad N",
+  "description": "FHIR Server",
+  "kind": "capability",
+  "fhirVersion": "4.0.1",
+  "format": [
+    "json"
+  ],
+  "rest": [
+    {
+      "mode": "server",
+      "security": {
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "token",
+                "valueUri": "https://identityserverfhir.azurewebsites.net/connect/token"
+              }
+            ],
+            "url": "http://fhir-registry.smarthealthit.org/StructureDefinition/oauth-uris"
+          }
+        ],
+        "cors": true,
+        "service": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/restful-security-service",
+                "code": "SMART-on-FHIR"
+              }
+            ]
+          }
+        ]
+      },
+      "resource": [
+        {
+          "type": "DiagnosticReport",
+          "interaction": [
+            {
+              "code": "read"
+            },
+            {
+              "code": "search-type"
+            },
+            {
+              "code": "update",
+              "documentation": "Implemented as per the specification"
+            },
+            {
+              "code": "create",
+              "documentation": "Implemented as per the specification"
+            }
+          ],
+          "versioning": "no-version",
+          "readHistory": false,
+          "updateCreate": false,
+          "searchParam": [
+            {
+              "name": "subject",
+              "type": "reference",
+              "documentation": "Subject of the Diagnostic Report (e.g. patient)"
+            },
+            {
+              "name": "category",
+              "type": "token",
+              "documentation": "The classification of the type of Diagnostic Report"
+            },
+            {
+              "name": "date",
+              "type": "date",
+              "documentation": "Issued datetime. If the issued element is a date range, a date that falls in the range."
+            },
+            {
+              "name": "identifier",
+              "type": "token",
+              "documentation": "A business identifier"
+            },
+            {
+              "name": "id",
+              "type": "token",
+              "documentation": "A logical identifier"
+            },
+            {
+              "name": "result",
+              "type": "token",
+              "documentation": "Reference to the result in the Diagnostic Report"
+            }
+          ]
+        },
+        {
+          "type": "Encounter",
+          "interaction": [
+            {
+              "code": "read"
+            },
+            {
+              "code": "search-type"
+            },
+            {
+              "code": "update",
+              "documentation": "Implemented as per the specification"
+            },
+            {
+              "code": "create",
+              "documentation": "Implemented as per the specification"
+            }
+          ],
+          "versioning": "no-version",
+          "readHistory": false,
+          "updateCreate": false,
+          "searchParam": [
+            {
+              "name": "subject",
+              "type": "reference",
+              "documentation": "Subject of the Encounter (e.g. patient)"
+            },
+            {
+              "name": "date",
+              "type": "date",
+              "documentation": "A date within the period the Encounter lasted"
+            },
+            {
+              "name": "identifier",
+              "type": "token",
+              "documentation": "A business identifier"
+            },
+            {
+              "name": "id",
+              "type": "token",
+              "documentation": "A logical identifier"
+            },
+            {
+              "name": "class",
+              "type": "token",
+              "documentation": "Classification of patient encounter"
+            },
+            {
+              "name": "type",
+              "type": "token",
+              "documentation": "Specific type of encounter"
+            }
+          ]
+        },
+        {
+          "type": "Immunization",
+          "interaction": [
+            {
+              "code": "read"
+            },
+            {
+              "code": "search-type"
+            },
+            {
+              "code": "update",
+              "documentation": "Implemented as per the specification"
+            },
+            {
+              "code": "create",
+              "documentation": "Implemented as per the specification"
+            }
+          ],
+          "versioning": "no-version",
+          "readHistory": false,
+          "updateCreate": false,
+          "searchParam": [
+            {
+              "name": "patient",
+              "type": "reference",
+              "documentation": "Reference to the patient"
+            },
+            {
+              "name": "date",
+              "type": "date",
+              "documentation": "Immunization occurrence date or if it's a range a date that falls within that range"
+            },
+            {
+              "name": "identifier",
+              "type": "token",
+              "documentation": "A business identifier"
+            },
+            {
+              "name": "id",
+              "type": "token",
+              "documentation": "A logical identifier"
+            }
+          ]
+        },
+        {
+          "type": "Observation",
+          "interaction": [
+            {
+              "code": "read"
+            },
+            {
+              "code": "search-type"
+            },
+            {
+              "code": "update",
+              "documentation": "Implemented as per the specification"
+            },
+            {
+              "code": "create",
+              "documentation": "Implemented as per the specification"
+            }
+          ],
+          "versioning": "no-version",
+          "readHistory": false,
+          "updateCreate": false,
+          "searchParam": [
+            {
+              "name": "subject",
+              "type": "reference",
+              "documentation": "Reference to the subject (e.g. patient)"
+            },
+            {
+              "name": "category",
+              "type": "token",
+              "documentation": "The classification of the type of observation laboratory e.g. vital-signs or social-history."
+            },
+            {
+              "name": "date",
+              "type": "date",
+              "documentation": "Obtained datetime. If the obtained element is a date range, a date that falls in the range."
+            },
+            {
+              "name": "identifier",
+              "type": "token",
+              "documentation": "A business identifier"
+            },
+            {
+              "name": "id",
+              "type": "token",
+              "documentation": "A logical identifier"
+            }
+          ]
+        },
+        {
+          "type": "Organization",
+          "interaction": [
+            {
+              "code": "read"
+            },
+            {
+              "code": "search-type"
+            },
+            {
+              "code": "update",
+              "documentation": "Implemented as per the specification"
+            },
+            {
+              "code": "create",
+              "documentation": "Implemented as per the specification"
+            }
+          ],
+          "versioning": "no-version",
+          "readHistory": false,
+          "updateCreate": false,
+          "searchParam": [
+            {
+              "name": "name",
+              "type": "string",
+              "documentation": "A portion of the organization's name or alias"
+            },
+            {
+              "name": "address",
+              "type": "string",
+              "documentation": "A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text"
+            },
+            {
+              "name": "identifier",
+              "type": "token",
+              "documentation": "A business identifier"
+            },
+            {
+              "name": "id",
+              "type": "token",
+              "documentation": "A logical identifier"
+            },
+            {
+              "name": "type",
+              "type": "token",
+              "documentation": "A code for the type of organization"
+            }
+          ]
+        },
+        {
+          "type": "Patient",
+          "interaction": [
+            {
+              "code": "read"
+            },
+            {
+              "code": "search-type"
+            },
+            {
+              "code": "update",
+              "documentation": "Implemented as per the specification"
+            },
+            {
+              "code": "create",
+              "documentation": "Implemented as per the specification"
+            }
+          ],
+          "versioning": "no-version",
+          "readHistory": false,
+          "updateCreate": false,
+          "searchParam": [
+            {
+              "name": "given",
+              "type": "string",
+              "documentation": "To match any of the given names"
+            },
+            {
+              "name": "family",
+              "type": "string",
+              "documentation": "Family name"
+            },
+            {
+              "name": "identifier",
+              "type": "token",
+              "documentation": "A business identifier"
+            },
+            {
+              "name": "id",
+              "type": "token",
+              "documentation": "A logical identifier"
+            },
+            {
+              "name": "address",
+              "type": "string",
+              "documentation": "To match any of the address lines"
+            }
+          ]
+        },
+        {
+          "type": "Practitioner",
+          "interaction": [
+            {
+              "code": "read"
+            },
+            {
+              "code": "search-type"
+            },
+            {
+              "code": "update",
+              "documentation": "Implemented as per the specification"
+            },
+            {
+              "code": "create",
+              "documentation": "Implemented as per the specification"
+            }
+          ],
+          "versioning": "no-version",
+          "readHistory": false,
+          "updateCreate": false,
+          "searchParam": [
+            {
+              "name": "given",
+              "type": "string",
+              "documentation": "To match any of the given names"
+            },
+            {
+              "name": "family",
+              "type": "string",
+              "documentation": "Family name"
+            },
+            {
+              "name": "identifier",
+              "type": "token",
+              "documentation": "A business identifier"
+            },
+            {
+              "name": "id",
+              "type": "token",
+              "documentation": "A logical identifier"
+            },
+            {
+              "name": "address",
+              "type": "string",
+              "documentation": "To match any of the address lines"
+            }
+          ]
+        },
+        {
+          "type": "Procedure",
+          "interaction": [
+            {
+              "code": "read"
+            },
+            {
+              "code": "search-type"
+            },
+            {
+              "code": "update",
+              "documentation": "Implemented as per the specification"
+            },
+            {
+              "code": "create",
+              "documentation": "Implemented as per the specification"
+            }
+          ],
+          "versioning": "no-version",
+          "readHistory": false,
+          "updateCreate": false,
+          "searchParam": [
+            {
+              "name": "subject",
+              "type": "reference",
+              "documentation": "Subject of the Procedure (e.g. patient)"
+            },
+            {
+              "name": "category",
+              "type": "token",
+              "documentation": "The classification of the type of Procedure"
+            },
+            {
+              "name": "date",
+              "type": "date",
+              "documentation": "Performed datetime. If the performed element is a date range, a date that falls in the range."
+            },
+            {
+              "name": "identifier",
+              "type": "token",
+              "documentation": "A business identifier"
+            },
+            {
+              "name": "id",
+              "type": "token",
+              "documentation": "A logical identifier"
+            }
+          ]
+        },
+        {
+          "type": "AllergyIntolerance",
+          "interaction": [
+            {
+              "code": "read"
+            },
+            {
+              "code": "search-type"
+            },
+            {
+              "code": "update",
+              "documentation": "Implemented as per the specification"
+            },
+            {
+              "code": "create",
+              "documentation": "Implemented as per the specification"
+            }
+          ],
+          "versioning": "no-version",
+          "readHistory": false,
+          "updateCreate": false,
+          "searchParam": [
+            {
+              "name": "asserter",
+              "type": "reference",
+              "documentation": "AllergyIntolerance.asserter (e.g. patient)"
+            },
+            {
+              "name": "category",
+              "type": "token",
+              "documentation": "AllergyIntolerance.category"
+            },
+            {
+              "name": "clinicalstatus",
+              "type": "token",
+              "documentation": "AllergyIntolerance.clinicalStatus"
+            },
+            {
+              "name": "code",
+              "type": "token",
+              "documentation": "AllergyIntolerance.code | AllergyIntolerance.reaction.substance"
+            },
+            {
+              "name": "criticality",
+              "type": "token",
+              "documentation": "AllergyIntolerance.criticality"
+            },
+            {
+              "name": "date",
+              "type": "date",
+              "documentation": "AllergyIntolerance.recordedDate in yyyy-MM-dd format."
+            },
+            {
+              "name": "identifier",
+              "type": "token",
+              "documentation": "A business identifier"
+            },
+            {
+              "name": "onset",
+              "type": "date",
+              "documentation": "AllergyIntolerance.reaction.onset in yyyy-MM-dd format."
+            },
+            {
+              "name": "patient",
+              "type": "reference",
+              "documentation": "AllergyIntolerance.patient"
+            }
+          ]
+        }        
+      ]
+    }
+  ]
+}
