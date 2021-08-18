@@ -43,3 +43,7 @@ Support for `Dzongkha` as well as `English` can be added using the following con
 
 - Separate view for each language. (In most cases the views are just copied from the invariant culture view). In some cases, you might want to give a little different UI to your users of a particular language. 
 - Controller need not be changed. Same controller is shared by view of multiple languages. 
+
+# Service Bus using RabbitMQ
+- Added two example APIs- One that does CRUD for an example entity and other receives messages from the first service via a RabbitMQ queue. No cross-API calls here. 
+- Please change your RabbitMQ configuration in app settings in all the relevant API projects as per your environment. 
