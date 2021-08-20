@@ -26,6 +26,7 @@ namespace Api.Controllers
 
         IConfiguration _iconfiguration;
         private readonly string BaseUri = null;
+        private readonly string GatewayUriApi1 = null;
         private readonly IDeathDetailsSender _deathDetailsSender;
 
         public UnnaturalDeathsController(IConfiguration configuration, 
@@ -38,6 +39,7 @@ namespace Api.Controllers
             _iconfiguration = configuration;
 
             BaseUri = _iconfiguration["BaseUri"];
+            GatewayUriApi1 = _iconfiguration["GatewayUriApi1"];
 
             try
             {

@@ -3,6 +3,7 @@ using Common.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -18,21 +19,27 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Views
         private readonly IUnnaturalDeathsLogic _unnaturalDeathsBusinessLogic;
 
         private static string access_token = null;
+        IConfiguration _iconfiguration;
+
+        public string GatewayUriApi1 { get; private set; }
 
         static UnnaturaldeathsController()
         {
             access_token = getAccessToken();
         }
 
-        public UnnaturaldeathsController(IUnnaturalDeathsLogic logic)
+        public UnnaturaldeathsController(IUnnaturalDeathsLogic logic,
+                                        IConfiguration configuration)
         {
             _unnaturalDeathsBusinessLogic = logic;
+            _iconfiguration = configuration;
         }
 
         // GET: UnnaturalDeaths
         public async Task<IActionResult> Index()
         {
-            var client = new RestClient("https://localhost:6001/api/unnaturaldeaths");
+            GatewayUriApi1 = _iconfiguration["GatewayUriApi1"];
+            var client = new RestClient(GatewayUriApi1);
             client.Timeout = -1;
             var request = new RestRequest(Method.GET);
             request.AddHeader("Authorization", string.Format("Bearer {0}", access_token));
@@ -84,8 +91,7 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Views
         }
 
         // POST: UnnaturalDeaths/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Address,Age,CidOrPassport,DateOfPostmortemExamination," +
@@ -105,7 +111,11 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Views
                 death.Transactedby = User.Identity.Name;
                 death.Transacteddate = DateTime.UtcNow;
 
-                var client = new RestClient("https://localhost:6001/api/unnaturaldeaths/post");
+                GatewayUriApi1 = _iconfiguration["GatewayUriApi1"];
+
+                var postUriForUnnaturalDeaths = Flurl.Url.Combine(GatewayUriApi1, "post");
+
+                var client = new RestClient(postUriForUnnaturalDeaths);
                 client.Timeout = -1;
                 var request = new RestRequest(Method.POST);
                 request.AddHeader("Content-Type", "application/json");
@@ -113,8 +123,7 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Views
                 request.AddParameter("application/json", JsonSerializer.Serialize(death), ParameterType.RequestBody);
                 
                 IRestResponse response = await client.ExecuteAsync(request);
-                Console.WriteLine(response.Content);
-
+                
                 return RedirectToAction(nameof(Index), "UnnaturalDeaths");
             }
             return View(death);
@@ -142,8 +151,7 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Views
         }
 
         // POST: UnnaturalDeaths/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("Address,Age,Id,CidOrPassport,DateOfPostmortemExamination," +
