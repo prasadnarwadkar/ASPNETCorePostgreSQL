@@ -14,6 +14,9 @@ using Api.Models;
 using Common.Models;
 using Common;
 using UnnaturalDeathsMicroservice.ServiceBus;
+using System.Text;
+using System.IO;
+using System.Text.Json.Serialization;
 
 namespace Api.Controllers
 {
@@ -29,7 +32,7 @@ namespace Api.Controllers
         private readonly string GatewayUriApi1 = null;
         private readonly IDeathDetailsSender _deathDetailsSender;
 
-        public UnnaturalDeathsController(IConfiguration configuration, 
+        public UnnaturalDeathsController(IConfiguration configuration,
                                         IUnnaturalDeathsRepository repo,
                                         IDeathDetailsSender deathSender)
         {
@@ -43,7 +46,7 @@ namespace Api.Controllers
 
             try
             {
-                
+
             }
             catch (Exception ex)
             {
@@ -54,25 +57,26 @@ namespace Api.Controllers
             }
         }
 
-        
 
-        [AcceptVerbs(new string[] { "GET"})]
+
+        [AcceptVerbs(new string[] { "GET" })]
         [Route("")]
         public async Task<IActionResult> get()
         {
             var list = await _UnnaturalDeathsFHIRRepository.GetListAsync();
-            
-            
 
-            return new JsonResult(list, new System.Text.Json.JsonSerializerOptions { 
-                IgnoreNullValues= true,
+
+
+            return new JsonResult(list, new System.Text.Json.JsonSerializerOptions
+            {
+                IgnoreNullValues = true,
                 WriteIndented = true,
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase 
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
             });
         }
 
-        
-        [AcceptVerbs(new string[1] { "GET"})]
+
+        [AcceptVerbs(new string[1] { "GET" })]
         [Route("{id:Guid}")]
         public async Task<IActionResult> get(Guid id)
         {
@@ -106,7 +110,7 @@ namespace Api.Controllers
         /// <returns></returns>
         /// <response code="202">Returns the udpated item's Uri in the location header in the response.</response>
         /// <response code="500">In case of server error</response> 
-        [AcceptVerbs(new string[1] { "PUT"})]
+        [AcceptVerbs(new string[1] { "PUT" })]
         [Route("put/{id:Guid}")]
         public async Task<IActionResult> put(Guid id, [FromBody] UnnaturalDeaths death)
         {
@@ -142,7 +146,64 @@ namespace Api.Controllers
         /// <returns></returns>
         /// <response code="201">Returns the created item's Uri in the location header in the response.</response>
         /// <response code="500">In case of server error</response> 
-        [AcceptVerbs(new string[1] { "POST"})]
+        [AcceptVerbs(new string[1] { "POST" })]
+        [Route("post2")]
+        public async Task<IActionResult> post2(UnnaturalDeaths death)
+        {
+            try
+            {
+
+                using (var Reader = new StreamReader(Request.Body, Encoding.UTF8))
+                {
+                    var reqBody = await Reader.ReadToEndAsync();
+
+                    if (string.IsNullOrWhiteSpace(reqBody))
+                    {
+                        return BadRequest();
+                    }
+
+                    death = JsonSerializer.Deserialize<UnnaturalDeaths>(reqBody,
+                        new JsonSerializerOptions
+                        {
+                            // [...]
+                            NumberHandling = JsonNumberHandling.AllowReadingFromString
+                            
+                        });
+
+                    if (death == null)
+                    {
+                        return BadRequest();
+                    }
+                }
+
+                var resource = await _UnnaturalDeathsFHIRRepository.FindAsync(death.Id);
+
+                if (resource != null)
+                {
+                    return Conflict(string.Format("This resource with the given id {0} already exists. Did you mean to send a PUT request instead?", resource.Id));
+                }
+
+                var url = await _UnnaturalDeathsFHIRRepository.AddAsync(death);
+
+                _deathDetailsSender.SendDeathDetails(death);
+                return Created("", "Created");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, string.Format("Message: {0} Stack Trace: {1}", ex.Message, ex.StackTrace));
+            }
+
+        }
+
+        /// <summary>
+        /// Register a new UnnaturalDeaths resource (entity). Check the Schema to know which JSON you would need to
+        /// send to this operation. 
+        /// </summary>
+        /// <param address="address">UnnaturalDeaths resource to create</param>
+        /// <returns></returns>
+        /// <response code="201">Returns the created item's Uri in the location header in the response.</response>
+        /// <response code="500">In case of server error</response> 
+        [AcceptVerbs(new string[1] { "POST" })]
         [Route("post")]
         public async Task<IActionResult> post([FromBody] UnnaturalDeaths death)
         {
@@ -150,6 +211,9 @@ namespace Api.Controllers
             {
                 if (death == null)
                 {
+                    byte[] buffer = new byte[(long)Request.ContentLength];
+                    var body = await Request.Body.ReadAsync(buffer, 0, (int)Request.ContentLength);
+                    var bodyString = Encoding.UTF8.GetString(buffer);
                     return BadRequest();
                 }
 
@@ -169,7 +233,7 @@ namespace Api.Controllers
             {
                 return StatusCode(500, string.Format("Message: {0} Stack Trace: {1}", ex.Message, ex.StackTrace));
             }
-            
+
         }
     }
 }

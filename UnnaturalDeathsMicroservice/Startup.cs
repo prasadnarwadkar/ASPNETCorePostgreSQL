@@ -27,9 +27,21 @@ namespace Api
         }
 
         public IConfiguration Configuration { get; }
+
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
         public void ConfigureServices(IServiceCollection services)
         {
             IdentityModelEventSource.ShowPII = true;
+            
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                                  builder =>
+                                  {
+                                      builder.WithOrigins("*").AllowAnyHeader().AllowAnyMethod();
+                                  });
+            });
 
             services.AddControllers().AddJsonOptions(option =>
             option.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase);
@@ -126,6 +138,8 @@ namespace Api
         public void Configure(IApplicationBuilder app)
         {
             app.UseRouting();
+
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseAuthentication();
             app.UseAuthorization();
