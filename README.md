@@ -14,10 +14,10 @@ PM> dotnet ef dbcontext scaffold "Host=localhost;Database=identitywithpgsql;User
 - Entity Framework Core
 - [PostgreSQL Driver for .NET Core](https://www.npgsql.org/)
 
-## EF Core
+## EF Core: No Raw SQL Queries please
 With Entity Framework Core, the code becomes simple to maintain.
 
-Getting a list of objects is very simple. No raw SQL queries.
+Getting a list of objects is very simple. **No raw SQL queries**.
 
 ```
         private readonly identitywithpgsqlContext _context;
@@ -47,3 +47,45 @@ Support for `Dzongkha` as well as `English` can be added using the following con
 # Service Bus using RabbitMQ
 - Added two example APIs- One that does CRUD for an example entity and other receives messages from the first service via a RabbitMQ queue. No cross-API calls here. 
 - Please change your RabbitMQ configuration in app settings in all the relevant API projects as per your environment. 
+
+# Zuul API Gateway Added
+The following Zuul API gateway configuration works here in this project. Please change the settings below as per your environment.
+
+```
+...
+
+server.port = 8091
+
+ribbon.eureka.enabled=false
+zuul.sensitiveHeaders=Cookie,Set-Cookie
+
+zuul.routes.api1.url = http://localhost:6001/api/unnaturaldeaths
+
+zuul.routes.index.path = /**
+zuul.routes.index.url = http://localhost:5000/Index
+
+...
+```
+
+- Please run your Zuul API gateway application on the port 8091. 
+- [Unnatural Deaths API](http://localhost:6001/api/unnaturaldeaths) is running on the port 6001. This is called the `downstream API endpoint`. 
+- The UI project's configuration (`appsettings.json`) has been updated to use the following:
+```
+...
+,
+"ConnectionStrings": {
+    "DefaultConnection": "Server=127.0.0.1;Port=5432;Database=identitywithpgsql;User Id=postgres;Password=Tetya1:2;"
+},
+"Logging": {
+    "LogLevel": {
+    "Default": "Information",
+    "Microsoft": "Warning",
+    "Microsoft.Hosting.Lifetime": "Information"
+    }
+},
+"AllowedHosts": "*",
+"GatewayUriApi1": "http://localhost:8091/api1"
+}
+...
+```
+ See the configuration above which uses the `Zuul API Gateway` endpoint rather than the `downstream API uri`. 
