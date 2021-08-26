@@ -4,6 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Common.Models;
+using System.Net.Http;
+using System.Net;
+using System.Web.Http;
 
 namespace DataAccessLayer
 {
@@ -57,35 +60,52 @@ namespace DataAccessLayer
 
         public async Task<long> AddAsync(UnnaturalDeaths item)
         {
-            _context.Add(new UnnaturalDeaths {
-                Address = item.Address,
-                Age = item.Age,
-                CidOrPassport = item.CidOrPassport,
-                DateOfPostmortemExamination = item.DateOfPostmortemExamination,
-                DeceasedName = item.DeceasedName,
-                Dzongkhag = item.Dzongkhag,
-                GeneralExternalInformation = item.GeneralExternalInformation,
-                History = item.History,
-                ImformantCidNo = item.ImformantCidNo,
-                InformantName = item.InformantName,
-                InformantRelationToDeceased = item.InformantRelationToDeceased,
-                Isactive = item.Isactive,
-                Lastchanged = item.Lastchanged,
-                Nationality = item.Nationality,
-                PlaceOfExamination = item.PlaceOfExamination,
-                PoliceCaseNo = item.PoliceCaseNo,
-                PoliceStation = item.PoliceStation,
-                Remark = item.Remark,
-                SceneOfDeath = item.SceneOfDeath,
-                Sex = item.Sex,
-                TimeOfPostmortemExamination = item.TimeOfPostmortemExamination,
-                Transactedby = item.Transactedby,
-                Transacteddate = item.Transacteddate,
-                Version = item.Version,
-                Id = item.Id
-            });
+            long returnVal = 0;
 
-            return await _context.SaveChangesAsync();
+            try
+            {
+                _context.Add(new UnnaturalDeaths
+                {
+                    Address = item.Address,
+                    Age = item.Age,
+                    CidOrPassport = item.CidOrPassport,
+                    DateOfPostmortemExamination = item.DateOfPostmortemExamination,
+                    DeceasedName = item.DeceasedName,
+                    Dzongkhag = item.Dzongkhag,
+                    GeneralExternalInformation = item.GeneralExternalInformation,
+                    History = item.History,
+                    ImformantCidNo = item.ImformantCidNo,
+                    InformantName = item.InformantName,
+                    InformantRelationToDeceased = item.InformantRelationToDeceased,
+                    Isactive = item.Isactive,
+                    Lastchanged = item.Lastchanged,
+                    Nationality = item.Nationality,
+                    PlaceOfExamination = item.PlaceOfExamination,
+                    PoliceCaseNo = item.PoliceCaseNo,
+                    PoliceStation = item.PoliceStation,
+                    Remark = item.Remark,
+                    SceneOfDeath = item.SceneOfDeath,
+                    Sex = item.Sex,
+                    TimeOfPostmortemExamination = item.TimeOfPostmortemExamination,
+                    Transactedby = item.Transactedby,
+                    Transacteddate = item.Transacteddate,
+                    Version = item.Version,
+                    Id = item.Id
+                });
+
+                returnVal = await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                var resp = new HttpResponseMessage(HttpStatusCode.InternalServerError)
+                {
+                    Content = new StringContent(ex.Message + " " + ex.StackTrace),
+                    ReasonPhrase = "Error"
+                };
+                throw new HttpResponseException(resp);
+            }
+
+            return returnVal;
         }
 
         

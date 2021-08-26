@@ -124,7 +124,7 @@
             <div class="form-group">
                 <label asp-for="Sex" class="control-label">Gender</label>
                 <select asp-for="Sex" class="form-control" required>
-                    <option value="Select">Select Gender</option>
+                    <option value="Unset">Select Gender</option>
                     <option value="F">Female</option>
                     <option value="M">Male</option>
                     <option value="O">Other</option>
@@ -143,7 +143,7 @@
         <div class="col-md-3">
             <div class="form-group">
                 <label asp-for="Age" class="control-label"></label>
-                <input asp-for="Age" class="form-control" />
+                <input asp-for="Age" class="form-control" max="150" min="1"/>
                 <span asp-validation-for="Age" class="text-danger"></span>
             </div>
         </div>

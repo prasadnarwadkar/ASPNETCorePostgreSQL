@@ -7,6 +7,8 @@ using Microsoft.Extensions.Configuration;
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -20,6 +22,7 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Views
 
         private static string access_token = null;
         IConfiguration _iconfiguration;
+        IHttpClientFactory _clientFactory;
 
         public string GatewayUriApi1 { get; private set; }
 
@@ -29,10 +32,13 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Views
         }
 
         public UnnaturaldeathsController(IUnnaturalDeathsLogic logic,
-                                        IConfiguration configuration)
+                                        IConfiguration configuration,
+                                        IHttpClientFactory clientFactory)
         {
             _unnaturalDeathsBusinessLogic = logic;
             _iconfiguration = configuration;
+
+            _clientFactory = clientFactory;
         }
 
         // GET: UnnaturalDeaths
@@ -115,16 +121,37 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Views
 
                 var postUriForUnnaturalDeaths = Flurl.Url.Combine(GatewayUriApi1, "post");
 
-                var client = new RestClient(postUriForUnnaturalDeaths);
-                client.Timeout = -1;
-                var request = new RestRequest(Method.POST);
-                request.AddHeader("Content-Type", "application/json");
-                request.AddHeader("Authorization", string.Format("Bearer {0}", access_token));
-                request.AddParameter("application/json", JsonSerializer.Serialize(death), ParameterType.RequestBody);
+                //var client = new RestClient(postUriForUnnaturalDeaths);
+                //client.Timeout = -1;
+                //var request = new RestRequest(Method.POST);
                 
-                IRestResponse response = await client.ExecuteAsync(request);
+                //request.AddHeader("Authorization", string.Format("Bearer {0}", access_token));
+                //request.AddParameter("application/json", JsonSerializer.Serialize(death), ParameterType.RequestBody);
                 
-                return RedirectToAction(nameof(Index), "UnnaturalDeaths");
+                //IRestResponse response = await client.ExecuteAsync(request);
+
+
+                var request2 = new HttpRequestMessage(HttpMethod.Post,
+                                                        postUriForUnnaturalDeaths);
+                
+                request2.Headers.Add("Authorization", string.Format("Bearer {0}", access_token));
+                request2.Content =  new StringContent(JsonSerializer.Serialize(death), 
+                                                        Encoding.UTF8, 
+                                                        "application/json");
+                               
+
+                var client2 = _clientFactory.CreateClient();
+                var response2 = await client2.SendAsync(request2);
+
+                if (response2.StatusCode == System.Net.HttpStatusCode.Created)
+                {
+                    return RedirectToAction(nameof(Index), "UnnaturalDeaths");
+                }
+                else
+                {
+                    var content = await response2.Content.ReadAsStringAsync();
+                    return View(death);
+                }
             }
             return View(death);
         }

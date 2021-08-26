@@ -17,6 +17,9 @@ using UnnaturalDeathsMicroservice.ServiceBus;
 using System.Text;
 using System.IO;
 using System.Text.Json.Serialization;
+using System.Web.Http;
+using System.Net.Http;
+using System.Net;
 
 namespace Api.Controllers
 {
@@ -165,7 +168,6 @@ namespace Api.Controllers
                     death = JsonSerializer.Deserialize<UnnaturalDeaths>(reqBody,
                         new JsonSerializerOptions
                         {
-                            // [...]
                             NumberHandling = JsonNumberHandling.AllowReadingFromString
                             
                         });
@@ -231,7 +233,12 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, string.Format("Message: {0} Stack Trace: {1}", ex.Message, ex.StackTrace));
+                var resp = new HttpResponseMessage(HttpStatusCode.InternalServerError)
+                {
+                    Content = new StringContent(ex.Message + " " + ex.StackTrace),
+                    ReasonPhrase = "Error"
+                };
+                throw new HttpResponseException(resp);
             }
 
         }
