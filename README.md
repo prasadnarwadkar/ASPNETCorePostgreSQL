@@ -14,6 +14,13 @@ PM> dotnet ef dbcontext scaffold "Host=localhost;Database=identitywithpgsql;User
 - Entity Framework Core
 - [PostgreSQL Driver for .NET Core](https://www.npgsql.org/)
 
+## Data Synchroization Background Hosted Service (Example)
+- Traverse through a source db patient list to see if each patient is in the destination db. If yes, update it if its last modified date is earlier than this record (destination record is stale). If not, update the source record. 
+- If this record is not in the destination db, insert it. 
+- You can use a UHID or Name or similar ID (not driven by database) to check whether the given entity is there in the destination db. Names can be repeated. So, using UHID or similar unique ID is recommended.
+- The same steps can be used for each and every entity.
+- The IDs automatically set by the database are unique within the same database but not across two databases. So these need to be avoided. UHID is the best bet.
+
 ## EF Core: No Raw SQL Queries please
 With Entity Framework Core, the code becomes simple to maintain.
 
