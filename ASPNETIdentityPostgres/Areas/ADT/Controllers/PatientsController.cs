@@ -8,6 +8,8 @@ using Common.Models;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Http;
 using System;
+using datasyncservice.Services;
+using Microsoft.Extensions.Hosting;
 
 namespace ASPNETIdentityPostgres
 {
@@ -17,10 +19,13 @@ namespace ASPNETIdentityPostgres
     {
         
         private readonly IPatientLogic _patientBusinessLogic;
+        private readonly PatientSyncService _HostedService;
 
-        public PatientsController(IPatientLogic logic)
+        public PatientsController(IPatientLogic logic,
+            datasyncservice.Services.BackgroundService hostedService)
         {
             _patientBusinessLogic = logic;
+            _HostedService = hostedService as PatientSyncService;
         }
 
         [HttpPost]
@@ -78,6 +83,9 @@ namespace ASPNETIdentityPostgres
                     Address = patient.Address.First(),
                     Name = patient.Name.First()
                 });
+
+                // Call background service.
+                await _HostedService.StartAsync(new System.Threading.CancellationToken());
 
                 return RedirectToAction(nameof(Index), "Patients");
             }

@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using datasyncservice.Services;
+using Microsoft.Extensions.Hosting;
 
 namespace ASPNETIdentityPostgres.Areas.Identity.Pages.Account
 {
@@ -18,14 +20,17 @@ namespace ASPNETIdentityPostgres.Areas.Identity.Pages.Account
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly PatientSyncService _HostedService;
 
         public LoginModel(SignInManager<ApplicationUser> signInManager, 
             ILogger<LoginModel> logger,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            IHostedService hostedService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _HostedService = hostedService as PatientSyncService;
         }
 
         [BindProperty]

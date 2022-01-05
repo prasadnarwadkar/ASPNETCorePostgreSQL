@@ -525,5 +525,10 @@
             in BLL or DAL.
             </summary>
         </member>
+        <member name="T:datasyncservice.Services.BackgroundService">
+            <summary>
+            Base class for implementing a long running <see cref="T:Microsoft.Extensions.Hosting.IHostedService"/>.
+            </summary>
+        </member>
     </members>
 </doc>

@@ -11,6 +11,7 @@ using BusinessLogicLayer;
 using DataAccessLayer;
 using Common.Models;
 using Microsoft.AspNetCore.Mvc.Razor;
+using datasyncservice.Services;
 
 namespace ASPNETIdentityPostgres
 {
@@ -69,6 +70,8 @@ namespace ASPNETIdentityPostgres
 
             services.AddSingleton<IConfiguration>(Configuration);
             services.AddHttpClient();
+
+            services.AddScoped<datasyncservice.Services.BackgroundService, PatientSyncService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
