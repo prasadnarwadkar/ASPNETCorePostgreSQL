@@ -26,6 +26,9 @@ namespace ASPNETIdentityPostgres
         {
             _patientBusinessLogic = logic;
             _HostedService = hostedService as PatientSyncService;
+
+            // Call background service.
+            Task.WaitAll(_HostedService.StartAsync(new System.Threading.CancellationToken()));
         }
 
         [HttpPost]
@@ -81,7 +84,9 @@ namespace ASPNETIdentityPostgres
             {
                 await _patientBusinessLogic.InsertAsync(new PatientDto { 
                     Address = patient.Address.First(),
-                    Name = patient.Name.First()
+                    Name = patient.Name.First(),
+                    Uhid = Guid.NewGuid(),
+                    LastModified = DateTime.Now
                 });
 
                 // Call background service.
@@ -117,7 +122,7 @@ namespace ASPNETIdentityPostgres
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("Name,Id,Address")] Patient patient)
+        public async Task<IActionResult> Edit(long id, [Bind("Name,Id,Address, Uhid, LastModified")] Patient patient)
         {
             if (id != patient.Id)
             {
@@ -136,8 +141,14 @@ namespace ASPNETIdentityPostgres
                     await _patientBusinessLogic.UpdateAsync(new PatientDto { 
                         Address = patient.Address.First(),
                         ID = patient.Id,
-                        Name = patient.Name.First()
+                        Name = patient.Name.First(),
+                        Uhid = patient.Uhid,
+                        LastModified = DateTime.Now
+
                     });
+
+                    // Call background service.
+                    await _HostedService.StartAsync(new System.Threading.CancellationToken());
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -180,7 +191,9 @@ namespace ASPNETIdentityPostgres
             var patient = await _patientBusinessLogic.FindAsync(id);
             await _patientBusinessLogic.RemoveAsync(new PatientDto { Name = patient.Name,
                                                 Address = patient.Address,
-                                                ID = patient.ID});
+                                                ID = patient.ID,
+                                                Uhid = patient.Uhid,
+                                                LastModified = patient.LastModified});
 
             return RedirectToAction(nameof(Index), "Patients");
         }

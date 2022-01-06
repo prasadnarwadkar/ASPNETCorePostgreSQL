@@ -18,5 +18,9 @@ namespace Common
         [Key]
         public long ID { get; set; }
         public string Address { get; set; }
+
+        public Guid? Uhid { get; set; }
+
+        public DateTime? LastModified { get; set; }
     }
 }

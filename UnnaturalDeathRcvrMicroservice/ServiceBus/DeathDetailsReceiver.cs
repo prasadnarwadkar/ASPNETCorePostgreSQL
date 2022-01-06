@@ -55,7 +55,7 @@ namespace UnnaturalDeathsRcvrMicroservice.ServiceBus
             consumer.Received += (ch, ea) =>
             {
                 var content = Encoding.UTF8.GetString(ea.Body.ToArray());
-                var updatedData = JsonConvert.DeserializeObject<UnnaturalDeaths>(content);
+                var updatedData = JsonConvert.DeserializeObject<Unnaturaldeaths>(content);
 
                 HandleMessage(updatedData);
 
@@ -71,7 +71,7 @@ namespace UnnaturalDeathsRcvrMicroservice.ServiceBus
             return Task.CompletedTask;
         }
 
-        private void HandleMessage(UnnaturalDeaths data)
+        private void HandleMessage(Unnaturaldeaths data)
         {
             _deathDetailsUpdateService.UpdateDeathDetails(data);
         }

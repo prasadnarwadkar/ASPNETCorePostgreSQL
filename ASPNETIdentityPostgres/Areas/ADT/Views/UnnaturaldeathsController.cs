@@ -56,7 +56,7 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Views
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             };
 
-            var list = JsonSerializer.Deserialize<List<UnnaturalDeaths>>(response.Content, options);
+            var list = JsonSerializer.Deserialize<List<Unnaturaldeaths>>(response.Content, options);
             return View(list);
         }
 
@@ -105,7 +105,7 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Views
                                                         "History,ImformantCidNo,InformantName,InformantRelationToDeceased," +
                                                         "Isactive,Lastchanged,Nationality,PlaceOfExamination," +
                                                         "PoliceCaseNo,PoliceStation,Remark," +
-                                                        "SceneOfDeath,Sex,TimeOfPostmortemExamination")] UnnaturalDeaths death)
+                                                        "SceneOfDeath,Sex,TimeOfPostmortemExamination")] Common.Models.Unnaturaldeaths death)
         {
 
 
@@ -186,7 +186,7 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Views
                                                         "History,ImformantCidNo,InformantName,InformantRelationToDeceased," +
                                                         "Isactive,Lastchanged,Nationality,PlaceOfExamination," +
                                                         "PoliceCaseNo,PoliceStation,Remark," +
-                                                        "SceneOfDeath,Sex,TimeOfPostmortemExamination")] UnnaturalDeaths death)
+                                                        "SceneOfDeath,Sex,TimeOfPostmortemExamination")] Common.Models.Unnaturaldeaths death)
         {
             if (id != death.Id)
             {

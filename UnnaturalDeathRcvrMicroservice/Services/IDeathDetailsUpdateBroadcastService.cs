@@ -4,6 +4,6 @@ namespace UnnaturalDeathsRcvrMicroservice.Services
 {
     public interface IDeathDetailsUpdateBroadcastService
     {
-        void UpdateDeathDetails(UnnaturalDeaths death);
+        void UpdateDeathDetails(Unnaturaldeaths death);
     }
 }

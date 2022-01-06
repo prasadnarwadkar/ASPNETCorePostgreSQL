@@ -115,7 +115,7 @@ namespace Api.Controllers
         /// <response code="500">In case of server error</response> 
         [AcceptVerbs(new string[1] { "PUT" })]
         [Route("put/{id:Guid}")]
-        public async Task<IActionResult> put(Guid id, [FromBody] UnnaturalDeaths death)
+        public async Task<IActionResult> put(Guid id, [FromBody] Unnaturaldeaths death)
         {
             try
             {
@@ -151,7 +151,7 @@ namespace Api.Controllers
         /// <response code="500">In case of server error</response> 
         [AcceptVerbs(new string[1] { "POST" })]
         [Route("post2")]
-        public async Task<IActionResult> post2(UnnaturalDeaths death)
+        public async Task<IActionResult> post2(Unnaturaldeaths death)
         {
             try
             {
@@ -165,7 +165,7 @@ namespace Api.Controllers
                         return BadRequest();
                     }
 
-                    death = JsonSerializer.Deserialize<UnnaturalDeaths>(reqBody,
+                    death = JsonSerializer.Deserialize<Unnaturaldeaths>(reqBody,
                         new JsonSerializerOptions
                         {
                             NumberHandling = JsonNumberHandling.AllowReadingFromString
@@ -207,7 +207,7 @@ namespace Api.Controllers
         /// <response code="500">In case of server error</response> 
         [AcceptVerbs(new string[1] { "POST" })]
         [Route("post")]
-        public async Task<IActionResult> post([FromBody] UnnaturalDeaths death)
+        public async Task<IActionResult> post([FromBody] Unnaturaldeaths death)
         {
             try
             {

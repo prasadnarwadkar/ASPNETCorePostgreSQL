@@ -23,12 +23,13 @@ namespace Common.Models
         public virtual DbSet<AspNetUserTokens> AspNetUserTokens { get; set; }
         public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
         public virtual DbSet<Patient> Patient { get; set; }
-        public virtual DbSet<UnnaturalDeaths> Unnaturaldeaths { get; set; }
+        public virtual DbSet<Unnaturaldeaths> Unnaturaldeaths { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseNpgsql("Host=localhost;Database=identitywithpgsql;Username=postgres;Password=Tetya1:2");
             }
         }
@@ -137,15 +138,19 @@ namespace Common.Models
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasColumnType("character varying(100)[]");
+
+                entity.Property(e => e.Uhid)
+                    .HasColumnName("UHID")
+                    .HasComment("Unique health ID");
             });
 
-            modelBuilder.Entity<UnnaturalDeaths>(entity =>
+            modelBuilder.Entity<Unnaturaldeaths>(entity =>
             {
                 entity.ToTable("unnaturaldeaths");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .ValueGeneratedNever();
+                    .HasDefaultValueSql("uuid_generate_v4()");
 
                 entity.Property(e => e.Address)
                     .HasColumnName("address")
@@ -223,7 +228,7 @@ namespace Common.Models
 
                 entity.Property(e => e.Sex)
                     .HasColumnName("sex")
-                    .HasColumnType("char");
+                    .HasMaxLength(5);
 
                 entity.Property(e => e.TimeOfPostmortemExamination)
                     .HasColumnName("timeOfPostmortemExamination")

@@ -103,7 +103,7 @@ namespace Api.Controllers
         /// <response code="500">In case of server error</response> 
         [AcceptVerbs(new string[1] { "PUT"})]
         [Route("put/{id:Guid}")]
-        public async Task<IActionResult> put(Guid id, [FromBody] UnnaturalDeaths death)
+        public async Task<IActionResult> put(Guid id, [FromBody] Unnaturaldeaths death)
         {
             try
             {
@@ -139,7 +139,7 @@ namespace Api.Controllers
         /// <response code="500">In case of server error</response> 
         [AcceptVerbs(new string[1] { "POST"})]
         [Route("post")]
-        public async Task<IActionResult> post([FromBody] UnnaturalDeaths death)
+        public async Task<IActionResult> post([FromBody] Unnaturaldeaths death)
         {
             try
             {

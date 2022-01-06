@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Common.Models
 {
-    public partial class UnnaturalDeaths
+    public partial class Unnaturaldeaths
     {
         public DateTimeOffset? TimeOfPostmortemExamination { get; set; }
         public string Sex { get; set; }

@@ -13,7 +13,7 @@ namespace UnnaturalDeathsRcvrMicroservice.Services
             _mediator = mediator;
         }
 
-        public void UpdateDeathDetails(UnnaturalDeaths death)
+        public void UpdateDeathDetails(Unnaturaldeaths death)
         {
             // Data is received here from RabbitMQ queue as a listener. 
             // Todo: do anything here. Like: respond to the message

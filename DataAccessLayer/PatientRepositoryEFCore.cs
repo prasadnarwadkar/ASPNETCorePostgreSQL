@@ -1,6 +1,7 @@
 ﻿using Common;
 using Common.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -26,7 +27,9 @@ namespace DataAccessLayer
                 list.Add(new PatientDto { 
                     Address = pat.Address.First(),
                     ID = pat.Id,
-                    Name = pat.Name.First()
+                    Name = pat.Name.First(),
+                    Uhid = pat.Uhid,
+                    LastModified = pat.LastModified
                 });
             }
 
@@ -37,7 +40,9 @@ namespace DataAccessLayer
         {
             _context.Add(new Patient { 
                 Address = new string[1] { item.Address },
-                Name = new string[1] { item.Name }
+                Name = new string[1] { item.Name },
+                Uhid = Guid.NewGuid(),
+                LastModified = DateTime.Now
             });
 
             return await _context.SaveChangesAsync();
@@ -56,7 +61,9 @@ namespace DataAccessLayer
             _context.Update(new Patient { 
                 Address = new string[1] {item.Address},
                 Name = new string[1] { item.Name },
-                Id = item.ID
+                Id = item.ID,
+                Uhid = item.Uhid,
+                LastModified = DateTime.Now
             });
             return await _context.SaveChangesAsync();
         }
@@ -78,7 +85,9 @@ namespace DataAccessLayer
 
             return new PatientDto {Address = patient.Address.First(),
                                     Name = patient.Name.First(),
-                                        ID = patient.Id};
+                                        ID = patient.Id,
+                                    Uhid = patient.Uhid,
+            LastModified = patient.LastModified};
         }
 
         public async Task<long> RemoveAsync(PatientDto patient)

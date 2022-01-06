@@ -8,6 +8,6 @@ namespace UnnaturalDeathsMicroservice.ServiceBus
 {
     public interface IDeathDetailsSender
     {
-        void SendDeathDetails(UnnaturalDeaths death);
+        void SendDeathDetails(Unnaturaldeaths death);
     }
 }

@@ -48,8 +48,7 @@ namespace datasyncservice.Services
                 // You can use a UHID or Name or similar to check whether the given
                 // patient is there in the dest db.
                 // Names can be repeacted. So please use UHID.
-                // The below is just a crude example.
-                var isThere = _destinationContext.Patient.ToList().FirstOrDefault(p => p.Name.FirstOrDefault().ToLower() == pat.Name.FirstOrDefault().ToLower()) != null;
+                var isThere = _destinationContext.Patient.ToList().FirstOrDefault(p => p.Uhid.ToString().ToLower() == pat.Uhid.ToString().ToLower()) != null;
 
                 if (!isThere)
                 {
@@ -59,11 +58,36 @@ namespace datasyncservice.Services
                     pat.Id = 0;
                     await _destinationContext.Patient.AddAsync(pat);
                 }
+                else
+                {
+                    // The record is there. Check last modified time.
+                    var destRecord = _destinationContext.Patient.ToList().FirstOrDefault(p => p.Uhid.ToString().ToLower() == pat.Uhid.ToString().ToLower());
+
+                    if (destRecord?.LastModified < pat.LastModified)
+                    {
+                        // Update destination record.
+                        destRecord.Name = pat.Name;
+                        destRecord.Address = pat.Address;
+                        destRecord.LastModified = pat.LastModified;
+                        
+                        destRecord.Uhid = pat.Uhid;
+                    }
+                    else if (destRecord?.LastModified > pat.LastModified)
+                    {
+                        // Modify source record.
+                        pat.Name = destRecord.Name;
+                        pat.Address = destRecord.Address;
+                        pat.LastModified = destRecord.LastModified;
+                        
+                        pat.Uhid = destRecord.Uhid;
+                    }
+                }
             }
 
             try
             {
                 await _destinationContext.SaveChangesAsync();
+                await _sourceContext.SaveChangesAsync();
             }
             catch (Exception ex)
             {

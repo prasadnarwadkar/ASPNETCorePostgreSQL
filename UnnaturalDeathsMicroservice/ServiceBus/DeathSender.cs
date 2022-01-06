@@ -58,7 +58,7 @@ namespace UnnaturalDeathsMicroservice.ServiceBus
             return _connection != null;
         }
 
-        public void SendDeathDetails(UnnaturalDeaths death)
+        public void SendDeathDetails(Unnaturaldeaths death)
         {
             if (ConnectionExists())
             {

@@ -19,14 +19,15 @@ namespace DataAccessLayer
             _context = context;
         }
 
-        public async Task<IList<UnnaturalDeaths>> GetListAsync()
+        public async Task<IList<Unnaturaldeaths>> GetListAsync()
         {
             var listFromEF =  await _context.Unnaturaldeaths.ToListAsync();
-            var list = new List<UnnaturalDeaths>();
+            var list = new List<Unnaturaldeaths>();
 
             foreach (var death in listFromEF)
             {
-                list.Add(new UnnaturalDeaths {
+                list.Add(new Unnaturaldeaths
+                {
                     Address = death.Address,
                     Age = death.Age,
                     CidOrPassport = death.CidOrPassport,
@@ -58,13 +59,13 @@ namespace DataAccessLayer
             return list;
         }
 
-        public async Task<long> AddAsync(UnnaturalDeaths item)
+        public async Task<long> AddAsync(Unnaturaldeaths item)
         {
             long returnVal = 0;
 
             try
             {
-                _context.Add(new UnnaturalDeaths
+                _context.Add(new Unnaturaldeaths
                 {
                     Address = item.Address,
                     Age = item.Age,
@@ -116,9 +117,10 @@ namespace DataAccessLayer
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<long> UpdateAsync(UnnaturalDeaths item)
+        public async Task<long> UpdateAsync(Unnaturaldeaths item)
         {
-            _context.Update(new UnnaturalDeaths { 
+            _context.Update(new Unnaturaldeaths
+            { 
                 Address = item.Address,
                 Age = item.Age,
                 CidOrPassport = item.CidOrPassport,
@@ -153,7 +155,7 @@ namespace DataAccessLayer
             return await _context.Unnaturaldeaths.AnyAsync(e => e.Id == id);
         }
 
-        public async Task<UnnaturalDeaths> FindAsync(Guid id)
+        public async Task<Unnaturaldeaths> FindAsync(Guid id)
         {
             var UnnaturalDeaths = await _context.Unnaturaldeaths
                .FirstOrDefaultAsync(m => m.Id == id);
@@ -163,7 +165,8 @@ namespace DataAccessLayer
                 return null;
             }
 
-            return new UnnaturalDeaths {
+            return new Unnaturaldeaths
+            {
                 Address = UnnaturalDeaths.Address,
                 Age = UnnaturalDeaths.Age,
                 CidOrPassport = UnnaturalDeaths.CidOrPassport,
@@ -192,7 +195,7 @@ namespace DataAccessLayer
             };
         }
 
-        public async Task<long> RemoveAsync(UnnaturalDeaths UnnaturalDeaths)
+        public async Task<long> RemoveAsync(Unnaturaldeaths UnnaturalDeaths)
         {
             var UnnaturalDeathsObj = await _context.Unnaturaldeaths.FindAsync(UnnaturalDeaths.Id);
             _context.Unnaturaldeaths.Remove(UnnaturalDeathsObj);
