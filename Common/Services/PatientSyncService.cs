@@ -1,4 +1,4 @@
-﻿using Common;
+using Common;
 using Common.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -27,6 +27,7 @@ namespace datasyncservice.Services
             stoppingToken.Register(() =>
                 _logger.LogDebug($" PatientSyncService background task is stopping."));
 
+            // Keep these in appsettings.json or similar. This is just a POC. 
             var sourceConnection = @"Server=127.0.0.1;Port=5432;Database=identitywithpgsql;User Id=postgres;Password=Tetya1:2;";
             var destinationConnection = @"Server=127.0.0.1;Port=5433;Database=postgres;User Id=postgres;Password=Tetya1:2;";
 
