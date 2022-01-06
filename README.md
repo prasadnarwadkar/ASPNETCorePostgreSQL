@@ -41,7 +41,8 @@ CREATE TABLE IF NOT EXISTS public."Patient"
     "Name" character varying(100)[] COLLATE pg_catalog."default" NOT NULL,
     "ID" bigint NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 1000000000 CACHE 1 ),
     "Address" character varying(500)[] COLLATE pg_catalog."default" NOT NULL,
-    "LastModified" time without time zone,
+    "UHID" uuid,
+    "LastModified" timestamp without time zone,
     CONSTRAINT "Patient_pkey" PRIMARY KEY ("ID")
 )
 
@@ -49,6 +50,9 @@ TABLESPACE pg_default;
 
 ALTER TABLE public."Patient"
     OWNER to postgres;
+
+COMMENT ON COLUMN public."Patient"."UHID"
+    IS 'Unique health ID';
 
 
 ```
