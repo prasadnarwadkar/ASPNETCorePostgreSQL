@@ -1,0 +1,84 @@
+﻿@model ASPNETIdentityPostgres.Areas.ADT.Models.claimSubmittedInfo
+
+@{
+    ViewData["Title"] = "My Tasks";
+
+    var username = User.Identity.Name;
+
+    var bpmRole = "";
+
+    var mapping = ASPNETIdentityPostgres.Areas.ADT.Models.WebAppAndBPMUserMapForBonitaSoft.mappings.FirstOrDefault(m => m.UserNameOnWebApp.ToLower() == username.ToLower());
+
+    if (mapping != null)
+    {
+        bpmRole = mapping.UserRoleOnBPMEngineOrApp;
+    }
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <p class="small">This example uses BonitaSoft RESTful API and the claim is submitted using that API. Next steps in the claim management workflow can be implemented using the same REST API (with different URLs and data as per the step)</p>
+        <p class="small">BonitaSoft Engine (Studio) must be running for this to work. Please refer to <a href="https://documentation.bonitasoft.com/bonita/2021.2/getting-started/draw-bpmn-diagram">this page</a> and follow all the instructions from the pages linked on this page. There are links to download the BonitaSoft BPM studio and then work with it. BonitaSoft doesn't expose conventional API. However, HTTP-based API can still be used to interact with it.</p>
+    </div>
+    <div class="col-md-6">
+        @if (bpmRole == "claim_initiator")
+        {
+            <p>
+                <a asp-action="SubmitClaimBonitaSoft" class="btn btn-primary">Submit a new claim</a>
+
+            </p>
+        }
+        <div>
+
+            <hr />
+            <h5>My Tasks</h5>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Name
+                        </th>
+
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.tasks)
+                    {
+                        if (item.displayName == "Review and answer claim"
+                        && bpmRole == "claim_reviewer")
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.displayName)
+                                </td>
+
+                                <td>
+                                    <a asp-action="BonitaSoftTaskDetails" asp-route-id="@item.id">Go To Task Details</a>
+                                </td>
+                            </tr>
+                        }
+                        else if (item.displayName == "Read the answer and rate it"
+                        && bpmRole == "claim_initiator")
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.displayName)
+                                </td>
+                                
+                                <td>
+                                    <a asp-action="BonitaSoftTaskDetails" asp-route-id="@item.id">Go To Task Details</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<p>
+    @*<a asp-action="LoginToBonitaSoftEngine">Login to BonitaSoft Engine</a>*@
+</p>
+

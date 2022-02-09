@@ -32,7 +32,6 @@
 
   <ItemGroup>
     <Folder Include="Areas\ADT\Data\" />
-    <Folder Include="Areas\ADT\Models\" />
     <Folder Include="Data\Migrations\" />
     <Folder Include="Migrations\" />
   </ItemGroup>

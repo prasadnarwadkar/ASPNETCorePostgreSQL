@@ -1,7 +1,22 @@
-﻿
-@using Microsoft.AspNetCore.Mvc.Localization
+﻿@using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
 
+@{
+    var username = User?.Identity?.Name;
+    var bpmRole = "";
+
+    if (!string.IsNullOrWhiteSpace(username))
+    {
+
+
+        var mapping = ASPNETIdentityPostgres.Areas.ADT.Models.WebAppAndBPMUserMapForBonitaSoft.mappings.FirstOrDefault(m => m.UserNameOnWebApp.ToLower() == username.ToLower());
+
+        if (mapping != null)
+        {
+            bpmRole = mapping.UserRoleOnBPMEngineOrApp;
+        }
+    }
+}
 <!DOCTYPE html>
 <html lang="dz" dir="ltr">
 <head>
@@ -23,7 +38,7 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <partial name="_LoginPartial" />
                     <ul class="navbar-nav flex-grow-1">
-                        
+
                         <li class="nav-item float-right">
                             @await Html.PartialAsync("_SelectLanguagePartial")
                         </li>
@@ -37,8 +52,11 @@
                             <a class="nav-link text-dark" asp-area="ADT" asp-controller="Patients" asp-action="index">Patients</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="ADT" asp-controller="Unnaturaldeaths" asp-action="index">Unnatural Deaths</a>
+                            <a class="nav-link text-dark" asp-area="ADT" asp-controller="Patients" asp-action="MyTaskList">My Tasks</a>
                         </li>
+                        @*<li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="ADT" asp-controller="Unnaturaldeaths" asp-action="index">Unnatural Deaths</a>
+                            </li>*@
                     </ul>
                 </div>
             </div>
@@ -46,13 +64,24 @@
     </header>
     <div class="container">
         <main role="main" class="pb-3">
+            @if (bpmRole == "claim_reviewer")
+            {
+                <p class="text-success">You are a claim reviewer (an employee). You can review customer claims and place your answer/comments to those claims. Log on as another user (a@b.com) to initiate claims and rate the service as a customer.</p>
+            }
+            else if (bpmRole == "claim_initiator")
+            {
+        <p class="text-success">You are a claim initiator (a customer). You can raise claims and review the answer/comments from the claim reviewer and rate how satisfied you are with the service. Log on as another user (p@q.com) to answer customer claims as an employee.</p>
+            }
+
+            <p class="text-center">Go to My Tasks to get started</p>
+            <hr />
             @RenderBody()
         </main>
     </div>
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2020 - ASPNETIdentityPostgres - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            &copy; 2020-2022 - ASPNETIdentityPostgres - <a asp-area="" asp-page="/Privacy">Privacy</a>
         </div>
     </footer>
 

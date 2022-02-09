@@ -1,0 +1,72 @@
+﻿@model ASPNETIdentityPostgres.Areas.ADT.Models.claimSubmittedInfo
+
+@{
+    ViewData["Title"] = "Submitted Claim to BonitaSoft BPM Engine";
+
+    var username = User.Identity.Name;
+
+    var bpmRole = "";
+
+    var mapping = ASPNETIdentityPostgres.Areas.ADT.Models.WebAppAndBPMUserMapForBonitaSoft.mappings.FirstOrDefault(m => m.UserNameOnWebApp.ToLower() == username.ToLower());
+
+    if (mapping != null)
+    {
+        bpmRole = mapping.UserRoleOnBPMEngineOrApp;
+    }
+}
+
+<p class="text-info">This example uses BonitaSoft RESTful API and the claim is submitted using that API. Next steps in the claim management workflow can be implemented using the same REST API (with different URLs and data as per the step)</p>
+
+<div>
+    @if (!string.IsNullOrWhiteSpace(Model.caseId))
+    {
+        <h3>Submitted Claim to BonitaSoft BPM Engine</h3>
+        <h4>Claim Case Id: @Model.caseId</h4>
+    }
+    <hr />
+    <h5>My Tasks</h5>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Name
+                </th>
+                
+               
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.tasks)
+            {
+                if (item.displayName == "Review and answer claim"
+                      && bpmRole == "claim_reviewer")
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.displayName)
+                        </td>
+                        
+                        <td>
+                            <a asp-action="BonitaSoftTaskDetails" asp-route-id="@item.id">Go To Task Details</a>
+                        </td>
+                    </tr>
+                }
+                else if (item.displayName == "Read the answer and rate it"
+                      && bpmRole == "claim_initiator")
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.displayName)
+                        </td>
+                        
+                        <td>
+                            <a asp-action="BonitaSoftTaskDetails" asp-route-id="@item.id">Go To Task Details</a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+

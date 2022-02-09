@@ -1,0 +1,40 @@
+﻿@model ASPNETIdentityPostgres.Areas.ADT.Models.ReviewAndAnswerTask
+
+@{
+    ViewData["Title"] = "Review and Answer Claim";
+    Layout = "_Layout";
+}
+
+<h3>Review and Answer Claim</h3><p class="text-info">Please use authorize attribute to restrict certain role(s) from doing this task. Or you can also do this programmatically. </p>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="ReviewAndAnswerClaim">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            @Html.HiddenFor(model=> model.TaskId)
+            <div class="form-group">
+                <label asp-for="description" class="control-label">Description</label>
+                <input asp-for="description" class="form-control" readonly />
+                <span asp-validation-for="description" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="answer" class="control-label">Answer</label>
+                <input asp-for="answer" class="form-control" />
+                <span asp-validation-for="answer" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Answer the Claim" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@*<div>
+    <a asp-action="Index">Back to List</a>
+</div>*@
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

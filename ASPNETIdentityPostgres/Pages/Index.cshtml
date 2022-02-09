@@ -1,10 +1,46 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "ASP.NET Core MVC Web App example that uses the BonitaSoft BPM Engine to simulate a claims management process";
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<style>
+    .doc .ulist {
+        margin: 1rem 0 0;
+    }
+</style>
+<div>
+    <h3>@ViewData["Title"]</h3>
+    <a href="https://documentation.bonitasoft.com/bonita/2021.2/getting-started/getting-started-index" class="btn btn-primary">Click here to know more</a>
+    <blockquote class="blockquote">
+        <p>By now, you must have your development environment (i.e. Bonita Studio/Engine) up and running on your machine/server. In that case, you are ready to start building your first Bonita Living Application. If not, please click the link above to know how to install the BonitaSoft BPM Studio and/or engine.</p>
+    </blockquote>
+    <blockquote class="blockquote">
+        <p>In this tutorial, we have built an example of a <strong>claims management solution</strong>. Making sure that claims are handled and answered in a timely manner by the appropriate employee(s) can be key to customer satisfaction. It is also a good fit for a process-based application that uses automation. We have, of course, drastically simplified the application in this tutorial so you can focus on learning about Bonita and not about claims management!</p>
+    </blockquote>
+    <blockquote class="blockquote">
+        <p>Here is an overview of process execution:</p>
+    </blockquote>
+    
+</div>
+<div>
+    <ul class="list-group">
+        <li class="list-group-item">
+            <p>The process will be started by a <em>customer</em> who submits a claim, which is a simple text description in our example</p>
+        </li>
+        <li class="list-group-item">
+            <p>Next, an <em>employee</em> will review the claim and provide an answer</p>
+        </li>
+        <li class="list-group-item">
+            <p>The <em>customer</em> will be able to review the <em>employee</em>'s answer and provide a satisfaction rating</p>
+        </li>
+        <li class="list-group-item">
+            <p>If the rating is equal to or greater than 3, the process will finish after the customer has read the answer</p>
+        </li>
+        <li class="list-group-item">
+            <p>If the rating is lower than 3 an extra task will be assigned to the manager of the employee to work with this customer who is not really satisfied. The manager will be notified by email that a task Deal with unsatisfied customer requires their attention.</p>
+        </li>
+        <li class="list-group-item">
+            <p>Once this task is done the process will be completed</p>
+        </li>
+    </ul>
 </div>
