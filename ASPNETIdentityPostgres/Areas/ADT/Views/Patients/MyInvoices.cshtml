@@ -1,0 +1,67 @@
+﻿@model IEnumerable<ASPNETIdentityPostgres.Areas.ADT.Models.ProcessInstance>
+
+@{
+    ViewData["Title"] = "My Invoices";
+
+    var username = User.Identity.Name;
+
+    var bpmRole = "";
+
+    var mapping = ASPNETIdentityPostgres.Areas.ADT.Models.WebAppAndBPMUserMap.mappings.FirstOrDefault(m => m.UserNameOnWebApp.ToLower() == username.ToLower());
+
+    if (mapping != null)
+    {
+        bpmRole = mapping.UserRoleOnBPMEngineOrApp2;
+    }
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <p class="small">This example uses Camunda RESTful API and the invoice is submitted using that API. Next steps in the invoice approval workflow can be implemented using the same REST API (with different URLs and data as per the step)</p>
+        <p class="small">Camunda Engine must be running for this to work. Please refer to <a href="https://camunda.com/blog/2021/10/start-and-step-through-a-process-with-rest-feat-swaggerui/">this page</a> and follow all the instructions from the pages linked on this page. There are links to download the Camunda BPM Platform and then work with it. </p>
+    </div>
+    <div class="col-md-6">
+        <p class="alert-danger">@ViewData["notapprovermsg"]</p>
+        @if (bpmRole == "invoice_initiator")
+        {
+            <p>
+                <a asp-action="SubmitInvoiceCamunda" class="btn btn-primary">Submit a new invoice</a>
+            </p>
+        }
+        <div>
+
+            <hr />
+            <h5>My Invoices</h5>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Business Key of the Invoice
+                        </th>
+
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.businessKey)
+                        </td>
+
+                        <td>
+                            <a asp-action="CamundaInvoiceDetails" asp-route-id="@item.id">Go To Invoice Details</a>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<p>
+    @*<a asp-action="LoginToBonitaSoftEngine">Login to BonitaSoft Engine</a>*@
+</p>
+

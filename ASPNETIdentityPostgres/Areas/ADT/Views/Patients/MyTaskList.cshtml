@@ -7,7 +7,7 @@
 
     var bpmRole = "";
 
-    var mapping = ASPNETIdentityPostgres.Areas.ADT.Models.WebAppAndBPMUserMapForBonitaSoft.mappings.FirstOrDefault(m => m.UserNameOnWebApp.ToLower() == username.ToLower());
+    var mapping = ASPNETIdentityPostgres.Areas.ADT.Models.WebAppAndBPMUserMap.mappings.FirstOrDefault(m => m.UserNameOnWebApp.ToLower() == username.ToLower());
 
     if (mapping != null)
     {

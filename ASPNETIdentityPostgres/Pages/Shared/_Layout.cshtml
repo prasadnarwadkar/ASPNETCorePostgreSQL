@@ -9,7 +9,7 @@
     {
 
 
-        var mapping = ASPNETIdentityPostgres.Areas.ADT.Models.WebAppAndBPMUserMapForBonitaSoft.mappings.FirstOrDefault(m => m.UserNameOnWebApp.ToLower() == username.ToLower());
+        var mapping = ASPNETIdentityPostgres.Areas.ADT.Models.WebAppAndBPMUserMap.mappings.FirstOrDefault(m => m.UserNameOnWebApp.ToLower() == username.ToLower());
 
         if (mapping != null)
         {
@@ -30,7 +30,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">ePIS Prototype</a>
+                <a class="navbar-brand" asp-area="" asp-page="/Index">ASP.NET Core Web App</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -46,7 +46,7 @@
                             <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="ADT" asp-controller="Patients" asp-action="MyInvoices">My Invoices</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="ADT" asp-controller="Patients" asp-action="index">Patients</a>
@@ -66,11 +66,11 @@
         <main role="main" class="pb-3">
             @if (bpmRole == "claim_reviewer")
             {
-                <p class="text-success">You are a claim reviewer (an employee). You can review customer claims and place your answer/comments to those claims. Log on as another user (a@b.com) to initiate claims and rate the service as a customer.</p>
+                <p class="text-success">You are a claim reviewer (an employee) or an invoice approver. You can review customer claims and place your answer/comments to those claims. Log on as another user (a@b.com) to initiate claims and rate the service as a customer. You can also approve/reject invoices.</p>
             }
             else if (bpmRole == "claim_initiator")
             {
-        <p class="text-success">You are a claim initiator (a customer). You can raise claims and review the answer/comments from the claim reviewer and rate how satisfied you are with the service. Log on as another user (p@q.com) to answer customer claims as an employee.</p>
+        <p class="text-success">You are a claim initiator (a customer) or an invoice poster. You can raise claims/invoices and review the answer/comments from the claim reviewer and rate how satisfied you are with the service. Log on as another user (p@q.com) to answer customer claims as an employee.</p>
             }
 
             <p class="text-center">Go to My Tasks to get started</p>

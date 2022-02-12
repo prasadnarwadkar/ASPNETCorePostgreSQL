@@ -1,0 +1,90 @@
+﻿@model ASPNETIdentityPostgres.Areas.ADT.Models.InvoiceDetails
+
+@{
+    ViewData["Title"] = "Submit an Invoice (Camunda BPM Engine)";
+}
+
+<h3>Submit an Invoice (Camunda BPM Engine)</h3>
+
+<div>
+    
+    <div class="row">
+        <div class="col-md-12">
+            <form asp-action="SubmitInvoiceCamunda">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="variables.amount.type" class="control-label">Amount Type</label>
+                            <select asp-for="variables.amount.type" class="form-control" readonly>
+                                <option value="Double">Double</option>
+                            </select>
+                            <span asp-validation-for="variables.amount.type" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="variables.amount.value" class="control-label">Amount Value</label>
+                            <input asp-for="variables.amount.value" type="number" class="form-control" required/>
+                            <span asp-validation-for="variables.amount.value" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="variables.creditor.type" class="control-label">Creditor Type</label>
+                            <select asp-for="variables.creditor.type" class="form-control" readonly>
+                                <option value="String">String</option>
+                            </select>
+                            <span asp-validation-for="variables.creditor.type" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="variables.creditor.value" class="control-label">Creditor Name</label>
+                            <input asp-for="variables.creditor.value" class="form-control" required />
+                            <span asp-validation-for="variables.creditor.value" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="variables.invoiceCategory.type" class="control-label">Invoice Category Type</label>
+                            <select asp-for="variables.invoiceCategory.type" class="form-control" readonly>
+                                <option value="String">String</option>
+                            </select>
+                            <span asp-validation-for="variables.invoiceCategory.type" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="variables.invoiceCategory.value" class="control-label">Invoice Category</label>
+                            <input asp-for="variables.invoiceCategory.value" class="form-control" required />
+                            <span asp-validation-for="variables.invoiceCategory.value" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="variables.invoiceNumber.type" class="control-label">Invoice Number Type</label>
+                            <select asp-for="variables.invoiceNumber.type" class="form-control" readonly>
+                                <option value="String">String</option>
+                            </select>
+                            <span asp-validation-for="variables.invoiceNumber.type" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="variables.invoiceNumber.value" class="control-label">Invoice Number</label>
+                            <input asp-for="variables.invoiceNumber.value" class="form-control" required />
+                            <span asp-validation-for="variables.invoiceNumber.value" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="businessKey" class="control-label">Business Key</label>
+                            <input asp-for="businessKey" class="form-control" required />
+                            <span asp-validation-for="businessKey" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <input type="submit" value="Submit the Invoice" class="btn btn-primary" />
+
+                </div>
+                <div class="form-group">
+                    <a asp-action="MyInvoices" class="btn btn-danger" title="I do not have Camunda Engine/Platform running on my machine.">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

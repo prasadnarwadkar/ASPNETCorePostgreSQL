@@ -9,7 +9,7 @@
     }
 </style>
 <div>
-    <h3>@ViewData["Title"]</h3>
+    <h2>@ViewData["Title"]</h2>
     <a href="https://documentation.bonitasoft.com/bonita/2021.2/getting-started/getting-started-index" class="btn btn-primary">Click here to know more</a>
     <blockquote class="blockquote">
         <p>By now, you must have your development environment (i.e. Bonita Studio/Engine) up and running on your machine/server. In that case, you are ready to start building your first Bonita Living Application. If not, please click the link above to know how to install the BonitaSoft BPM Studio and/or engine.</p>
@@ -20,7 +20,7 @@
     <blockquote class="blockquote">
         <p>Here is an overview of process execution:</p>
     </blockquote>
-    
+
 </div>
 <div>
     <ul class="list-group">
@@ -43,4 +43,389 @@
             <p>Once this task is done the process will be completed</p>
         </li>
     </ul>
+</div>
+<hr />
+<p class="alert-danger">The content below has been taken from <a href="https://camunda.com/blog/2021/10/start-and-step-through-a-process-with-rest-feat-swaggerui/">this web page.</a> &copy; Camunda -2022. It is taken here for illustrative purposes only and to allow users to see how our ASP.NET Core MVC Web app interacts with the Camunda engine through REST API to start and finish <b>Invoice Receipt</b> process.</p>
+<div class="row">
+    <header class="col entry-header">
+
+
+
+        <hr />
+        <h2 class="entry-title">This ASP.NET Core MVC Web App example also enables starting and stepping through an invoice receipt (approval) process with REST (featuring SwaggerUI) on the <b><a href="https://camunda.com/download">Camunda Platform</a></b></h2>
+        <div class="entry-meta">
+            <div class="category-author"><span class="post-category"> <span class="category"><a href="https://camunda.com/blog/category/camunda-platform/" rel="category tag">Camunda Platform</a>, <a href="https://camunda.com/blog/category/community-conversations/" rel="category tag">Community Conversations</a>, <a href="https://camunda.com/blog/category/getting-started/" rel="category tag">Getting Started</a>, <a href="https://camunda.com/blog/category/tutorial/" rel="category tag">Tutorial</a></span></span><br><span class="byline"> <span class="author vcard"><a href="https://camunda.com/blog/author/niall-deehan/" title="Niall Deehan" rel="author" itemprop="author" itemscope="itemscope" itemtype="https://schema.org/Person">Niall Deehan</a></span></span></div><span class="posted-on"><a href="https://camunda.com/blog/2021/10/start-and-step-through-a-process-with-rest-feat-swaggerui/" rel="bookmark"><time class="entry-date published" datetime="November 1, 2021">November 1, 2021</time><time class="updated" datetime="December 15, 2021">December 15, 2021</time></a></span>
+        </div><!-- .entry-meta -->
+    </header><!-- .entry-header -->
+</div>
+<div class="row">
+    <div class="col entry-content">
+
+        <p>If you’re going to be communicating with the Camunda engine from any kind of third-party system, you’re going to need to know a little bit about what Camunda’s REST API can do out of the box. The REST API itself is built on top of the engine’s own Java API &#8211; this is important to know because it means that almost anything you can do when speaking to the engine via Java, you can also do through the REST API.&nbsp;</p>
+
+
+
+        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+
+
+
+        <div class="wp-block-image"><figure class="aligncenter size-large"><img loading="lazy" width="1024" height="187" src="https://camunda.com/wp-content/uploads/2021/10/image4-1024x187.png" alt="" class="wp-image-35256" srcset="https://camunda.com/wp-content/uploads/2021/10/image4-1024x187.png 1024w, https://camunda.com/wp-content/uploads/2021/10/image4-300x55.png 300w, https://camunda.com/wp-content/uploads/2021/10/image4-768x140.png 768w, https://camunda.com/wp-content/uploads/2021/10/image4.png 1100w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure></div>
+
+
+
+        <div style="height:53px" aria-hidden="true" class="wp-block-spacer"></div>
+
+
+
+        <figure class="wp-block-image"><img loading="lazy" width="1200" height="700" src="https://lh4.googleusercontent.com/yXixiRSzJas4atbYI0e47UaXoOzW1LbPA3yKE4HjfI5mMXeumE_j8tnwTKLnBXoAVdVCsHhX6yNx91cdCyPl40raAm4emOtQgprbau-poghbjnaI4UnThrfsFEmQLmoDNU8CD70X" alt="" /></figure>
+
+
+
+        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+
+
+
+        <h3>The Setup</h3>
+
+
+
+        <p>As a fun introduction, I&#8217;m simply going to discuss how you might go about using the most common REST calls in order to start and step through a process. To make things even easier, I&#8217;m going to be doing this using nothing more than our <em>Open Source Community Edition</em> that you can find<a href="https://camunda.com/download/"> on our download page</a>.&nbsp;</p>
+
+
+
+        <p>Once you’ve downloaded this, and started the Camunda Platform, you will be able to find the web apps at <a href="http://localhost:8080/">http://localhost:8080/</a> and login with <strong>demo</strong>/<strong>demo</strong>. From here, you can log into Cockpit and you’ll find we’ve supplied you with a demo process called <em>Invoice Receipt</em>. This is the process we’re going to be stepping through.</p>
+
+
+
+        <div style="height:51px" aria-hidden="true" class="wp-block-spacer"></div>
+
+
+
+        <div class="wp-block-image"><figure class="aligncenter size-large"><img loading="lazy" width="1024" height="526" src="https://camunda.com/wp-content/uploads/2021/10/image7-1024x526.png" alt="Camunda Cockpit demo process called Invoice Receipt" class="wp-image-35273" srcset="https://camunda.com/wp-content/uploads/2021/10/image7-1024x526.png 1024w, https://camunda.com/wp-content/uploads/2021/10/image7-300x154.png 300w, https://camunda.com/wp-content/uploads/2021/10/image7-768x394.png 768w, https://camunda.com/wp-content/uploads/2021/10/image7.png 1436w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure></div>
+
+
+
+        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+
+
+
+        <p>This process will be pretty straightforward. We’ll start a process instance, query for the waiting user task and then complete that task. Resulting in a token waiting at the <em>Prepare Bank Transfer</em> task.</p>
+
+
+
+        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+
+
+
+        <div class="wp-block-image"><figure class="aligncenter size-large"><img loading="lazy" width="1024" height="366" src="https://camunda.com/wp-content/uploads/2021/10/image2-1-1024x366.png" alt="" class="wp-image-35263" srcset="https://camunda.com/wp-content/uploads/2021/10/image2-1-1024x366.png 1024w, https://camunda.com/wp-content/uploads/2021/10/image2-1-300x107.png 300w, https://camunda.com/wp-content/uploads/2021/10/image2-1-768x274.png 768w, https://camunda.com/wp-content/uploads/2021/10/image2-1-1536x549.png 1536w, https://camunda.com/wp-content/uploads/2021/10/image2-1.png 1856w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure></div>
+
+
+
+        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+
+
+
+        <h3>Starting the Process</h3>
+
+
+
+        <p>The download that you’ve got up and running also happens to have a great way to make REST calls! As part of Camunda Run distribution you can access SwaggerUI. This (if you haven&#8217;t heard about it) is a way of making REST calls to a service if provided a description of their REST API. <a href="http://localhost:8080/swaggerui">Click here</a> to access it on: <a href="http://localhost:8080/swaggerui">http://localhost:8080/swaggerui</a>&nbsp;</p>
+
+
+
+        <p>What you should see is this:&nbsp;</p>
+
+
+
+        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+
+
+
+        <div class="wp-block-image"><figure class="aligncenter size-large"><img loading="lazy" width="1024" height="601" src="https://camunda.com/wp-content/uploads/2021/10/image6-1024x601.png" alt="Camunda Platform Rest API" class="wp-image-35271" srcset="https://camunda.com/wp-content/uploads/2021/10/image6-1024x601.png 1024w, https://camunda.com/wp-content/uploads/2021/10/image6-300x176.png 300w, https://camunda.com/wp-content/uploads/2021/10/image6-768x451.png 768w, https://camunda.com/wp-content/uploads/2021/10/image6.png 1402w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure></div>
+
+
+
+        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+
+
+
+        <p><strong>NOTE</strong>: If you don’t see it, chances are you&#8217;re using the wrong distribution or an older version of Camunda Run. Follow <a href="https://camunda.com/download/">this link</a> to get the right version.</p>
+
+
+
+        <p>From here, you can peruse the REST calls that are available to you. We’re looking to start a process instance, so head to the <em>Process Definition</em> section and find the start process instance post call.</p>
+
+
+
+        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+
+
+
+        <div class="wp-block-image"><figure class="aligncenter size-large"><img loading="lazy" width="1024" height="433" src="https://camunda.com/wp-content/uploads/2021/10/image8-1024x433.png" alt="Camunda start process instance REST API" class="wp-image-35275" srcset="https://camunda.com/wp-content/uploads/2021/10/image8-1024x433.png 1024w, https://camunda.com/wp-content/uploads/2021/10/image8-300x127.png 300w, https://camunda.com/wp-content/uploads/2021/10/image8-768x325.png 768w, https://camunda.com/wp-content/uploads/2021/10/image8.png 1354w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure></div>
+
+
+
+        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+
+
+
+        <p>The POST call we’re making to kick off the process is:<strong> /process-definition/key/{key}/start</strong>, which requires a process definition key &#8211; that’s “invoice”&nbsp;in this case. It also requires some variables which can be added as a JSON payload.</p>
+
+
+
+        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+
+
+
+<pre class="wp-block-prismatic-blocks"><code class="language-json">{
+  &quot;variables&quot;: {
+	&quot;amount&quot;: {
+  	&quot;value&quot;: 30,
+  	&quot;type&quot;: &quot;Double&quot;
+	},
+	&quot;creditor&quot;: {
+  	&quot;value&quot;: &quot;Niall&quot;,
+  	&quot;type&quot;: &quot;String&quot;
+	},
+  &quot;invoiceCategory&quot;: {
+  	&quot;value&quot;: &quot;Travel Expenses&quot;,
+  	&quot;type&quot;: &quot;String&quot;
+	},
+  &quot;invoiceNumber&quot;: {
+  	&quot;value&quot;: &quot;BER-00001&quot;,
+  	&quot;type&quot;: &quot;String&quot;
+	}
+  },
+  &quot;businessKey&quot;: &quot;Doom1&quot;,
+  &quot;withVariablesInReturn&quot;: true
+}</code></pre>
+
+
+
+        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+
+
+
+        <p>Once you&#8217;ve added the requirement you can click <em>Execute. </em>If you’ve done everything correctly, you should get a response code of 200, which is being cleverly pointed at by the green arrow below.</p>
+
+
+
+        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+
+
+
+        <div class="wp-block-image"><figure class="aligncenter size-large"><img loading="lazy" width="1024" height="610" src="https://camunda.com/wp-content/uploads/2021/10/image10-1024x610.png" alt="Start process POST call response" class="wp-image-35279" srcset="https://camunda.com/wp-content/uploads/2021/10/image10-1024x610.png 1024w, https://camunda.com/wp-content/uploads/2021/10/image10-300x179.png 300w, https://camunda.com/wp-content/uploads/2021/10/image10-768x458.png 768w, https://camunda.com/wp-content/uploads/2021/10/image10.png 1297w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure></div>
+
+
+
+        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+
+
+
+        <p>The red arrow is pointing at a very important variable for us, which is the ID of the process that we’ve created. We’ll need that to continue stepping through the process. So copy it and keep it safe.&nbsp;</p>
+
+
+
+        <h3>Finding a User Task</h3>
+
+
+
+        <p>We can use the process instance ID from&nbsp; the previous step to find out what is going on with the process we’ve just started. Specifically finding out which user task the process is currently waiting at.&nbsp;</p>
+
+
+
+        <p>This is once again done through the SwaggerUI. Find the <em>Task</em> section and select the GET call&nbsp; <strong>/task </strong>as indicated by the friendly red arrow below.</p>
+
+
+
+        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+
+
+
+        <div class="wp-block-image"><figure class="aligncenter size-large"><img loading="lazy" width="1024" height="451" src="https://camunda.com/wp-content/uploads/2021/10/image1-3-1024x451.png" alt="find user task Camunda REST API" class="wp-image-35261" srcset="https://camunda.com/wp-content/uploads/2021/10/image1-3-1024x451.png 1024w, https://camunda.com/wp-content/uploads/2021/10/image1-3-300x132.png 300w, https://camunda.com/wp-content/uploads/2021/10/image1-3-768x338.png 768w, https://camunda.com/wp-content/uploads/2021/10/image1-3.png 1394w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure></div>
+
+
+
+        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+
+
+
+        <p>Then, enter the process instance ID where the green arrow is indicating and click on Execute. If the call was made successfully, you’ll have a code of 200 and the response body will contain a JSON object describing the user task.&nbsp;</p>
+
+
+
+        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+
+
+
+        <div class="wp-block-image"><figure class="aligncenter size-large"><img loading="lazy" width="1024" height="626" src="https://camunda.com/wp-content/uploads/2021/10/image3-1024x626.png" alt="GET call task response" class="wp-image-35265" srcset="https://camunda.com/wp-content/uploads/2021/10/image3-1024x626.png 1024w, https://camunda.com/wp-content/uploads/2021/10/image3-300x183.png 300w, https://camunda.com/wp-content/uploads/2021/10/image3-768x469.png 768w, https://camunda.com/wp-content/uploads/2021/10/image3.png 1332w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure></div>
+
+
+
+        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+
+
+
+        <p>We’ve also got another very important ID as part of the response, the ID of the user task itself. Helpfully indicated above with that trusty green arrow again.</p>
+
+
+
+        <h3>Completing a User Task</h3>
+
+
+
+        <p>We now have the ID of the task that the process is currently waiting at, so the only thing left to do is to complete the task and have the process move on. This means scrolling down to the <strong>task/{id}/complete</strong> POST call and entering the task ID as a parameter.&nbsp;</p>
+
+
+
+        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+
+
+
+        <div class="wp-block-image"><figure class="aligncenter size-large"><img loading="lazy" width="1024" height="297" src="https://camunda.com/wp-content/uploads/2021/10/image5-1024x297.png" alt="complete user task Camunda REST API" class="wp-image-35269" srcset="https://camunda.com/wp-content/uploads/2021/10/image5-1024x297.png 1024w, https://camunda.com/wp-content/uploads/2021/10/image5-300x87.png 300w, https://camunda.com/wp-content/uploads/2021/10/image5-768x223.png 768w, https://camunda.com/wp-content/uploads/2021/10/image5.png 1317w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure></div>
+
+
+
+        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+
+
+
+        <p>But this task needs a little more than just the ID, it also needs a variable so that process knows how to progress past the gateway. So if you try to send this call without those variables, you’ll end up getting an error and the task will not complete. The variable we need to add is a boolean variable “approved” which we’ll set to true.&nbsp;</p>
+
+
+
+        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+
+
+
+<pre class="wp-block-prismatic-blocks"><code class="language-java">{
+  &quot;variables&quot;: {
+	&quot;approved&quot;: {
+  	&quot;value&quot;: true
+	}
+  },
+  &quot;withVariablesInReturn&quot;: true
+}</code></pre>
+
+
+
+        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+
+
+
+        <p>After clicking Execute, you should be greeted with a response and a very happy 200 response code.&nbsp;</p>
+
+
+
+        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+
+
+
+        <div class="wp-block-image"><figure class="aligncenter size-large"><img loading="lazy" width="1024" height="589" src="https://camunda.com/wp-content/uploads/2021/10/image9-1024x589.png" alt="" class="wp-image-35277" srcset="https://camunda.com/wp-content/uploads/2021/10/image9-1024x589.png 1024w, https://camunda.com/wp-content/uploads/2021/10/image9-300x172.png 300w, https://camunda.com/wp-content/uploads/2021/10/image9-768x442.png 768w, https://camunda.com/wp-content/uploads/2021/10/image9.png 1348w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure></div>
+
+
+
+        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+
+
+
+        <p>Now, you can feel free to go into Camunda Cockpit (<a href="http://localhost:8080/camunda/app/cockpit/default/">http://localhost:8080/camunda/app/cockpit/default/</a>) and take a look at how far your little process has come. With just three little REST calls.</p>
+
+
+
+        <h3>In Summary</h3>
+
+
+
+        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+
+
+
+        <div class="wp-block-image"><figure class="aligncenter size-large"><img loading="lazy" width="1024" height="366" src="https://camunda.com/wp-content/uploads/2021/10/image2-1-1024x366.png" alt="" class="wp-image-35263" srcset="https://camunda.com/wp-content/uploads/2021/10/image2-1-1024x366.png 1024w, https://camunda.com/wp-content/uploads/2021/10/image2-1-300x107.png 300w, https://camunda.com/wp-content/uploads/2021/10/image2-1-768x274.png 768w, https://camunda.com/wp-content/uploads/2021/10/image2-1-1536x549.png 1536w, https://camunda.com/wp-content/uploads/2021/10/image2-1.png 1856w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure></div>
+
+
+
+        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+
+
+
+        <p>It took three different calls to step through this process, which goes as follows in the screenshot above.</p>
+
+
+
+        <h3>Start the process:</h3>
+
+
+
+        <p class="has-light-green-cyan-color has-text-color"><strong>http://localhost:8080/engine-rest/process-definition/key/{processDefinitionKey}/start</strong></p>
+
+
+
+<pre class="wp-block-prismatic-blocks"><code class="language-java">{
+  &quot;variables&quot;: {
+	&quot;amount&quot;: {
+  	&quot;value&quot;: 30,
+  	&quot;type&quot;: &quot;Double&quot;
+	},
+	&quot;creditor&quot;: {
+  	&quot;value&quot;: &quot;Niall&quot;,
+  	&quot;type&quot;: &quot;String&quot;
+	},
+  &quot;invoiceCategory&quot;: {
+  	&quot;value&quot;: &quot;Travel Expenses&quot;,
+  	&quot;type&quot;: &quot;String&quot;
+	},
+  &quot;invoiceNumber&quot;: {
+  	&quot;value&quot;: &quot;BER-00001&quot;,
+  	&quot;type&quot;: &quot;String&quot;
+	}
+  },
+  &quot;businessKey&quot;: &quot;Doom1&quot;,
+  &quot;withVariablesInReturn&quot;: true
+}</code></pre>
+
+
+
+        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+
+
+
+        <h3>Query for the Task:</h3>
+
+
+
+        <p class="has-light-green-cyan-color has-text-color"><strong>http://localhost:8080/engine-rest/task?processInstanceId={processInstanceId}/</strong></p>
+
+
+
+<pre class="wp-block-prismatic-blocks"><code class="language-java">{}</code></pre>
+
+
+
+        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+
+
+
+        <h3>Complete the Task:</h3>
+
+
+
+        <p class="has-light-green-cyan-color has-text-color"><strong>http://localhost:8080/engine-rest/task/{taskId}/complete</strong></p>
+
+
+
+<pre class="wp-block-prismatic-blocks"><code class="language-java">{
+  &quot;variables&quot;: {
+	&quot;approved&quot;: {
+  	&quot;value&quot;: true
+	}
+  },
+  &quot;withVariablesInReturn&quot;: true
+}</code></pre>
+
+
+
+        <p></p>
+
+    </div>
 </div>

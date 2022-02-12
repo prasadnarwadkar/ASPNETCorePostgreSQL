@@ -32,19 +32,21 @@ namespace ASPNETIdentityPostgres
     /// I have shown below an example where a process can be started using REST API from an ASP.NET Core MVC web app (this app).
     public class PatientsController : Controller
     {
-        
+
         private readonly IPatientLogic _patientBusinessLogic;
         private readonly PatientSyncService _HostedService;
 
-        private static IEnumerable<Cookie> _cookies_bonitasoft= new List<Cookie>();
+        private static IEnumerable<Cookie> _cookies_bonitasoft = new List<Cookie>();
+        private string processDefKey = "invoice:3:d8ca49d6-8b21-11ec-aa22-0a0027000007";
 
         IConfiguration _iconfiguration;
         private static Uri BonitaBaseUri;
         private static Uri BonitaPortalResourceBaseUri;
+        private static Uri CamundaRestBaseUri;
 
         static PatientsController()
         {
-            
+
         }
 
         public PatientsController(IPatientLogic logic,
@@ -56,6 +58,7 @@ namespace ASPNETIdentityPostgres
             _iconfiguration = configuration;
             BonitaBaseUri = new Uri(_iconfiguration["BonitaBaseUri"]);
             BonitaPortalResourceBaseUri = new Uri(_iconfiguration["BonitaPortalResourceBaseUri"]);
+            CamundaRestBaseUri = new Uri(_iconfiguration["CamundaRestBaseUri"]);
 
             getCookies("walter.bates", "bpm").Wait(2000);
 
@@ -74,7 +77,7 @@ namespace ASPNETIdentityPostgres
 
             return LocalRedirect(returnUrl);
         }
-        
+
         // GET: Patients
         public async Task<IActionResult> Index()
         {
@@ -90,6 +93,18 @@ namespace ASPNETIdentityPostgres
             claimSubmittedInfo.tasks = tasks;
 
             return View(claimSubmittedInfo);
+        }
+
+        /// <summary>
+        /// Get all the running process instances for invoice receipt process.
+        /// Each instance represents one invoice.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IActionResult> MyInvoices()
+        {
+            var invoices = await getInvoices(processDefKey);
+
+            return View(invoices);
         }
 
 
@@ -117,7 +132,7 @@ namespace ASPNETIdentityPostgres
 
         [HttpGet]
         public async Task<IActionResult> LoginToBonitaSoftEngine()
-        {            
+        {
             // Get the list of BonitaSoft processes.
             var url = new Uri(BonitaBaseUri, "API/bpm/process?c=10&p=0").ToString();
             var cookieContainer = new CookieContainer();
@@ -128,7 +143,7 @@ namespace ASPNETIdentityPostgres
                 {
                     cookieContainer.Add(new Uri(url), cookie);
                 }
-                
+
                 var result = await client.GetAsync("");
                 var content = await result.Content.ReadAsStringAsync();
                 result.EnsureSuccessStatusCode();
@@ -196,7 +211,7 @@ namespace ASPNETIdentityPostgres
 
         public async Task<claimDetails> getClaimDetailsFromClaimRef(int claimID)
         {
-            var url = new Uri(BonitaPortalResourceBaseUri, "taskInstance/ClaimsManagement/1.0/Review%20and%20answer%20claim/API/bdm/businessData/com.company.model.Claim/"+ claimID).ToString();
+            var url = new Uri(BonitaPortalResourceBaseUri, "taskInstance/ClaimsManagement/1.0/Review%20and%20answer%20claim/API/bdm/businessData/com.company.model.Claim/" + claimID).ToString();
 
             CookieContainer cookieContainer = new CookieContainer();
             using (var handler = new HttpClientHandler() { CookieContainer = cookieContainer })
@@ -312,6 +327,78 @@ namespace ASPNETIdentityPostgres
             return View();
         }
 
+        /// <summary>
+        /// Camunda Invoice (process instance) details
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<IActionResult> CamundaInvoiceDetails(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var invoices = new List<ProcessInstance>();
+
+            var tasks = await getCamundaUserTasks(id);
+            var username = User.Identity.Name;
+
+            var bpmRole = "";
+
+            var mapping = ASPNETIdentityPostgres.Areas.ADT.Models.WebAppAndBPMUserMap.mappings.FirstOrDefault(m => m.UserNameOnWebApp.ToLower() == username.ToLower());
+
+            if (mapping != null)
+            {
+                bpmRole = mapping.UserRoleOnBPMEngineOrApp2;
+            }
+
+            ViewData["notapprovermsg"] = "";
+
+            foreach (var taskObj in tasks)
+            {
+                if (taskObj.taskDefinitionKey.Equals("approveInvoice"))
+                {
+
+                    if (bpmRole == "invoice_approver")
+                    {
+                        var post = new ApproveInvoicePost();
+                        post.taskId = taskObj.id;
+
+                        return View("ApproveInvoiceCamunda", post);
+                    }
+                    else
+                    {
+                        ViewData["notapprovermsg"] = "Please login as approver to approve invoices";
+                        invoices = await getInvoices(processDefKey);
+
+                        return View("MyInvoices", invoices);
+                    }
+                }
+                else if (taskObj.taskDefinitionKey.Equals("prepareBankTransfer"))
+                {
+                    if (bpmRole == "invoice_approver")
+                    {
+                        var result = await prepareBankTransferForAnInvoice(taskObj.id);
+
+                        invoices = await getInvoices(processDefKey);
+
+                        return View("MyInvoices", invoices);
+                    }
+                    else
+                    {
+                        invoices = await getInvoices(processDefKey);
+
+                        return View("MyInvoices", invoices);
+                    }
+                }
+            }
+
+            invoices = await getInvoices(processDefKey);
+
+            return View("MyInvoices", invoices);
+        }
+
         // GET: Patients/Details/5
         public async Task<IActionResult> Details(long? id)
         {
@@ -337,6 +424,11 @@ namespace ASPNETIdentityPostgres
         }
 
         public IActionResult SubmitClaimBonitaSoft()
+        {
+            return View();
+        }
+
+        public IActionResult SubmitInvoiceCamunda()
         {
             return View();
         }
@@ -397,7 +489,7 @@ namespace ASPNETIdentityPostgres
 
                 var assigned = new assignedid();
                 // Reviewer of claim. This needs to be mapped from BonitaSoft BPM users to web app users.
-                assigned.assigned_id = userId; 
+                assigned.assigned_id = userId;
 
                 var claimJSON = JsonContent.Create<assignedid>(assigned);
                 var result = await client.PutAsync("", claimJSON);
@@ -469,6 +561,30 @@ namespace ASPNETIdentityPostgres
             }
         }
 
+
+        private async Task<List<ProcessInstance>> getInvoices(string processDefKey)
+        {
+            var url = new Uri(CamundaRestBaseUri, "process-instance?processDefinitionId=" + processDefKey + "&active=false&suspended=false&withIncident=false&withoutTenantId=false&processDefinitionWithoutTenantId=false&rootProcessInstances=false&leafProcessInstances=false&variableNamesIgnoreCase=false&variableValuesIgnoreCase=false").ToString();
+
+            using (var handler = new HttpClientHandler() { })
+            using (var client = new HttpClient(handler) { BaseAddress = new Uri(url) })
+            {
+                var result = await client.GetAsync("");
+                
+                result.EnsureSuccessStatusCode();
+
+                var content = await result.Content.ReadAsStringAsync();
+
+                var settings = new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                    MissingMemberHandling = MissingMemberHandling.Ignore
+                };
+
+                return JsonConvert.DeserializeObject<List<ProcessInstance>>(content, settings);
+            }
+        }
+
         private async Task<List<BonitaSoftTaskDesc>> getUserTasks()
         {
             var url = new Uri(BonitaPortalResourceBaseUri, "app/userAppBonita/task-list/API/bpm/humanTask?c=50&d=rootContainerId&f=state%3Dready&o=displayName+ASC&p=0").ToString();
@@ -513,6 +629,158 @@ namespace ASPNETIdentityPostgres
 
                 return JsonConvert.DeserializeObject<List<BonitaSoftTaskDesc>>(content, settings);
             }
+        }
+
+        private async Task<List<CamundaUserTask>> getCamundaUserTasks(string processInstanceId)
+        {
+            var url = new Uri(CamundaRestBaseUri, "task?processInstanceId="+ processInstanceId + "&withoutTenantId=false&includeAssignedTasks=false&assigned=false&unassigned=false&withoutDueDate=false&withCandidateGroups=false&withoutCandidateGroups=false&withCandidateUsers=false&withoutCandidateUsers=false&active=false&suspended=false&variableNamesIgnoreCase=false&variableValuesIgnoreCase=false").ToString();
+
+            using (var handler = new HttpClientHandler() {})
+            using (var client = new HttpClient(handler) { BaseAddress = new Uri(url) })
+            { 
+                var result = await client.GetAsync("");
+
+                result.EnsureSuccessStatusCode();
+
+                var content = await result.Content.ReadAsStringAsync();
+
+                var settings = new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                    MissingMemberHandling = MissingMemberHandling.Ignore
+                };
+
+                return JsonConvert.DeserializeObject<List<CamundaUserTask>>(content, settings);
+            }
+        }
+
+        /// <summary>
+        /// Approve an invoice.
+        /// Creates a process instance (one instance of a process). Many instances can 
+        /// be created, each catering to one instance of that process/work flow.
+        /// </summary>
+        /// <returns></returns>
+        private async Task<HttpResponseMessage> approveInvoice(ApproveInvoicePost invoice)
+        {
+            invoice.withVariablesInReturn = true;
+            
+            var url = new Uri(CamundaRestBaseUri,
+                    "task/" + invoice.taskId + "/complete").ToString();
+
+            using (var handler = new HttpClientHandler() { })
+            using (var client = new HttpClient(handler) { BaseAddress = new Uri(url) })
+            {
+                var settings = new JsonSerializerOptions
+                {
+                    DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+                };
+
+                invoice.taskId = null;
+
+                var post = JsonContent.Create<ApproveInvoicePost>(invoice, null, settings);
+
+                var result = await client.PostAsync("", post);
+                
+                result.EnsureSuccessStatusCode();
+
+                return result;
+            }
+        }
+
+        /// <summary>
+        /// Prepare bank transfer for an invoice.
+        /// Creates a process instance (one instance of a process). Many instances can 
+        /// be created, each catering to one instance of that process/work flow.
+        /// </summary>
+        /// <returns></returns>
+        private async Task<HttpResponseMessage> prepareBankTransferForAnInvoice(string taskid)
+        {
+            var url = new Uri(CamundaRestBaseUri,
+                    "task/" + taskid + "/complete").ToString();
+
+            using (var handler = new HttpClientHandler() { })
+            using (var client = new HttpClient(handler) { BaseAddress = new Uri(url) })
+            {
+                var settings = new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                    MissingMemberHandling = MissingMemberHandling.Ignore
+                };
+
+                var post = JsonContent.Create<emptyJson>(new emptyJson());
+                
+                var result = await client.PostAsync("", post);
+
+                result.EnsureSuccessStatusCode();
+
+                return result;
+            }
+        }
+
+        /// <summary>
+        /// Submit an invoice.
+        /// Creates a process instance (one instance of a process). Many instances can 
+        /// be created, each catering to one instance of that process/work flow.
+        /// </summary>
+        /// <returns></returns>
+        private async Task<ProcessInstance> submitInvoice(InvoiceDetails invoiceDetails)
+        {
+            invoiceDetails.withVariablesInReturn = true;
+
+            var url = new Uri(CamundaRestBaseUri,
+                    "process-definition/key/invoice/start").ToString();
+
+            using (var handler = new HttpClientHandler() { })
+            using (var client = new HttpClient(handler) { BaseAddress = new Uri(url) })
+            {
+                var options = new JsonSerializerOptions
+                {
+                    DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+                };
+
+                var post = JsonContent.Create<InvoiceDetails>(invoiceDetails, null, options);
+
+                var result = await client.PostAsync("", post);
+                var content = await result.Content.ReadAsStringAsync();
+
+                var settings = new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                    MissingMemberHandling = MissingMemberHandling.Ignore
+                };
+
+                var processInstance = JsonConvert.DeserializeObject<ProcessInstance>(content, settings);
+
+                result.EnsureSuccessStatusCode();
+
+                return processInstance;
+            }
+        }
+
+        // POST: Patients/SubmitInvoiceCamunda
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SubmitInvoiceCamunda(InvoiceDetails invoice)
+        {
+            var result = await submitInvoice(invoice);
+
+            var invoices = await getInvoices(processDefKey);
+
+            return View("MyInvoices", invoices);
+        }
+
+        // POST: Patients/ApproveInvoiceCamunda
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ApproveInvoiceCamunda(ApproveInvoicePost invoice)
+        {
+            var result = await approveInvoice(invoice);
+
+            var invoices = await getInvoices(processDefKey);
+
+            return View("MyInvoices", invoices);
         }
 
         // POST: Patients/SubmitClaimBonitaSoft
@@ -610,7 +878,7 @@ namespace ASPNETIdentityPostgres
         public async Task<IActionResult> ReviewAndAnswerClaim(ReviewAndAnswerTask task)
         {
             // Check the mapping.
-            var mapping = WebAppAndBPMUserMapForBonitaSoft.mappings.FirstOrDefault(m => m.UserRoleOnBPMEngineOrApp == "claim_reviewer");
+            var mapping = WebAppAndBPMUserMap.mappings.FirstOrDefault(m => m.UserRoleOnBPMEngineOrApp == "claim_reviewer");
 
             // Take (claim) the task to complete it.
             var taken = await takeTheTask(task.TaskId,
@@ -650,7 +918,7 @@ namespace ASPNETIdentityPostgres
         public async Task<IActionResult> ReadTheAnswerAndRateIt(ReviewAndAnswerTask task)
         {
             // Check the mapping.
-            var mapping = WebAppAndBPMUserMapForBonitaSoft.mappings.FirstOrDefault(m => m.UserRoleOnBPMEngineOrApp == "claim_initiator");
+            var mapping = WebAppAndBPMUserMap.mappings.FirstOrDefault(m => m.UserRoleOnBPMEngineOrApp == "claim_initiator");
 
             // Take (claim) the task to complete it.
             var taken = await takeTheTask(task.TaskId,
