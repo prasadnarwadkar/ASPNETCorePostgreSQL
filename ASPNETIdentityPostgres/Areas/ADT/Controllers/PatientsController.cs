@@ -43,6 +43,11 @@ namespace ASPNETIdentityPostgres
         private static Uri BonitaBaseUri;
         private static Uri BonitaPortalResourceBaseUri;
         private static Uri CamundaRestBaseUri;
+        private static Uri jBPMRestBaseUri;
+        private static Uri jBPMRestUri;
+        private static string usernameBPM = "";
+        private static string passwordBPM = "";
+
 
         static PatientsController()
         {
@@ -59,6 +64,10 @@ namespace ASPNETIdentityPostgres
             BonitaBaseUri = new Uri(_iconfiguration["BonitaBaseUri"]);
             BonitaPortalResourceBaseUri = new Uri(_iconfiguration["BonitaPortalResourceBaseUri"]);
             CamundaRestBaseUri = new Uri(_iconfiguration["CamundaRestBaseUri"]);
+            jBPMRestBaseUri = new Uri(_iconfiguration["jBPMRestBaseUri"]);
+            jBPMRestUri = new Uri(_iconfiguration["jBPMRestUri"]);
+
+
 
             getCookies("walter.bates", "bpm").Wait(2000);
 
@@ -88,6 +97,11 @@ namespace ASPNETIdentityPostgres
         {
             var tasks = await getUserTasks();
 
+            if (_cookies_bonitasoft.Count() == 0)
+            {
+                ViewData["NoConnError"] = "No connection to BonitaSoft Engine. Is the BonitaSoft Engine running?";
+            }
+
             var claimSubmittedInfo = new claimSubmittedInfo();
             claimSubmittedInfo.caseId = "";
             claimSubmittedInfo.tasks = tasks;
@@ -107,27 +121,54 @@ namespace ASPNETIdentityPostgres
             return View(invoices);
         }
 
-
-        private static async Task getCookies(string username, string password)
+        public async Task<IActionResult> MyEmpEvals()
         {
-            CookieContainer cookies = new CookieContainer();
-            HttpClientHandler handler = new HttpClientHandler();
-            handler.CookieContainer = cookies;
+            var username = User.Identity.Name;
 
-            HttpClient client = new HttpClient(handler);
-            var url = new Uri(BonitaBaseUri, "loginservice").ToString();
+            var mapping = ASPNETIdentityPostgres.Areas.ADT.Models.WebAppAndBPMUserMap.mappings.FirstOrDefault(m => m.UserNameOnWebApp.ToLower() == username.ToLower());
 
-            var dict = new Dictionary<string, string>();
-            dict.Add("username", username);
-            dict.Add("password", password);
+            if (mapping != null)
+            {
+                usernameBPM = mapping.UserNameOnjBPMEngineOrApp;
+                passwordBPM = mapping.PasswordOnjBPMEngineOrApp;
+            }
 
-            var req = new HttpRequestMessage(HttpMethod.Post, url) { Content = new FormUrlEncodedContent(dict) };
-            var res = await client.SendAsync(req);
+            var list = await Utility.GetProcessInstances(Constants.jBPMEvalProcessContainerID, jBPMRestBaseUri, usernameBPM, passwordBPM);
 
-            Uri uri = new Uri(BonitaBaseUri, "loginservice");
-            IEnumerable<Cookie> responseCookies = cookies.GetCookies(uri).Cast<Cookie>();
+            return View(list.ProcessInstance);
+        }
 
-            _cookies_bonitasoft = responseCookies;
+        private async Task getCookies(string username, string password)
+        {
+            try
+            {
+                CookieContainer cookies = new CookieContainer();
+                HttpClientHandler handler = new HttpClientHandler();
+                handler.CookieContainer = cookies;
+
+                HttpClient client = new HttpClient(handler);
+                var url = new Uri(BonitaBaseUri, "loginservice").ToString();
+
+                var dict = new Dictionary<string, string>();
+                dict.Add("username", username);
+                dict.Add("password", password);
+
+                var req = new HttpRequestMessage(HttpMethod.Post, url) { Content = new FormUrlEncodedContent(dict) };
+                var res = await client.SendAsync(req);
+
+                Uri uri = new Uri(BonitaBaseUri, "loginservice");
+                IEnumerable<Cookie> responseCookies = cookies.GetCookies(uri).Cast<Cookie>();
+
+                _cookies_bonitasoft = responseCookies;
+                ViewData["NoConnError"] = "";
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.ToLower().Contains("no connection"))
+                {
+                    ViewData["NoConnError"] = "No connection to BonitaSoft Engine. Is the BonitaSoft Engine running?";
+                }
+            }
         }
 
         [HttpGet]
@@ -399,6 +440,130 @@ namespace ASPNETIdentityPostgres
             return View("MyInvoices", invoices);
         }
 
+        public async Task<IActionResult> jBPMProcInstDetails(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var list = new ProcessInstanceList();
+
+            var invoices = new List<ProcessInstance>();
+
+            var tasks = await getjBPMUserTasks(id);
+            var username = User.Identity.Name;
+
+            var bpmRole = "";
+
+            var mapping = ASPNETIdentityPostgres.Areas.ADT.Models.WebAppAndBPMUserMap.mappings.FirstOrDefault(m => m.UserNameOnWebApp.ToLower() == username.ToLower());
+
+            if (mapping != null)
+            {
+                bpmRole = mapping.UserRoleOnjBPMEngineOrApp;
+            }
+
+            ViewData["notapprovermsg"] = "";
+
+            foreach (var taskObj in tasks.TaskSummary)
+            {
+                if (taskObj.TaskName.Equals("Self Evaluation"))
+                {
+                    if (bpmRole == "pm_employee")
+                    {
+                        var data = await Utility.GetProcessInstanceVars(Constants.jBPMEvalProcessContainerID,
+                                        taskObj.TaskProcInstId,
+                                        jBPMRestBaseUri,
+                                        usernameBPM,
+                                        passwordBPM);
+
+                        var dataForView = new jBPMSelfEvalTaskData();
+                        dataForView.processData = data;
+                        dataForView.TaskStatus = taskObj.TaskStatus;
+                        
+                        dataForView.taskInstanceID = taskObj.TaskId;
+                        dataForView.TaskOwner = taskObj.TaskActualOwner;
+
+                        return View("jBPMSelfEval", dataForView);
+                    }
+                    else
+                    {
+                        ViewData["notapprovermsg"] = "Please login as an employee (a@b.com) to evaluate yourself.";
+                        list = await Utility.GetProcessInstances(Constants.jBPMEvalProcessContainerID,
+                                                                jBPMRestBaseUri,
+                                                                usernameBPM,
+                                                                passwordBPM);
+
+                        return View("MyEmpEvals", list.ProcessInstance);
+                    }
+                }
+                else if (taskObj.TaskName.Equals("PM Evaluation"))
+                {
+                    if (bpmRole == "pm_employee")
+                    {
+                        var data = await Utility.GetProcessInstanceVars(Constants.jBPMEvalProcessContainerID,
+                                        taskObj.TaskProcInstId,
+                                        jBPMRestBaseUri,
+                                        usernameBPM,
+                                        passwordBPM);
+
+                        var dataForView = new jBPMSelfEvalTaskData();
+                        dataForView.processData = data;
+
+                        dataForView.taskInstanceID = taskObj.TaskId;
+
+                        return View("jBPMPMEval", dataForView);
+                    }
+                    else
+                    {
+                        ViewData["notapprovermsg"] = "Please login as a PM (a@b.com) to evaluate an employee.";
+                        list = await Utility.GetProcessInstances(Constants.jBPMEvalProcessContainerID,
+                                                                jBPMRestBaseUri,
+                                                                usernameBPM,
+                                                                passwordBPM);
+
+                        return View("MyEmpEvals", list.ProcessInstance);
+                    }
+                }
+                else if (taskObj.TaskName.Equals("HR Evaluation"))
+                {
+                    if (bpmRole == "hr_admin")
+                    {
+                        var data = await Utility.GetProcessInstanceVars(Constants.jBPMEvalProcessContainerID,
+                                        taskObj.TaskProcInstId,
+                                        jBPMRestBaseUri,
+                                        usernameBPM,
+                                        passwordBPM);
+
+                        var dataForView = new jBPMSelfEvalTaskData();
+                        dataForView.processData = data;
+
+                        dataForView.taskInstanceID = taskObj.TaskId;
+
+                        return View("jBPMHREval", dataForView);
+                    }
+                    else
+                    {
+                        ViewData["notapprovermsg"] = "Please login as an HR (p@q.com) to evaluate an employee.";
+                        list = await Utility.GetProcessInstances(Constants.jBPMEvalProcessContainerID,
+                                                                jBPMRestBaseUri,
+                                                                usernameBPM,
+                                                                passwordBPM);
+
+                        return View("MyEmpEvals", list.ProcessInstance);
+                    }
+                }
+
+            }
+
+            list = await Utility.GetProcessInstances(Constants.jBPMEvalProcessContainerID,
+                                                                jBPMRestBaseUri,
+                                                                usernameBPM,
+                                                                passwordBPM);
+
+            return View("MyEmpEvals", list.ProcessInstance);
+        }
+
         // GET: Patients/Details/5
         public async Task<IActionResult> Details(long? id)
         {
@@ -564,22 +729,40 @@ namespace ASPNETIdentityPostgres
 
         private async Task<List<ProcessInstance>> getInvoices(string processDefKey)
         {
+            var settings = new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                MissingMemberHandling = MissingMemberHandling.Ignore
+            };
+
             var url = new Uri(CamundaRestBaseUri, "process-instance?processDefinitionId=" + processDefKey + "&active=false&suspended=false&withIncident=false&withoutTenantId=false&processDefinitionWithoutTenantId=false&rootProcessInstances=false&leafProcessInstances=false&variableNamesIgnoreCase=false&variableValuesIgnoreCase=false").ToString();
+
+            HttpResponseMessage result = new HttpResponseMessage();
 
             using (var handler = new HttpClientHandler() { })
             using (var client = new HttpClient(handler) { BaseAddress = new Uri(url) })
             {
-                var result = await client.GetAsync("");
-                
-                result.EnsureSuccessStatusCode();
+                try
+                {
+                    result = await client.GetAsync("");
+
+                    result.EnsureSuccessStatusCode();
+                }
+                catch (Exception ex)
+                {
+                    if (ex.Message.ToLower().Contains("no connection"))
+                    {
+                        ViewData["NoConnError"] = "No connection to Camunda Engine. Is the Camunda Engine running?";
+                    }
+                    else if (ex.Message.ToLower().Contains("not found"))
+                    {
+                        ViewData["NoConnError"] = "No connection to Camunda Engine. Is the Camunda Engine running? OR the process definition you are referring to doesn't exist.";
+                    }
+
+                    return JsonConvert.DeserializeObject<List<ProcessInstance>>("[]", settings);
+                }                
 
                 var content = await result.Content.ReadAsStringAsync();
-
-                var settings = new JsonSerializerSettings
-                {
-                    NullValueHandling = NullValueHandling.Ignore,
-                    MissingMemberHandling = MissingMemberHandling.Ignore
-                };
 
                 return JsonConvert.DeserializeObject<List<ProcessInstance>>(content, settings);
             }
@@ -596,6 +779,11 @@ namespace ASPNETIdentityPostgres
                 foreach (var cookie in _cookies_bonitasoft)
                 {
                     cookieContainer.Add(new Uri(url), cookie);
+                }
+
+                if (_cookies_bonitasoft.Count() == 0)
+                {
+                    return new List<BonitaSoftTaskDesc>();
                 }
 
                 client.DefaultRequestHeaders.Add("X-Bonita-API-Token", _cookies_bonitasoft.Where(ck => ck.Name == "X-Bonita-API-Token").FirstOrDefault().Value);
@@ -633,11 +821,11 @@ namespace ASPNETIdentityPostgres
 
         private async Task<List<CamundaUserTask>> getCamundaUserTasks(string processInstanceId)
         {
-            var url = new Uri(CamundaRestBaseUri, "task?processInstanceId="+ processInstanceId + "&withoutTenantId=false&includeAssignedTasks=false&assigned=false&unassigned=false&withoutDueDate=false&withCandidateGroups=false&withoutCandidateGroups=false&withCandidateUsers=false&withoutCandidateUsers=false&active=false&suspended=false&variableNamesIgnoreCase=false&variableValuesIgnoreCase=false").ToString();
+            var url = new Uri(CamundaRestBaseUri, "task?processInstanceId=" + processInstanceId + "&withoutTenantId=false&includeAssignedTasks=false&assigned=false&unassigned=false&withoutDueDate=false&withCandidateGroups=false&withoutCandidateGroups=false&withCandidateUsers=false&withoutCandidateUsers=false&active=false&suspended=false&variableNamesIgnoreCase=false&variableValuesIgnoreCase=false").ToString();
 
-            using (var handler = new HttpClientHandler() {})
+            using (var handler = new HttpClientHandler() { })
             using (var client = new HttpClient(handler) { BaseAddress = new Uri(url) })
-            { 
+            {
                 var result = await client.GetAsync("");
 
                 result.EnsureSuccessStatusCode();
@@ -654,6 +842,35 @@ namespace ASPNETIdentityPostgres
             }
         }
 
+        private async Task<jBPMTaskList> getjBPMUserTasks(string processInstanceId)
+        {
+            int id;
+            var parsed = int.TryParse(processInstanceId, out id);
+            var usernameBPM = "";
+            var passwordBPM = "";
+
+            ViewData["Title"] = "My Invoices";
+
+            var username = User.Identity.Name;
+
+            var mapping = ASPNETIdentityPostgres.Areas.ADT.Models.WebAppAndBPMUserMap.mappings.FirstOrDefault(m => m.UserNameOnWebApp.ToLower() == username.ToLower());
+
+            if (mapping != null)
+            {
+                usernameBPM = mapping.UserNameOnjBPMEngineOrApp;
+                passwordBPM = mapping.PasswordOnjBPMEngineOrApp;
+            }
+
+            if (parsed)
+            {
+                return await Utility.GetTaskInstances(id, jBPMRestUri, usernameBPM, passwordBPM);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         /// <summary>
         /// Approve an invoice.
         /// Creates a process instance (one instance of a process). Many instances can 
@@ -663,7 +880,7 @@ namespace ASPNETIdentityPostgres
         private async Task<HttpResponseMessage> approveInvoice(ApproveInvoicePost invoice)
         {
             invoice.withVariablesInReturn = true;
-            
+
             var url = new Uri(CamundaRestBaseUri,
                     "task/" + invoice.taskId + "/complete").ToString();
 
@@ -680,7 +897,7 @@ namespace ASPNETIdentityPostgres
                 var post = JsonContent.Create<ApproveInvoicePost>(invoice, null, settings);
 
                 var result = await client.PostAsync("", post);
-                
+
                 result.EnsureSuccessStatusCode();
 
                 return result;
@@ -708,7 +925,7 @@ namespace ASPNETIdentityPostgres
                 };
 
                 var post = JsonContent.Create<emptyJson>(new emptyJson());
-                
+
                 var result = await client.PostAsync("", post);
 
                 result.EnsureSuccessStatusCode();
@@ -757,6 +974,38 @@ namespace ASPNETIdentityPostgres
             }
         }
 
+        public IActionResult jBPMStartEmpVal()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> jBPMStartEmpVal(EmployeeEvalStartProcessData data)
+        {
+            var result = await Utility.CreateAProcessInstance(Constants.jBPMEvalProcessContainerID,
+                                                                Constants.jBPMEvalProcessID,
+                                                                jBPMRestBaseUri,
+                                                                usernameBPM,
+                                                                passwordBPM,
+                                                                data.initiator,
+                                                                data.employee);
+
+            if (result > 0)
+            {
+                var list = await Utility.GetProcessInstances(Constants.jBPMEvalProcessContainerID, 
+                                                                jBPMRestBaseUri, 
+                                                                usernameBPM, 
+                                                                passwordBPM);
+
+                return View("MyEmpEvals", list.ProcessInstance);
+            }
+            else
+            {
+                return View(data);
+            }
+        }
+
         // POST: Patients/SubmitInvoiceCamunda
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         [HttpPost]
@@ -781,6 +1030,166 @@ namespace ASPNETIdentityPostgres
             var invoices = await getInvoices(processDefKey);
 
             return View("MyInvoices", invoices);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> jBPMSelfEval(jBPMSelfEvalTaskData data)
+        {
+            var result = 200;
+
+            if (data.TaskStatus != "Reserved")
+            {
+                if (!string.IsNullOrWhiteSpace(data.TaskOwner)
+                    && BPMUsers.Users.ContainsKey(data.TaskOwner))
+                {
+                    result = await Utility.ClaimATask(Constants.jBPMEvalProcessContainerID,
+                                                                data.taskInstanceID,
+                                                                jBPMRestBaseUri,
+                                                                data.TaskOwner,
+                                                                BPMUsers.Users[data.TaskOwner]);
+                }
+                else
+                {
+                    result = await Utility.ClaimATask(Constants.jBPMEvalProcessContainerID,
+                                                            data.taskInstanceID,
+                                                            jBPMRestBaseUri,
+                                                            usernameBPM,
+                                                            passwordBPM);
+                }
+            }
+
+            if (result >= 200 && result <= 201)
+            {
+                if (!string.IsNullOrWhiteSpace(data.TaskOwner)
+                    && BPMUsers.Users.ContainsKey(data.TaskOwner))
+                {
+                    result = await Utility.StartATask(Constants.jBPMEvalProcessContainerID,
+                                                    data.taskInstanceID,
+                                                    jBPMRestBaseUri,
+                                                    data.TaskOwner,
+                                                    BPMUsers.Users[data.TaskOwner]);
+                }
+                else
+                {
+                    result = await Utility.StartATask(Constants.jBPMEvalProcessContainerID,
+                                                    data.taskInstanceID,
+                                                    jBPMRestBaseUri,
+                                                    usernameBPM,
+                                                    passwordBPM);
+                }
+
+                if (result >= 200 && result <= 201)
+                {
+                    if (!string.IsNullOrWhiteSpace(data.TaskOwner)
+                    && BPMUsers.Users.ContainsKey(data.TaskOwner))
+                    {
+                        result = await Utility.CompleteATask(Constants.jBPMEvalProcessContainerID,
+                                                        data.taskInstanceID,
+                                                        jBPMRestBaseUri,
+                                                        data.TaskOwner,
+                                                        BPMUsers.Users[data.TaskOwner]
+,                                                       data.processData);
+                    }
+                    else
+                    {
+                        result = await Utility.CompleteATask(Constants.jBPMEvalProcessContainerID,
+                                                        data.taskInstanceID,
+                                                        jBPMRestBaseUri,
+                                                        usernameBPM,
+                                                        passwordBPM,
+                                                        data.processData);
+                    }
+
+                    if (result >= 200 && result <= 201)
+                    {
+                        var list = await Utility.GetProcessInstances(Constants.jBPMEvalProcessContainerID, jBPMRestBaseUri, usernameBPM, passwordBPM);
+
+                        return View("MyEmpEvals", list.ProcessInstance);
+                    }
+                }
+            }
+
+            return View("jBPMSelfEval", data);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> jBPMPMEval(jBPMSelfEvalTaskData data)
+        {
+            var result = await Utility.ClaimATask(Constants.jBPMEvalProcessContainerID,
+                                                    data.taskInstanceID,
+                                                    jBPMRestBaseUri,
+                                                    usernameBPM,
+                                                    passwordBPM);
+
+            if (result >= 200 && result <= 201)
+            {
+                result = await Utility.StartATask(Constants.jBPMEvalProcessContainerID,
+                                                    data.taskInstanceID,
+                                                    jBPMRestBaseUri,
+                                                    usernameBPM,
+                                                    passwordBPM);
+
+                if (result >= 200 && result <= 201)
+                {
+                    result = await Utility.CompleteATask(Constants.jBPMEvalProcessContainerID,
+                                                        data.taskInstanceID,
+                                                        jBPMRestBaseUri,
+                                                        usernameBPM,
+                                                        passwordBPM,
+                                                        data.processData);
+
+                    if (result >= 200 && result <= 201)
+                    {
+                        var list = await Utility.GetProcessInstances(Constants.jBPMEvalProcessContainerID, jBPMRestBaseUri, usernameBPM, passwordBPM);
+
+                        return View("MyEmpEvals", list.ProcessInstance);
+                    }
+                }
+            }
+
+            return View("jBPMPMEval", data);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> jBPMHREval(jBPMSelfEvalTaskData data)
+        {
+            var result = await Utility.ClaimATask(Constants.jBPMEvalProcessContainerID,
+                                                    data.taskInstanceID,
+                                                    jBPMRestBaseUri,
+                                                    usernameBPM,
+                                                    passwordBPM);
+
+            if (result >= 200 && result <= 201)
+            {
+                result = await Utility.StartATask(Constants.jBPMEvalProcessContainerID,
+                                                    data.taskInstanceID,
+                                                    jBPMRestBaseUri,
+                                                    usernameBPM,
+                                                    passwordBPM);
+
+                if (result >= 200 && result <= 201)
+                {
+
+                    result = await Utility.CompleteATask(Constants.jBPMEvalProcessContainerID,
+                                                        data.taskInstanceID,
+                                                        jBPMRestBaseUri,
+                                                        usernameBPM,
+                                                        passwordBPM,
+                                                        data.processData);
+
+                    if (result >= 200 && result <= 201)
+                    {
+                        var list = await Utility.GetProcessInstances(Constants.jBPMEvalProcessContainerID, jBPMRestBaseUri, usernameBPM, passwordBPM);
+
+                        return View("MyEmpEvals", list.ProcessInstance);
+                    }
+                }
+            }
+
+            return View("jBPMHREval", data);
         }
 
         // POST: Patients/SubmitClaimBonitaSoft

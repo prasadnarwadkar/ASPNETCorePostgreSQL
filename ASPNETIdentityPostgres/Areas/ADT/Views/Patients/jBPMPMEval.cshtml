@@ -1,0 +1,68 @@
+﻿@model ASPNETIdentityPostgres.Areas.ADT.Models.jBPMSelfEvalTaskData
+
+@{
+    ViewData["Title"] = "PM Evaluation";
+
+    var username = User.Identity.Name;
+
+    var bpmRole = "";
+
+    var mapping = ASPNETIdentityPostgres.Areas.ADT.Models.WebAppAndBPMUserMap.mappings.FirstOrDefault(m => m.UserNameOnWebApp.ToLower() == username.ToLower());
+
+    if (mapping != null)
+    {
+        bpmRole = mapping.UserRoleOnjBPMEngineOrApp;
+    }
+}
+
+<h3>PM Evaluation (jBPM Engine)</h3>
+
+<div>
+    @if (bpmRole == "pm_employee")
+    {
+
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="jBPMPMEval">
+                @Html.HiddenFor(model => model.taskInstanceID)
+                
+
+                <div asp-validation-summary="All" class="text-danger"></div>
+
+                <div class="form-group">
+                    <label asp-for="processData.initiator" class="control-label">Initiator</label>
+                    <input asp-for="processData.initiator" class="form-control" readonly/>
+                    <span asp-validation-for="processData.initiator" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="processData.employee" class="control-label">Employee</label>
+                    <input asp-for="processData.employee" class="form-control" readonly/>
+                    <span asp-validation-for="processData.employee" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="processData.performance" class="control-label">Performance (self notes)</label>
+                    <input asp-for="processData.performance" class="form-control" readonly />
+                    <span asp-validation-for="processData.performance" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="processData.reason" class="control-label">Reason</label>
+                    <input asp-for="processData.reason" class="form-control" />
+                    <span asp-validation-for="processData.reason" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Submit" class="btn btn-primary" />
+                </div>
+
+                <div class="form-group">
+                    <a asp-action="MyEmpEvals" class="btn btn-danger" title="I do not have jBPM Engine/Platform running on my machine.">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    }
+</div>
+

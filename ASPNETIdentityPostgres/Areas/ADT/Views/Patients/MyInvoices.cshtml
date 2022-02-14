@@ -14,6 +14,7 @@
         bpmRole = mapping.UserRoleOnBPMEngineOrApp2;
     }
 }
+<p class="alert-danger">@ViewData["NoConnError"]</p>
 
 <div class="row">
     <div class="col-md-6">
@@ -24,9 +25,12 @@
         <p class="alert-danger">@ViewData["notapprovermsg"]</p>
         @if (bpmRole == "invoice_initiator")
         {
+            if (ViewData["NoConnError"]?.ToString().Length == 0)
+            {
             <p>
                 <a asp-action="SubmitInvoiceCamunda" class="btn btn-primary">Submit a new invoice</a>
             </p>
+            }
         }
         <div>
 
@@ -45,15 +49,15 @@
                 <tbody>
                     @foreach (var item in Model)
                     {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.businessKey)
-                        </td>
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.businessKey)
+                            </td>
 
-                        <td>
-                            <a asp-action="CamundaInvoiceDetails" asp-route-id="@item.id">Go To Invoice Details</a>
-                        </td>
-                    </tr>
+                            <td>
+                                <a asp-action="CamundaInvoiceDetails" asp-route-id="@item.id">Go To Invoice Details</a>
+                            </td>
+                        </tr>
                     }
                 </tbody>
             </table>

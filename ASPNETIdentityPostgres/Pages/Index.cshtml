@@ -429,3 +429,210 @@
 
     </div>
 </div>
+
+<div class="row">
+    <header class="col entry-header">
+
+
+
+        <hr />
+        <h2 class="entry-title">This ASP.NET Core MVC Web App example also enables starting and stepping through an example of employee evaluation process with REST (featuring SwaggerUI) on the <b><a href="https://www.jbpm.org/download/download.html">jBPM Platform</a></b></h2>
+
+    </header><!-- .entry-header -->
+</div>
+<p class="alert-danger">The content below has been taken from <a href="https://www.jbpm.org/learn/gettingStarted.html">this web page.</a> &copy; 2006 -2022 RedHat, Inc. and others. It is taken here for illustrative purposes only and to allow users to see how our ASP.NET Core MVC Web app interacts with the jBPM engine through REST API to start and finish <b>Employee evaluation</b> process.</p>
+
+<div class="sect1">
+    <h2 id="_download_jbpm">Download jBPM</h2>
+    <div class="sectionbody">
+        <div class="paragraph">
+            <p>First things first, download jBPM server distribution (if not already done) to start quickly with complete environment.</p>
+        </div>
+        <div class="ulist">
+            <ul>
+                <li>
+                    <p><a href="https://download.jboss.org/jbpm/release/7.65.0.Final/jbpm-server-7.65.0.Final-dist.zip">Download jBPM 7.65.0.Final server (single zip) distribution</a></p>
+                </li>
+            </ul>
+        </div>
+        <div class="paragraph">
+            <p>Just download, unzip and run</p>
+        </div>
+        <div class="listingblock">
+            <div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">jbpm-server/bin/standalone.sh     (Unix / Linux)&#x000A;&#x000A;jbpm-server/bin/standalone.bat    (Windows)</code></pre>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="sect1">
+    <h2 id="_explore_your_running_environment">Explore your running environment</h2>
+    <div class="sectionbody">
+        <div class="paragraph">
+            <p><strong>Business Central</strong></p>
+        </div>
+        <div class="paragraph">
+            <p>Business Central provides feature rich authoring and management environment. It consists of:</p>
+        </div>
+        <div class="ulist">
+            <ul>
+                <li>
+                    <p>Design perspectives where users can create projects and pages</p>
+                </li>
+                <li>
+                    <p>Deploy perspectives where users can manage execution servers</p>
+                </li>
+                <li>
+                    <p>Manage perspectives where users can take control over process and case instances</p>
+                </li>
+                <li>
+                    <p>Track perspectives where users can access assigned tasks and reports</p>
+                </li>
+            </ul>
+        </div>
+        <div class="paragraph">
+            <p>Business Central can be accessed (once the server was started) at <a href="http://localhost:8080/business-central"><strong>http://localhost:8080/business-central</strong></a></p>
+        </div>
+        <div class="paragraph">
+            <p>There are set of predefined users that can be used to directly logon to Business Central:</p>
+        </div>
+        <div class="ulist">
+            <ul>
+                <li>
+                    <p>wbadmin/wbadmin</p>
+                </li>
+                <li>
+                    <p>krisv/krisv</p>
+                </li>
+                <li>
+                    <p>john/john</p>
+                </li>
+                <li>
+                    <p>mary/mary</p>
+                </li>
+                <li>
+                    <p>katy/katy</p>
+                </li>
+                <li>
+                    <p>jack/jack</p>
+                </li>
+                <li>
+                    <p>kieserver/kieserver1!</p>
+                </li>
+            </ul>
+        </div>
+        <div class="paragraph">
+            <p>Additional users can be created via Business Central Admin section.</p>
+        </div>
+        <hr>
+        <div class="paragraph">
+            <p><strong>KIE Server Swagger documentation</strong></p>
+        </div>
+        <div class="paragraph">
+            <p>KIE Server is the execution server that provides various capabilities</p>
+        </div>
+        <div class="ulist">
+            <ul>
+                <li>
+                    <p>BRM (business rules)</p>
+                </li>
+                <li>
+                    <p>BPM (business processes)</p>
+                </li>
+                <li>
+                    <p>BRP (planning/solver)</p>
+                </li>
+                <li>
+                    <p>Case Management</p>
+                </li>
+                <li>
+                    <p>DMN (decisions)</p>
+                </li>
+            </ul>
+        </div>
+        <div class="paragraph">
+            <p>Its complete REST api documentation can be accessed at <a href="http://localhost:8080/kie-server/docs"><strong>http://localhost:8080/kie-server/docs</strong></a></p>
+        </div>
+        <hr>
+        <div class="paragraph">
+            <p><strong>jBPM Case Management Showcase</strong></p>
+        </div>
+        <div class="paragraph">
+            <p>
+                jBPM Case Management Showcase is a web application that aims at illustrating various case management building blocks in action. These
+                are UI components built on top of KIE Server REST api for case management. It&#8217;s not intended for production usage but more for getting better
+                understanding of the capabilities.
+                Case management, in general should be business focused so generic UI won&#8217;t provide much business context to the knowledge workers.
+            </p>
+        </div>
+        <div class="paragraph">
+            <p>jBPM Case Management application can be accessed at <a href="http://localhost:8080/jbpm-casemgmt"><strong>http://localhost:8080/jbpm-casemgmt</strong></a></p>
+        </div>
+        <div class="paragraph">
+            <p>Same users as for Business Central can be used to logon to this application.</p>
+        </div>
+        <hr>
+    </div>
+</div>
+<div class="sect1">
+    <h2 id="_try_examples">Try examples</h2>
+    <div class="sectionbody">
+        <div class="paragraph">
+            <p>
+                Once you get yourself familiar with the tools of the jBPM it&#8217;s time to see something running. The easiest way is to try one of the examples
+                shipped with the platform, it will show typical path users take to design, build and execute business logic.
+            </p>
+        </div>
+        <div class="sect2">
+            <h3 id="_evaluation_process">Evaluation process</h3>
+            <table class="tableblock frame-none grid-all stretch">
+                <colgroup>
+                    <col style="width: 66.6666%;">
+                    <col style="width: 33.3334%;">
+                </colgroup>
+                <tbody>
+                    <tr>
+                        <td class="tableblock halign-left valign-top">
+                            <div class="content">
+                                <div class="paragraph">
+                                    <p>
+                                        Evaluation process is a business process that is human centric (heavily uses human actors to perform work) that defines a complete flow of
+                                        activities to perform employee evaluation. This examples shows:
+                                    </p>
+                                </div>
+                                <div class="ulist">
+                                    <ul>
+                                        <li>
+                                            <p>importing example project</p>
+                                        </li>
+                                        <li>
+                                            <p>building and deploying project</p>
+                                        </li>
+                                        <li>
+                                            <p>verifying deployment to execution server</p>
+                                        </li>
+                                        <li>
+                                            <p>executing process instance and work with human tasks</p>
+                                        </li>
+                                        <li>
+                                            <p>exploring reporting capabilities</p>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="tableblock halign-left valign-top">
+                            <div class="content">
+                                <div class="videoblock">
+                                    <div class="content">
+                                        <iframe src="https://www.youtube.com/embed/-fxL2iioPRI?rel=0" frameborder="0" allowfullscreen></iframe>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -39,9 +39,9 @@
                     <partial name="_LoginPartial" />
                     <ul class="navbar-nav flex-grow-1">
 
-                        <li class="nav-item float-right">
+                        @*<li class="nav-item float-right">
                             @await Html.PartialAsync("_SelectLanguagePartial")
-                        </li>
+                        </li>*@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
                         </li>
@@ -54,9 +54,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="ADT" asp-controller="Patients" asp-action="MyTaskList">My Tasks</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="ADT" asp-controller="Patients" asp-action="MyEmpEvals">My Employee Evaluations</a>
+                        </li>
                         @*<li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="ADT" asp-controller="Unnaturaldeaths" asp-action="index">Unnatural Deaths</a>
-                            </li>*@
+            <a class="nav-link text-dark" asp-area="ADT" asp-controller="Unnaturaldeaths" asp-action="index">Unnatural Deaths</a>
+        </li>*@
                     </ul>
                 </div>
             </div>
@@ -66,14 +69,14 @@
         <main role="main" class="pb-3">
             @if (bpmRole == "claim_reviewer")
             {
-                <p class="text-success">You are a claim reviewer (an employee) or an invoice approver. You can review customer claims and place your answer/comments to those claims. Log on as another user (a@b.com) to initiate claims and rate the service as a customer. You can also approve/reject invoices.</p>
+                <p class="small text-success">You are a claim reviewer (an employee) or an invoice approver. You can review customer claims and place your answer/comments to those claims. Log on as another user (a@b.com) to initiate claims and rate the service as a customer. You can also approve/reject invoices.</p>
             }
             else if (bpmRole == "claim_initiator")
             {
-        <p class="text-success">You are a claim initiator (a customer) or an invoice poster. You can raise claims/invoices and review the answer/comments from the claim reviewer and rate how satisfied you are with the service. Log on as another user (p@q.com) to answer customer claims as an employee.</p>
+        <p class="small text-success">You are a claim initiator (a customer) or an invoice poster. You can raise claims/invoices and review the answer/comments from the claim reviewer and rate how satisfied you are with the service. Log on as another user (p@q.com) to answer customer claims as an employee.</p>
             }
 
-            <p class="text-center">Go to My Tasks to get started</p>
+            <p class="small text-center">Go to My Tasks to get started</p>
             <hr />
             @RenderBody()
         </main>

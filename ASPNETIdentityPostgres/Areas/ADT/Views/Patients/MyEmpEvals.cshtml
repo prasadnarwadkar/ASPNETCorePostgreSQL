@@ -1,0 +1,71 @@
+﻿@model IEnumerable<ASPNETIdentityPostgres.Areas.ADT.Models.processinstance>
+
+@{
+    ViewData["Title"] = "My Employee Evaluations";
+
+    var username = User.Identity.Name;
+
+    var bpmRole = "";
+
+    var mapping = ASPNETIdentityPostgres.Areas.ADT.Models.WebAppAndBPMUserMap.mappings.FirstOrDefault(m => m.UserNameOnWebApp.ToLower() == username.ToLower());
+
+    if (mapping != null)
+    {
+        bpmRole = mapping.UserRoleOnjBPMEngineOrApp;
+    }
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <p class="small">This example uses jBPM RESTful API and the employee evaluation is completed start to finish using that API.</p>
+        <p class="small">jBPM BPM Engine must be running for this to work. Please refer to <a href="https://jbpm.org/learn/gettingStarted.html">this page</a> and follow the simple instructions. There are links to download the jBPM BPM Platform and then work with it.</p>
+    </div>
+    <div class="col-md-6">
+        <p class="alert-danger">@ViewData["notapprovermsg"]</p>
+        @if (bpmRole == "pm_employee")
+        {
+            <p>
+                <a asp-action="jBPMStartEmpVal" class="btn btn-primary">Start a new Employee Evaluation</a>
+            </p>
+        }
+        <div>
+
+            <hr />
+            <h5>My Employee Evaluations</h5>
+            @if (Model.Count() == 0)
+            {
+                <p>All tasks have been completed.</p>
+            }
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Initiator
+                        </th>
+
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.initiator)
+                        </td>
+
+                        <td>
+                            <a asp-action="jBPMProcInstDetails" asp-route-id="@item.ProcessInstanceId">Go To Employee Evaluation</a>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<p>
+    @*<a asp-action="LoginToBonitaSoftEngine">Login to BonitaSoft Engine</a>*@
+</p>
+

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,6 +10,191 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Models
     {
         public claimInput claimInput { get; set; }
     }
+
+    public class ValueInfo
+    {
+        public string filename { get; set; }
+        public string mimeType { get; set; }
+        public string objectTypeName { get; set; }
+        public string serializationDataFormat { get; set; }
+    }
+
+    public class CamundaProcessVar
+    {
+        public string type { get; set; }
+        public object value { get; set; }
+        public ValueInfo valueInfo { get; set; }
+        public string id { get; set; }
+        public string name { get; set; }
+        public string processDefinitionId { get; set; }
+        public string processInstanceId { get; set; }
+        public string executionId { get; set; }
+        public object caseInstanceId { get; set; }
+        public object caseExecutionId { get; set; }
+        public object taskId { get; set; }
+        public object batchId { get; set; }
+        public string activityInstanceId { get; set; }
+        public object errorMessage { get; set; }
+        public object tenantId { get; set; }
+    }
+
+
+    public class EmployeeEvalStartProcessData
+    {
+        public string initiator { get; set; }
+        public string employee { get; set; }
+
+        public string performance { get; set; }
+
+        public string reason { get; set; }
+    }
+
+    public class StartDate
+    {
+        [JsonProperty("java.util.Date")]
+        public object JavaUtilDate { get; set; }
+    }
+
+    public class processinstance
+    {
+        [JsonProperty("process-instance-id")]
+        public int ProcessInstanceId { get; set; }
+
+        [JsonProperty("process-id")]
+        public string ProcessId { get; set; }
+
+        [JsonProperty("process-name")]
+        public string ProcessName { get; set; }
+
+        [JsonProperty("process-version")]
+        public string ProcessVersion { get; set; }
+
+        [JsonProperty("process-instance-state")]
+        public int ProcessInstanceState { get; set; }
+
+        [JsonProperty("container-id")]
+        public string ContainerId { get; set; }
+        public string initiator { get; set; }
+
+        [JsonProperty("start-date")]
+        public StartDate StartDate { get; set; }
+
+        [JsonProperty("process-instance-desc")]
+        public string ProcessInstanceDesc { get; set; }
+
+        [JsonProperty("correlation-key")]
+        public string CorrelationKey { get; set; }
+
+        [JsonProperty("parent-instance-id")]
+        public int ParentInstanceId { get; set; }
+
+        [JsonProperty("sla-compliance")]
+        public int SlaCompliance { get; set; }
+
+        [JsonProperty("sla-due-date")]
+        public object SlaDueDate { get; set; }
+
+        [JsonProperty("active-user-tasks")]
+        public object ActiveUserTasks { get; set; }
+
+        [JsonProperty("process-instance-variables")]
+        public object ProcessInstanceVariables { get; set; }
+    }
+
+    public class ProcessInstanceList
+    {
+        [JsonProperty("process-instance")]
+        public List<processinstance> ProcessInstance { get; set; }
+    }
+
+    public class TaskCreatedOn
+    {
+        [JsonProperty("java.util.Date")]
+        public long JavaUtilDate { get; set; }
+    }
+
+    public class TaskActivationTime
+    {
+        [JsonProperty("java.util.Date")]
+        public long JavaUtilDate { get; set; }
+    }
+
+    public class jBPMSelfEvalTaskData
+    {
+        public int taskInstanceID { get; set; }
+
+        public EmployeeEvalStartProcessData processData { get; set; }
+
+        public string TaskStatus { get; set; }
+
+        public string TaskOwner { get; set; }
+    }
+
+
+    public class TaskSummary
+    {
+        [JsonProperty("task-id")]
+        public int TaskId { get; set; }
+
+        [JsonProperty("task-name")]
+        public string TaskName { get; set; }
+
+        [JsonProperty("task-subject")]
+        public string TaskSubject { get; set; }
+
+        [JsonProperty("task-description")]
+        public string TaskDescription { get; set; }
+
+        [JsonProperty("task-status")]
+        public string TaskStatus { get; set; }
+
+        [JsonProperty("task-priority")]
+        public int TaskPriority { get; set; }
+
+        [JsonProperty("task-is-skipable")]
+        public bool TaskIsSkipable { get; set; }
+
+        [JsonProperty("task-actual-owner")]
+        public string TaskActualOwner { get; set; }
+
+        [JsonProperty("task-created-by")]
+        public object TaskCreatedBy { get; set; }
+
+        [JsonProperty("task-created-on")]
+        public TaskCreatedOn TaskCreatedOn { get; set; }
+
+        [JsonProperty("task-activation-time")]
+        public TaskActivationTime TaskActivationTime { get; set; }
+
+        [JsonProperty("task-expiration-time")]
+        public object TaskExpirationTime { get; set; }
+
+        [JsonProperty("task-proc-inst-id")]
+        public int TaskProcInstId { get; set; }
+
+        [JsonProperty("task-proc-def-id")]
+        public string TaskProcDefId { get; set; }
+
+        [JsonProperty("task-container-id")]
+        public string TaskContainerId { get; set; }
+
+        [JsonProperty("task-parent-id")]
+        public int TaskParentId { get; set; }
+
+        [JsonProperty("correlation-key")]
+        public string CorrelationKey { get; set; }
+
+        [JsonProperty("process-type")]
+        public int ProcessType { get; set; }
+    }
+
+    public class jBPMTaskList
+    {
+        [JsonProperty("task-summary")]
+        public List<TaskSummary> TaskSummary { get; set; }
+    }
+
+
 
     public class claimInput
     {
@@ -99,6 +285,32 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Models
         public string UserRoleOnBPMEngineOrApp2 { get; set; }
         public string UserNameOnBPMEngineOrApp2 { get; internal set; }
         public string PasswordOnBPMEngineOrApp2 { get; internal set; }
+        public string UserIdOnjBPMEngineOrApp { get; internal set; }
+        public string UserRoleOnjBPMEngineOrApp { get; internal set; }
+        public string UserNameOnjBPMEngineOrApp { get; internal set; }
+        public string PasswordOnjBPMEngineOrApp { get; internal set; }
+    }
+
+    /// <summary>
+    /// Normally, these should be stored in db.
+    /// </summary>
+    public static class BPMUsers
+    {
+        public static Dictionary<string, string> Users { get; }
+
+        static BPMUsers()
+        {
+            Users = new Dictionary<string, string>();
+            Users.Add("katy", "katy");
+            Users.Add("john", "john");
+            Users.Add("wbadmin", "wbadmin");
+        }
+    }
+
+    public static class Constants
+    {
+        public static string jBPMEvalProcessContainerID = "evaluation_1.0";
+        public static string jBPMEvalProcessID = "evaluation";
     }
 
     public static class WebAppAndBPMUserMap
@@ -121,6 +333,10 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Models
                 UserRoleOnBPMEngineOrApp2 = "invoice_initiator",
                 UserNameOnBPMEngineOrApp2 = "demo",
                 PasswordOnBPMEngineOrApp2 = "demo",
+                UserIdOnjBPMEngineOrApp = "",
+                UserRoleOnjBPMEngineOrApp = "pm_employee",
+                UserNameOnjBPMEngineOrApp = "john",
+                PasswordOnjBPMEngineOrApp = "john",
             });
 
             mappings.Add(new mapping
@@ -134,7 +350,13 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Models
                 UserRoleOnBPMEngineOrApp2 = "invoice_approver",
                 UserNameOnBPMEngineOrApp2 = "demo",
                 PasswordOnBPMEngineOrApp2 = "demo",
+                UserIdOnjBPMEngineOrApp = "",
+                UserRoleOnjBPMEngineOrApp = "hr_admin",
+                UserNameOnjBPMEngineOrApp = "wbadmin",
+                PasswordOnjBPMEngineOrApp = "wbadmin",
             });
+
+            
         }
     }
 
