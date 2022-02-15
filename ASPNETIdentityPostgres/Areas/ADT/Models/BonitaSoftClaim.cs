@@ -303,7 +303,8 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Models
             Users = new Dictionary<string, string>();
             Users.Add("katy", "katy");
             Users.Add("john", "john");
-            Users.Add("wbadmin", "wbadmin");
+            //Users.Add("wbadmin", "wbadmin");
+            Users.Add("jack", "jack");
         }
     }
 
@@ -323,6 +324,23 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Models
 
             // These are example mappings. Please edit for your own
             // env. 
+            mappings.Add(new mapping
+            {
+                UserNameOnWebApp = "jack@example.com",
+                UserIdOnBPMEngineOrApp = "4",
+                UserRoleOnBPMEngineOrApp = "claim_initiator",
+                UserNameOnBPMEngineOrApp = "walter.bates",
+                PasswordOnBPMEngineOrApp = "bpm",
+                UserIdOnBPMEngineOrApp2 = "",
+                UserRoleOnBPMEngineOrApp2 = "invoice_initiator",
+                UserNameOnBPMEngineOrApp2 = "demo",
+                PasswordOnBPMEngineOrApp2 = "demo",
+                UserIdOnjBPMEngineOrApp = "",
+                UserRoleOnjBPMEngineOrApp = "employee",
+                UserNameOnjBPMEngineOrApp = "jack",
+                PasswordOnjBPMEngineOrApp = "jack",
+            });
+
             mappings.Add(new mapping { 
                 UserNameOnWebApp = "a@b.com",
                 UserIdOnBPMEngineOrApp = "4",
@@ -334,7 +352,7 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Models
                 UserNameOnBPMEngineOrApp2 = "demo",
                 PasswordOnBPMEngineOrApp2 = "demo",
                 UserIdOnjBPMEngineOrApp = "",
-                UserRoleOnjBPMEngineOrApp = "pm_employee",
+                UserRoleOnjBPMEngineOrApp = "pm",
                 UserNameOnjBPMEngineOrApp = "john",
                 PasswordOnjBPMEngineOrApp = "john",
             });

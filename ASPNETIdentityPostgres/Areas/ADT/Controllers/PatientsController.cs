@@ -469,7 +469,7 @@ namespace ASPNETIdentityPostgres
             {
                 if (taskObj.TaskName.Equals("Self Evaluation"))
                 {
-                    if (bpmRole == "pm_employee")
+                    if (bpmRole == "employee")
                     {
                         var data = await Utility.GetProcessInstanceVars(Constants.jBPMEvalProcessContainerID,
                                         taskObj.TaskProcInstId,
@@ -488,7 +488,7 @@ namespace ASPNETIdentityPostgres
                     }
                     else
                     {
-                        ViewData["notapprovermsg"] = "Please login as an employee (a@b.com) to evaluate yourself.";
+                        ViewData["notapprovermsg"] = "Please login as an employee (jack@example.com) to evaluate yourself.";
                         list = await Utility.GetProcessInstances(Constants.jBPMEvalProcessContainerID,
                                                                 jBPMRestBaseUri,
                                                                 usernameBPM,
@@ -499,7 +499,7 @@ namespace ASPNETIdentityPostgres
                 }
                 else if (taskObj.TaskName.Equals("PM Evaluation"))
                 {
-                    if (bpmRole == "pm_employee")
+                    if (bpmRole == "pm")
                     {
                         var data = await Utility.GetProcessInstanceVars(Constants.jBPMEvalProcessContainerID,
                                         taskObj.TaskProcInstId,
@@ -976,6 +976,7 @@ namespace ASPNETIdentityPostgres
 
         public IActionResult jBPMStartEmpVal()
         {
+            
             return View();
         }
 
@@ -983,22 +984,29 @@ namespace ASPNETIdentityPostgres
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> jBPMStartEmpVal(EmployeeEvalStartProcessData data)
         {
-            var result = await Utility.CreateAProcessInstance(Constants.jBPMEvalProcessContainerID,
-                                                                Constants.jBPMEvalProcessID,
-                                                                jBPMRestBaseUri,
-                                                                usernameBPM,
-                                                                passwordBPM,
-                                                                data.initiator,
-                                                                data.employee);
-
-            if (result > 0)
+            if (data.employee?.Length > 0)
             {
-                var list = await Utility.GetProcessInstances(Constants.jBPMEvalProcessContainerID, 
-                                                                jBPMRestBaseUri, 
-                                                                usernameBPM, 
-                                                                passwordBPM);
+                var result = await Utility.CreateAProcessInstance(Constants.jBPMEvalProcessContainerID,
+                                                                    Constants.jBPMEvalProcessID,
+                                                                    jBPMRestBaseUri,
+                                                                    usernameBPM,
+                                                                    passwordBPM,
+                                                                    data.initiator,
+                                                                    data.employee);
 
-                return View("MyEmpEvals", list.ProcessInstance);
+                if (result > 0)
+                {
+                    var list = await Utility.GetProcessInstances(Constants.jBPMEvalProcessContainerID,
+                                                                    jBPMRestBaseUri,
+                                                                    usernameBPM,
+                                                                    passwordBPM);
+
+                    return View("MyEmpEvals", list.ProcessInstance);
+                }
+                else
+                {
+                    return View(data);
+                }
             }
             else
             {

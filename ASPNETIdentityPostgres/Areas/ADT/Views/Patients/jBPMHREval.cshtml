@@ -25,15 +25,9 @@
         <div class="col-md-4">
             <form asp-action="jBPMHREval">
                 @Html.HiddenFor(model => model.taskInstanceID)
-                
+                @Html.HiddenFor(model => model.processData.initiator)
 
                 <div asp-validation-summary="All" class="text-danger"></div>
-
-                <div class="form-group">
-                    <label asp-for="processData.initiator" class="control-label">Initiator</label>
-                    <input asp-for="processData.initiator" class="form-control" readonly />
-                    <span asp-validation-for="processData.initiator" class="text-danger"></span>
-                </div>
 
                 <div class="form-group">
                     <label asp-for="processData.employee" class="control-label">Employee</label>
@@ -43,7 +37,7 @@
 
                 <div class="form-group">
                     <label asp-for="processData.performance" class="control-label">Performance (self notes)</label>
-                    <input asp-for="processData.performance" class="form-control" readonly />
+                    <input asp-for="processData.performance" class="form-control" />
                     <span asp-validation-for="processData.performance" class="text-danger"></span>
                 </div>
 
