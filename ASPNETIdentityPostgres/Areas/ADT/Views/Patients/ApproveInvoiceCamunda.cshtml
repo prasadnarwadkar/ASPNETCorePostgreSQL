@@ -26,7 +26,31 @@
             <form asp-action="ApproveInvoiceCamunda">
                 @Html.HiddenFor(model => model.taskId)
                 <div asp-validation-summary="All" class="text-danger"></div>
-                
+
+                <div class="form-group">
+                    <label class="control-label">Invoice Number</label>
+                    <input asp-for="vars[0].value" class="form-control" readonly />
+                    <span asp-validation-for="vars[0].value" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Amount</label>
+                    <input asp-for="vars[1].value" class="form-control" readonly />
+                    <span asp-validation-for="vars[1].value" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Creditor</label>
+                    <input asp-for="vars[2].value" class="form-control" readonly />
+                    <span asp-validation-for="vars[2].value" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Invoice Category</label>
+                    <input asp-for="vars[3].value" class="form-control" readonly />
+                    <span asp-validation-for="vars[3].value" class="text-danger"></span>
+                </div>
+
                 <label class="checkbox-inline">
                     <input asp-for="variables.approved.value" type="checkbox" /> Check to approve; uncheck to reject
                 </label>

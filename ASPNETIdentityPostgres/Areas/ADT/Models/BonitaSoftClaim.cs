@@ -11,6 +11,30 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Models
         public claimInput claimInput { get; set; }
     }
 
+    public class valueInfo
+    {
+        public string objectTypeName { get; set; }
+        public string serializationDataFormat { get; set; }
+    }
+
+    public class CamundaProcessInstVar
+    {
+        public string type { get; set; }
+        public object value { get; set; }
+        public valueInfo valueInfo { get; set; }
+        public string id { get; set; }
+        public string name { get; set; }
+        public string processDefinitionId { get; set; }
+        public string processInstanceId { get; set; }
+        public string executionId { get; set; }
+        public object caseInstanceId { get; set; }
+        public object caseExecutionId { get; set; }
+        public object taskId { get; set; }
+        public object batchId { get; set; }
+        public string activityInstanceId { get; set; }
+        public object errorMessage { get; set; }
+        public object tenantId { get; set; }
+    }
     public class ValueInfo
     {
         public string filename { get; set; }
@@ -480,6 +504,8 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Models
         public bool withVariablesInReturn { get; set; }
 
         public string taskId { get; set; }
+
+        public List<CamundaProcessInstVar> vars { get; set; }
     }
 
     public class InvoiceDetails

@@ -22,20 +22,29 @@
     </div>
     <div class="col-md-6">
         <p class="alert-danger">@ViewData["notapprovermsg"]</p>
-        @if (bpmRole == "pm")
+        @if (bpmRole == "pm" && Model != null)
         {
             <p>
                 <a asp-action="jBPMStartEmpVal" class="btn btn-primary">Start a new Employee Evaluation</a>
             </p>
         }
-        <div>
-
-            <hr />
-            <h5>My Employee Evaluations</h5>
-            @if (Model.Count() == 0)
-            {
-                <p>All tasks have been completed. Please login as a PM (a@b.com) to start an evaluation for an employee.</p>
-            }
+        else if (bpmRole != "pm" && Model != null)
+        {
+            <p class="alert-danger">Please login as a@b.com (PM) to start an employee's evaluation.</p>
+        }
+    <div>
+        @if (Model == null)
+        {
+            <p class="alert-danger small">jBPM BPM Engine must be running for this to work. Please refer to <a href="https://jbpm.org/learn/gettingStarted.html">this page</a> and follow the simple instructions. There are links to download the jBPM BPM Platform and then work with it.</p>
+        }
+        <hr />
+        <h5>My Employee Evaluations</h5>
+        @if (Model != null && Model.Count() == 0)
+        {
+            <p>All tasks have been completed. Please login as a PM (a@b.com) to start an evaluation for an employee.</p>
+        }
+        @if (Model != null && Model.Count() > 0)
+        {
             <table class="table">
                 <thead>
                     <tr>
@@ -49,19 +58,24 @@
                 <tbody>
                     @foreach (var item in Model)
                     {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.initiator)
-                        </td>
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.initiator)
+                            </td>
 
-                        <td>
-                            <a asp-action="jBPMProcInstDetails" asp-route-id="@item.ProcessInstanceId">Go To Employee Evaluation</a>
-                        </td>
-                    </tr>
+                            <td>
+                                <a asp-action="jBPMProcInstDetails" asp-route-id="@item.ProcessInstanceId">Go To Employee Evaluation</a>
+                            </td>
+                        </tr>
                     }
                 </tbody>
             </table>
-        </div>
+        }
+        else
+        {
+            <p class="alert-danger">No Evaluations are active.</p>
+        }
+    </div>
     </div>
 </div>
 

@@ -135,7 +135,14 @@ namespace ASPNETIdentityPostgres
 
             var list = await Utility.GetProcessInstances(Constants.jBPMEvalProcessContainerID, jBPMRestBaseUri, usernameBPM, passwordBPM);
 
-            return View(list.ProcessInstance);
+            if (list != null)
+            {
+                return View(list.ProcessInstance);
+            }
+            else
+            {
+                return View(null);
+            }
         }
 
         private async Task getCookies(string username, string password)
@@ -405,6 +412,11 @@ namespace ASPNETIdentityPostgres
                     {
                         var post = new ApproveInvoicePost();
                         post.taskId = taskObj.id;
+
+                        post.vars = (await getProcInstVars(taskObj.processInstanceId)).Where(v => v.name == "amount"
+                                                                                                || v.name == "invoiceNumber"
+                                                                                                || v.name == "invoiceCategory"
+                                                                                                || v.name == "creditor").ToList();
 
                         return View("ApproveInvoiceCamunda", post);
                     }
@@ -764,7 +776,52 @@ namespace ASPNETIdentityPostgres
 
                 var content = await result.Content.ReadAsStringAsync();
 
-                return JsonConvert.DeserializeObject<List<ProcessInstance>>(content, settings);
+                var invoices = JsonConvert.DeserializeObject<List<ProcessInstance>>(content, settings);
+
+                return invoices.Where(i => i.businessKey != null).ToList();
+            }
+        }
+
+        private async Task<List<CamundaProcessInstVar>> getProcInstVars(string processInstID)
+        {
+            var settings = new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                MissingMemberHandling = MissingMemberHandling.Ignore
+            };
+
+            var url = new Uri(CamundaRestBaseUri, "variable-instance?processInstanceIdIn=" + processInstID).ToString();
+
+            HttpResponseMessage result = new HttpResponseMessage();
+
+            using (var handler = new HttpClientHandler() { })
+            using (var client = new HttpClient(handler) { BaseAddress = new Uri(url) })
+            {
+                try
+                {
+                    result = await client.GetAsync("");
+
+                    result.EnsureSuccessStatusCode();
+                }
+                catch (Exception ex)
+                {
+                    if (ex.Message.ToLower().Contains("no connection"))
+                    {
+                        ViewData["NoConnError"] = "No connection to Camunda Engine. Is the Camunda Engine running?";
+                    }
+                    else if (ex.Message.ToLower().Contains("not found"))
+                    {
+                        ViewData["NoConnError"] = "No connection to Camunda Engine. Is the Camunda Engine running? OR the process definition you are referring to doesn't exist.";
+                    }
+
+                    return JsonConvert.DeserializeObject<List<CamundaProcessInstVar>>("[]", settings);
+                }
+
+                var content = await result.Content.ReadAsStringAsync();
+
+                var vars = JsonConvert.DeserializeObject<List<CamundaProcessInstVar>>(content, settings);
+
+                return vars;
             }
         }
 
