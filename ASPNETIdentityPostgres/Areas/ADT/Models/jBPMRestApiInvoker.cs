@@ -11,7 +11,7 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Models
     /// <summary>
     /// jBPM REST API utility.
     /// </summary>
-    public static class Utility
+    public static class jBPMRestApiInvoker
     {
         /// <summary>
         /// Get all the process instances by container id.

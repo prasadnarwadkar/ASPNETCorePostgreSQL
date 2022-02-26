@@ -133,7 +133,7 @@ namespace ASPNETIdentityPostgres
                 passwordBPM = mapping.PasswordOnjBPMEngineOrApp;
             }
 
-            var list = await Utility.GetProcessInstances(Constants.jBPMEvalProcessContainerID, jBPMRestBaseUri, usernameBPM, passwordBPM);
+            var list = await jBPMRestApiInvoker.GetProcessInstances(Constants.jBPMEvalProcessContainerID, jBPMRestBaseUri, usernameBPM, passwordBPM);
 
             if (list != null)
             {
@@ -483,7 +483,7 @@ namespace ASPNETIdentityPostgres
                 {
                     if (bpmRole == "employee")
                     {
-                        var data = await Utility.GetProcessInstanceVars(Constants.jBPMEvalProcessContainerID,
+                        var data = await jBPMRestApiInvoker.GetProcessInstanceVars(Constants.jBPMEvalProcessContainerID,
                                         taskObj.TaskProcInstId,
                                         jBPMRestBaseUri,
                                         usernameBPM,
@@ -501,7 +501,7 @@ namespace ASPNETIdentityPostgres
                     else
                     {
                         ViewData["notapprovermsg"] = "Please login as an employee (jack@example.com) to evaluate yourself.";
-                        list = await Utility.GetProcessInstances(Constants.jBPMEvalProcessContainerID,
+                        list = await jBPMRestApiInvoker.GetProcessInstances(Constants.jBPMEvalProcessContainerID,
                                                                 jBPMRestBaseUri,
                                                                 usernameBPM,
                                                                 passwordBPM);
@@ -513,7 +513,7 @@ namespace ASPNETIdentityPostgres
                 {
                     if (bpmRole == "pm")
                     {
-                        var data = await Utility.GetProcessInstanceVars(Constants.jBPMEvalProcessContainerID,
+                        var data = await jBPMRestApiInvoker.GetProcessInstanceVars(Constants.jBPMEvalProcessContainerID,
                                         taskObj.TaskProcInstId,
                                         jBPMRestBaseUri,
                                         usernameBPM,
@@ -529,7 +529,7 @@ namespace ASPNETIdentityPostgres
                     else
                     {
                         ViewData["notapprovermsg"] = "Please login as a PM (a@b.com) to evaluate an employee.";
-                        list = await Utility.GetProcessInstances(Constants.jBPMEvalProcessContainerID,
+                        list = await jBPMRestApiInvoker.GetProcessInstances(Constants.jBPMEvalProcessContainerID,
                                                                 jBPMRestBaseUri,
                                                                 usernameBPM,
                                                                 passwordBPM);
@@ -541,7 +541,7 @@ namespace ASPNETIdentityPostgres
                 {
                     if (bpmRole == "hr_admin")
                     {
-                        var data = await Utility.GetProcessInstanceVars(Constants.jBPMEvalProcessContainerID,
+                        var data = await jBPMRestApiInvoker.GetProcessInstanceVars(Constants.jBPMEvalProcessContainerID,
                                         taskObj.TaskProcInstId,
                                         jBPMRestBaseUri,
                                         usernameBPM,
@@ -557,7 +557,7 @@ namespace ASPNETIdentityPostgres
                     else
                     {
                         ViewData["notapprovermsg"] = "Please login as an HR (p@q.com) to evaluate an employee.";
-                        list = await Utility.GetProcessInstances(Constants.jBPMEvalProcessContainerID,
+                        list = await jBPMRestApiInvoker.GetProcessInstances(Constants.jBPMEvalProcessContainerID,
                                                                 jBPMRestBaseUri,
                                                                 usernameBPM,
                                                                 passwordBPM);
@@ -568,7 +568,7 @@ namespace ASPNETIdentityPostgres
 
             }
 
-            list = await Utility.GetProcessInstances(Constants.jBPMEvalProcessContainerID,
+            list = await jBPMRestApiInvoker.GetProcessInstances(Constants.jBPMEvalProcessContainerID,
                                                                 jBPMRestBaseUri,
                                                                 usernameBPM,
                                                                 passwordBPM);
@@ -920,7 +920,7 @@ namespace ASPNETIdentityPostgres
 
             if (parsed)
             {
-                return await Utility.GetTaskInstances(id, jBPMRestUri, usernameBPM, passwordBPM);
+                return await jBPMRestApiInvoker.GetTaskInstances(id, jBPMRestUri, usernameBPM, passwordBPM);
             }
             else
             {
@@ -1043,7 +1043,7 @@ namespace ASPNETIdentityPostgres
         {
             if (data.employee?.Length > 0)
             {
-                var result = await Utility.CreateAProcessInstance(Constants.jBPMEvalProcessContainerID,
+                var result = await jBPMRestApiInvoker.CreateAProcessInstance(Constants.jBPMEvalProcessContainerID,
                                                                     Constants.jBPMEvalProcessID,
                                                                     jBPMRestBaseUri,
                                                                     usernameBPM,
@@ -1053,7 +1053,7 @@ namespace ASPNETIdentityPostgres
 
                 if (result > 0)
                 {
-                    var list = await Utility.GetProcessInstances(Constants.jBPMEvalProcessContainerID,
+                    var list = await jBPMRestApiInvoker.GetProcessInstances(Constants.jBPMEvalProcessContainerID,
                                                                     jBPMRestBaseUri,
                                                                     usernameBPM,
                                                                     passwordBPM);
@@ -1108,7 +1108,7 @@ namespace ASPNETIdentityPostgres
                 if (!string.IsNullOrWhiteSpace(data.TaskOwner)
                     && BPMUsers.Users.ContainsKey(data.TaskOwner))
                 {
-                    result = await Utility.ClaimATask(Constants.jBPMEvalProcessContainerID,
+                    result = await jBPMRestApiInvoker.ClaimATask(Constants.jBPMEvalProcessContainerID,
                                                                 data.taskInstanceID,
                                                                 jBPMRestBaseUri,
                                                                 data.TaskOwner,
@@ -1116,7 +1116,7 @@ namespace ASPNETIdentityPostgres
                 }
                 else
                 {
-                    result = await Utility.ClaimATask(Constants.jBPMEvalProcessContainerID,
+                    result = await jBPMRestApiInvoker.ClaimATask(Constants.jBPMEvalProcessContainerID,
                                                             data.taskInstanceID,
                                                             jBPMRestBaseUri,
                                                             usernameBPM,
@@ -1129,7 +1129,7 @@ namespace ASPNETIdentityPostgres
                 if (!string.IsNullOrWhiteSpace(data.TaskOwner)
                     && BPMUsers.Users.ContainsKey(data.TaskOwner))
                 {
-                    result = await Utility.StartATask(Constants.jBPMEvalProcessContainerID,
+                    result = await jBPMRestApiInvoker.StartATask(Constants.jBPMEvalProcessContainerID,
                                                     data.taskInstanceID,
                                                     jBPMRestBaseUri,
                                                     data.TaskOwner,
@@ -1137,7 +1137,7 @@ namespace ASPNETIdentityPostgres
                 }
                 else
                 {
-                    result = await Utility.StartATask(Constants.jBPMEvalProcessContainerID,
+                    result = await jBPMRestApiInvoker.StartATask(Constants.jBPMEvalProcessContainerID,
                                                     data.taskInstanceID,
                                                     jBPMRestBaseUri,
                                                     usernameBPM,
@@ -1149,7 +1149,7 @@ namespace ASPNETIdentityPostgres
                     if (!string.IsNullOrWhiteSpace(data.TaskOwner)
                     && BPMUsers.Users.ContainsKey(data.TaskOwner))
                     {
-                        result = await Utility.CompleteATask(Constants.jBPMEvalProcessContainerID,
+                        result = await jBPMRestApiInvoker.CompleteATask(Constants.jBPMEvalProcessContainerID,
                                                         data.taskInstanceID,
                                                         jBPMRestBaseUri,
                                                         data.TaskOwner,
@@ -1158,7 +1158,7 @@ namespace ASPNETIdentityPostgres
                     }
                     else
                     {
-                        result = await Utility.CompleteATask(Constants.jBPMEvalProcessContainerID,
+                        result = await jBPMRestApiInvoker.CompleteATask(Constants.jBPMEvalProcessContainerID,
                                                         data.taskInstanceID,
                                                         jBPMRestBaseUri,
                                                         usernameBPM,
@@ -1168,7 +1168,7 @@ namespace ASPNETIdentityPostgres
 
                     if (result >= 200 && result <= 201)
                     {
-                        var list = await Utility.GetProcessInstances(Constants.jBPMEvalProcessContainerID, jBPMRestBaseUri, usernameBPM, passwordBPM);
+                        var list = await jBPMRestApiInvoker.GetProcessInstances(Constants.jBPMEvalProcessContainerID, jBPMRestBaseUri, usernameBPM, passwordBPM);
 
                         return View("MyEmpEvals", list.ProcessInstance);
                     }
@@ -1182,7 +1182,7 @@ namespace ASPNETIdentityPostgres
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> jBPMPMEval(jBPMSelfEvalTaskData data)
         {
-            var result = await Utility.ClaimATask(Constants.jBPMEvalProcessContainerID,
+            var result = await jBPMRestApiInvoker.ClaimATask(Constants.jBPMEvalProcessContainerID,
                                                     data.taskInstanceID,
                                                     jBPMRestBaseUri,
                                                     usernameBPM,
@@ -1190,7 +1190,7 @@ namespace ASPNETIdentityPostgres
 
             if (result >= 200 && result <= 201)
             {
-                result = await Utility.StartATask(Constants.jBPMEvalProcessContainerID,
+                result = await jBPMRestApiInvoker.StartATask(Constants.jBPMEvalProcessContainerID,
                                                     data.taskInstanceID,
                                                     jBPMRestBaseUri,
                                                     usernameBPM,
@@ -1198,7 +1198,7 @@ namespace ASPNETIdentityPostgres
 
                 if (result >= 200 && result <= 201)
                 {
-                    result = await Utility.CompleteATask(Constants.jBPMEvalProcessContainerID,
+                    result = await jBPMRestApiInvoker.CompleteATask(Constants.jBPMEvalProcessContainerID,
                                                         data.taskInstanceID,
                                                         jBPMRestBaseUri,
                                                         usernameBPM,
@@ -1207,7 +1207,7 @@ namespace ASPNETIdentityPostgres
 
                     if (result >= 200 && result <= 201)
                     {
-                        var list = await Utility.GetProcessInstances(Constants.jBPMEvalProcessContainerID, jBPMRestBaseUri, usernameBPM, passwordBPM);
+                        var list = await jBPMRestApiInvoker.GetProcessInstances(Constants.jBPMEvalProcessContainerID, jBPMRestBaseUri, usernameBPM, passwordBPM);
 
                         return View("MyEmpEvals", list.ProcessInstance);
                     }
@@ -1221,7 +1221,7 @@ namespace ASPNETIdentityPostgres
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> jBPMHREval(jBPMSelfEvalTaskData data)
         {
-            var result = await Utility.ClaimATask(Constants.jBPMEvalProcessContainerID,
+            var result = await jBPMRestApiInvoker.ClaimATask(Constants.jBPMEvalProcessContainerID,
                                                     data.taskInstanceID,
                                                     jBPMRestBaseUri,
                                                     usernameBPM,
@@ -1229,7 +1229,7 @@ namespace ASPNETIdentityPostgres
 
             if (result >= 200 && result <= 201)
             {
-                result = await Utility.StartATask(Constants.jBPMEvalProcessContainerID,
+                result = await jBPMRestApiInvoker.StartATask(Constants.jBPMEvalProcessContainerID,
                                                     data.taskInstanceID,
                                                     jBPMRestBaseUri,
                                                     usernameBPM,
@@ -1238,7 +1238,7 @@ namespace ASPNETIdentityPostgres
                 if (result >= 200 && result <= 201)
                 {
 
-                    result = await Utility.CompleteATask(Constants.jBPMEvalProcessContainerID,
+                    result = await jBPMRestApiInvoker.CompleteATask(Constants.jBPMEvalProcessContainerID,
                                                         data.taskInstanceID,
                                                         jBPMRestBaseUri,
                                                         usernameBPM,
@@ -1247,7 +1247,7 @@ namespace ASPNETIdentityPostgres
 
                     if (result >= 200 && result <= 201)
                     {
-                        var list = await Utility.GetProcessInstances(Constants.jBPMEvalProcessContainerID, jBPMRestBaseUri, usernameBPM, passwordBPM);
+                        var list = await jBPMRestApiInvoker.GetProcessInstances(Constants.jBPMEvalProcessContainerID, jBPMRestBaseUri, usernameBPM, passwordBPM);
 
                         return View("MyEmpEvals", list.ProcessInstance);
                     }
