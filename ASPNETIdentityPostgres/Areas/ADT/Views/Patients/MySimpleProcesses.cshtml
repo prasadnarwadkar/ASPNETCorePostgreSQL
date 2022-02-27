@@ -1,0 +1,64 @@
+﻿@model IEnumerable<ASPNETIdentityPostgres.Areas.ADT.Models.AlfrescoActivitiProcessInstance>
+
+@{
+    ViewData["Title"] = "My Simple Processes";
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <p class="small">This example uses Alfresco Activiti RESTful API and an example employee evaluation process is completed start to finish using that API.</p>
+        <p class="small">Alfresco Activiti must be running for this to work. Please refer to <a href="https://www.activiti.org/userguide/">this page</a> and follow the simple instructions. There are links to download the Activiti Web apps (WARs) and then deploy them  in Apache Tomcat. Activiti user roles are ignored here. You can enforce them using a mapping of web app users and Activiti users.</p>
+    </div>
+    <div class="col-md-6">
+        <p>
+            <a asp-action="ActivitiStartProcessInstance" class="btn btn-primary">Start a new Process Instance</a>
+        </p>
+    <div>
+        @if (Model == null)
+        {
+        <p class="alert-danger small">Alfresco Activiti apps (REST, Admin and Explorer) must be running for this to work. </p>
+        }
+        <hr />
+        <h5>My Simple Processes</h5>
+        @if (Model != null && Model.Count() == 0)
+        {
+            <p>All tasks have been completed. Please start a new process instance.</p>
+        }
+        @if (Model != null && Model.Count() > 0)
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Instance ID
+                        </th>
+
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.id)
+                            </td>
+
+                            <td>
+                                <a asp-action="ActivitiProcInstDetails" asp-route-id="@item.id">View Details</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p class="alert-danger">No Process instances are active.</p>
+        }
+    </div>
+    </div>
+</div>
+
+
+

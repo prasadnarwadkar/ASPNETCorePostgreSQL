@@ -5,195 +5,195 @@
 }
 
 @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-<link rel="stylesheet" href="~/css/site.css" />*@
+    <link rel="stylesheet" href="~/css/site.css" />*@
 
-    <style>
-        .doc .ulist {
-            margin: 1rem 0 0;
-        }
-    </style>
-    <div class="container">
-        <ul class="nav nav-pills">
-            <li class="active"><a data-toggle="pill" href="#home">BonitaSoft Engine</a></li>
-            <li><a data-toggle="pill" href="#menu1">Camunda BPM Engine</a></li>
-            <li><a data-toggle="pill" href="#menu2">jBPM Demo</a></li>
-            <li><a data-toggle="pill" href="#menu3">Alfresco Activiti</a></li>
-        </ul>
+<style>
+    .doc .ulist {
+        margin: 1rem 0 0;
+    }
+</style>
+<div class="container">
+    <ul class="nav nav-pills">
+        <li class="active"><a data-toggle="pill" href="#home">BonitaSoft Engine</a></li>
+        <li><a data-toggle="pill" href="#menu1">Camunda BPM Engine</a></li>
+        <li><a data-toggle="pill" href="#menu2">jBPM Demo</a></li>
+        <li><a data-toggle="pill" href="#menu3">Alfresco Activiti</a></li>
+    </ul>
 
-        <div class="tab-content">
-            <div id="home" class="tab-pane active">
-                <hr />
-                <div class="row">
-                    <h3 class="entry-title">Starting and stepping through an example of a claims management workflow with REST API on the <b><a href="https://documentation.bonitasoft.com/bonita/2021.2/getting-started/getting-started-index">BonitaSoft Platform</a></b></h3>
-                    <a href="https://documentation.bonitasoft.com/bonita/2021.2/getting-started/getting-started-index" class="card-link">Click here to know more</a>
-                    <blockquote class="blockquote">
-                        <p>By now, you must have your development environment (i.e. Bonita Studio/Engine) up and running on your machine/server. In that case, you are ready to start building your first Bonita Living Application. If not, please click the link above to know how to install the BonitaSoft BPM Studio and/or engine.</p>
-                    </blockquote>
-                    <blockquote class="blockquote">
-                        <p>In this tutorial, we have built an example of a <strong>claims management solution</strong>. Making sure that claims are handled and answered in a timely manner by the appropriate employee(s) can be key to customer satisfaction. It is also a good fit for a process-based application that uses automation. We have, of course, drastically simplified the application in this tutorial so you can focus on learning about Bonita and not about claims management!</p>
-                    </blockquote>
-                    <blockquote class="blockquote">
-                        <p>Here is an overview of process execution:</p>
-                    </blockquote>
+    <div class="tab-content">
+        <div id="home" class="tab-pane active">
+            <hr />
+            <div class="row">
+                <h3 class="entry-title">Starting and stepping through an example of a claims management workflow with REST API on the <b><a href="https://documentation.bonitasoft.com/bonita/2021.2/getting-started/getting-started-index">BonitaSoft Platform</a></b></h3>
+                <a href="https://documentation.bonitasoft.com/bonita/2021.2/getting-started/getting-started-index" class="card-link">Click here to know more</a>
+                <blockquote class="blockquote">
+                    <p>By now, you must have your development environment (i.e. Bonita Studio/Engine) up and running on your machine/server. In that case, you are ready to start building your first Bonita Living Application. If not, please click the link above to know how to install the BonitaSoft BPM Studio and/or engine.</p>
+                </blockquote>
+                <blockquote class="blockquote">
+                    <p>In this tutorial, we have built an example of a <strong>claims management solution</strong>. Making sure that claims are handled and answered in a timely manner by the appropriate employee(s) can be key to customer satisfaction. It is also a good fit for a process-based application that uses automation. We have, of course, drastically simplified the application in this tutorial so you can focus on learning about Bonita and not about claims management!</p>
+                </blockquote>
+                <blockquote class="blockquote">
+                    <p>Here is an overview of process execution:</p>
+                </blockquote>
 
-                </div>
-                <div class="row">
-                    <ul class="list-group">
-                        <li class="list-group-item">
-                            <p>The process will be started by a <em>customer</em> who submits a claim, which is a simple text description in our example</p>
-                        </li>
-                        <li class="list-group-item">
-                            <p>Next, an <em>employee</em> will review the claim and provide an answer</p>
-                        </li>
-                        <li class="list-group-item">
-                            <p>The <em>customer</em> will be able to review the <em>employee</em>'s answer and provide a satisfaction rating</p>
-                        </li>
-                        <li class="list-group-item">
-                            <p>If the rating is equal to or greater than 3, the process will finish after the customer has read the answer</p>
-                        </li>
-                        <li class="list-group-item">
-                            <p>If the rating is lower than 3 an extra task will be assigned to the manager of the employee to work with this customer who is not really satisfied. The manager will be notified by email that a task Deal with unsatisfied customer requires their attention.</p>
-                        </li>
-                        <li class="list-group-item">
-                            <p>Once this task is done the process will be completed</p>
-                        </li>
-                    </ul>
-                </div>
             </div>
-            <div id="menu1" class="tab-pane">
+            <div class="row">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <p>The process will be started by a <em>customer</em> who submits a claim, which is a simple text description in our example</p>
+                    </li>
+                    <li class="list-group-item">
+                        <p>Next, an <em>employee</em> will review the claim and provide an answer</p>
+                    </li>
+                    <li class="list-group-item">
+                        <p>The <em>customer</em> will be able to review the <em>employee</em>'s answer and provide a satisfaction rating</p>
+                    </li>
+                    <li class="list-group-item">
+                        <p>If the rating is equal to or greater than 3, the process will finish after the customer has read the answer</p>
+                    </li>
+                    <li class="list-group-item">
+                        <p>If the rating is lower than 3 an extra task will be assigned to the manager of the employee to work with this customer who is not really satisfied. The manager will be notified by email that a task Deal with unsatisfied customer requires their attention.</p>
+                    </li>
+                    <li class="list-group-item">
+                        <p>Once this task is done the process will be completed</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div id="menu1" class="tab-pane">
 
-                <div class="row">
-                    <header class="col entry-header">
+            <div class="row">
+                <header class="col entry-header">
 
 
 
-                        <hr />
-                        <h3 class="entry-title">Starting and stepping through an invoice receipt (approval) process with REST (featuring SwaggerUI) on the <b><a href="https://camunda.com/download">Camunda Platform</a></b></h3>
-                        <div class="entry-meta">
-                            <div class="category-author"><span class="post-category"> <span class="category"><a href="https://camunda.com/blog/category/camunda-platform/" rel="category tag">Camunda Platform</a>, <a href="https://camunda.com/blog/category/community-conversations/" rel="category tag">Community Conversations</a>, <a href="https://camunda.com/blog/category/getting-started/" rel="category tag">Getting Started</a>, <a href="https://camunda.com/blog/category/tutorial/" rel="category tag">Tutorial</a></span></span><br><span class="byline"> <span class="author vcard"><a href="https://camunda.com/blog/author/niall-deehan/" title="Niall Deehan" rel="author" itemprop="author" itemscope="itemscope" itemtype="https://schema.org/Person">Niall Deehan</a></span></span></div><span class="posted-on"><a href="https://camunda.com/blog/2021/10/start-and-step-through-a-process-with-rest-feat-swaggerui/" rel="bookmark"><time class="entry-date published" datetime="November 1, 2021">November 1, 2021</time><time class="updated" datetime="December 15, 2021">December 15, 2021</time></a></span>
-                        </div><!-- .entry-meta -->
-                    </header><!-- .entry-header -->
-                </div>
-                <div class="row">
-                    <div class="col entry-content">
+                    <hr />
+                    <h3 class="entry-title">Starting and stepping through an invoice receipt (approval) process with REST (featuring SwaggerUI) on the <b><a href="https://camunda.com/download">Camunda Platform</a></b></h3>
+                    <div class="entry-meta">
+                        <div class="category-author"><span class="post-category"> <span class="category"><a href="https://camunda.com/blog/category/camunda-platform/" rel="category tag">Camunda Platform</a>, <a href="https://camunda.com/blog/category/community-conversations/" rel="category tag">Community Conversations</a>, <a href="https://camunda.com/blog/category/getting-started/" rel="category tag">Getting Started</a>, <a href="https://camunda.com/blog/category/tutorial/" rel="category tag">Tutorial</a></span></span><br><span class="byline"> <span class="author vcard"><a href="https://camunda.com/blog/author/niall-deehan/" title="Niall Deehan" rel="author" itemprop="author" itemscope="itemscope" itemtype="https://schema.org/Person">Niall Deehan</a></span></span></div><span class="posted-on"><a href="https://camunda.com/blog/2021/10/start-and-step-through-a-process-with-rest-feat-swaggerui/" rel="bookmark"><time class="entry-date published" datetime="November 1, 2021">November 1, 2021</time><time class="updated" datetime="December 15, 2021">December 15, 2021</time></a></span>
+                    </div><!-- .entry-meta -->
+                </header><!-- .entry-header -->
+            </div>
+            <div class="row">
+                <div class="col entry-content">
 
-                        <p>If you’re going to be communicating with the Camunda engine from any kind of third-party system, you’re going to need to know a little bit about what Camunda’s REST API can do out of the box. The REST API itself is built on top of the engine’s own Java API &#8211; this is important to know because it means that almost anything you can do when speaking to the engine via Java, you can also do through the REST API.&nbsp;</p>
+                    <p>If you’re going to be communicating with the Camunda engine from any kind of third-party system, you’re going to need to know a little bit about what Camunda’s REST API can do out of the box. The REST API itself is built on top of the engine’s own Java API &#8211; this is important to know because it means that almost anything you can do when speaking to the engine via Java, you can also do through the REST API.&nbsp;</p>
 
 
 
-                        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+                    <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
 
 
 
-                        <div class="wp-block-image"><figure class="aligncenter size-large"><img loading="lazy" width="1024" height="187" src="https://camunda.com/wp-content/uploads/2021/10/image4-1024x187.png" alt="" class="wp-image-35256" srcset="https://camunda.com/wp-content/uploads/2021/10/image4-1024x187.png 1024w, https://camunda.com/wp-content/uploads/2021/10/image4-300x55.png 300w, https://camunda.com/wp-content/uploads/2021/10/image4-768x140.png 768w, https://camunda.com/wp-content/uploads/2021/10/image4.png 1100w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure></div>
+                    <div class="wp-block-image"><figure class="aligncenter size-large"><img loading="lazy" width="1024" height="187" src="https://camunda.com/wp-content/uploads/2021/10/image4-1024x187.png" alt="" class="wp-image-35256" srcset="https://camunda.com/wp-content/uploads/2021/10/image4-1024x187.png 1024w, https://camunda.com/wp-content/uploads/2021/10/image4-300x55.png 300w, https://camunda.com/wp-content/uploads/2021/10/image4-768x140.png 768w, https://camunda.com/wp-content/uploads/2021/10/image4.png 1100w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure></div>
 
 
 
-                        <div style="height:53px" aria-hidden="true" class="wp-block-spacer"></div>
+                    <div style="height:53px" aria-hidden="true" class="wp-block-spacer"></div>
 
 
 
-                        <figure class="wp-block-image"><img loading="lazy" width="1200" height="700" src="https://lh4.googleusercontent.com/yXixiRSzJas4atbYI0e47UaXoOzW1LbPA3yKE4HjfI5mMXeumE_j8tnwTKLnBXoAVdVCsHhX6yNx91cdCyPl40raAm4emOtQgprbau-poghbjnaI4UnThrfsFEmQLmoDNU8CD70X" alt="" /></figure>
+                    <figure class="wp-block-image"><img loading="lazy" width="1200" height="700" src="https://lh4.googleusercontent.com/yXixiRSzJas4atbYI0e47UaXoOzW1LbPA3yKE4HjfI5mMXeumE_j8tnwTKLnBXoAVdVCsHhX6yNx91cdCyPl40raAm4emOtQgprbau-poghbjnaI4UnThrfsFEmQLmoDNU8CD70X" alt="" /></figure>
 
 
 
-                        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+                    <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
 
 
 
-                        <h3>The Setup</h3>
+                    <h3>The Setup</h3>
 
 
 
-                        <p>As a fun introduction, I&#8217;m simply going to discuss how you might go about using the most common REST calls in order to start and step through a process. To make things even easier, I&#8217;m going to be doing this using nothing more than our <em>Open Source Community Edition</em> that you can find<a href="https://camunda.com/download/"> on our download page</a>.&nbsp;</p>
+                    <p>As a fun introduction, I&#8217;m simply going to discuss how you might go about using the most common REST calls in order to start and step through a process. To make things even easier, I&#8217;m going to be doing this using nothing more than our <em>Open Source Community Edition</em> that you can find<a href="https://camunda.com/download/"> on our download page</a>.&nbsp;</p>
 
 
 
-                        <p>Once you’ve downloaded this, and started the Camunda Platform, you will be able to find the web apps at <a href="http://localhost:8080/">http://localhost:8080/</a> and login with <strong>demo</strong>/<strong>demo</strong>. From here, you can log into Cockpit and you’ll find we’ve supplied you with a demo process called <em>Invoice Receipt</em>. This is the process we’re going to be stepping through.</p>
+                    <p>Once you’ve downloaded this, and started the Camunda Platform, you will be able to find the web apps at <a href="http://localhost:8080/">http://localhost:8080/</a> and login with <strong>demo</strong>/<strong>demo</strong>. From here, you can log into Cockpit and you’ll find we’ve supplied you with a demo process called <em>Invoice Receipt</em>. This is the process we’re going to be stepping through.</p>
 
 
 
-                        <div style="height:51px" aria-hidden="true" class="wp-block-spacer"></div>
+                    <div style="height:51px" aria-hidden="true" class="wp-block-spacer"></div>
 
 
 
-                        <div class="wp-block-image"><figure class="aligncenter size-large"><img loading="lazy" width="1024" height="526" src="https://camunda.com/wp-content/uploads/2021/10/image7-1024x526.png" alt="Camunda Cockpit demo process called Invoice Receipt" class="wp-image-35273" srcset="https://camunda.com/wp-content/uploads/2021/10/image7-1024x526.png 1024w, https://camunda.com/wp-content/uploads/2021/10/image7-300x154.png 300w, https://camunda.com/wp-content/uploads/2021/10/image7-768x394.png 768w, https://camunda.com/wp-content/uploads/2021/10/image7.png 1436w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure></div>
+                    <div class="wp-block-image"><figure class="aligncenter size-large"><img loading="lazy" width="1024" height="526" src="https://camunda.com/wp-content/uploads/2021/10/image7-1024x526.png" alt="Camunda Cockpit demo process called Invoice Receipt" class="wp-image-35273" srcset="https://camunda.com/wp-content/uploads/2021/10/image7-1024x526.png 1024w, https://camunda.com/wp-content/uploads/2021/10/image7-300x154.png 300w, https://camunda.com/wp-content/uploads/2021/10/image7-768x394.png 768w, https://camunda.com/wp-content/uploads/2021/10/image7.png 1436w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure></div>
 
 
 
-                        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+                    <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
 
 
 
-                        <p>This process will be pretty straightforward. We’ll start a process instance, query for the waiting user task and then complete that task. Resulting in a token waiting at the <em>Prepare Bank Transfer</em> task.</p>
+                    <p>This process will be pretty straightforward. We’ll start a process instance, query for the waiting user task and then complete that task. Resulting in a token waiting at the <em>Prepare Bank Transfer</em> task.</p>
 
 
 
-                        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+                    <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
 
 
 
-                        <div class="wp-block-image"><figure class="aligncenter size-large"><img loading="lazy" width="1024" height="366" src="https://camunda.com/wp-content/uploads/2021/10/image2-1-1024x366.png" alt="" class="wp-image-35263" srcset="https://camunda.com/wp-content/uploads/2021/10/image2-1-1024x366.png 1024w, https://camunda.com/wp-content/uploads/2021/10/image2-1-300x107.png 300w, https://camunda.com/wp-content/uploads/2021/10/image2-1-768x274.png 768w, https://camunda.com/wp-content/uploads/2021/10/image2-1-1536x549.png 1536w, https://camunda.com/wp-content/uploads/2021/10/image2-1.png 1856w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure></div>
+                    <div class="wp-block-image"><figure class="aligncenter size-large"><img loading="lazy" width="1024" height="366" src="https://camunda.com/wp-content/uploads/2021/10/image2-1-1024x366.png" alt="" class="wp-image-35263" srcset="https://camunda.com/wp-content/uploads/2021/10/image2-1-1024x366.png 1024w, https://camunda.com/wp-content/uploads/2021/10/image2-1-300x107.png 300w, https://camunda.com/wp-content/uploads/2021/10/image2-1-768x274.png 768w, https://camunda.com/wp-content/uploads/2021/10/image2-1-1536x549.png 1536w, https://camunda.com/wp-content/uploads/2021/10/image2-1.png 1856w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure></div>
 
 
 
-                        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+                    <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
 
 
 
-                        <h3>Starting the Process</h3>
+                    <h3>Starting the Process</h3>
 
 
 
-                        <p>The download that you’ve got up and running also happens to have a great way to make REST calls! As part of Camunda Run distribution you can access SwaggerUI. This (if you haven&#8217;t heard about it) is a way of making REST calls to a service if provided a description of their REST API. <a href="http://localhost:8080/swaggerui">Click here</a> to access it on: <a href="http://localhost:8080/swaggerui">http://localhost:8080/swaggerui</a>&nbsp;</p>
+                    <p>The download that you’ve got up and running also happens to have a great way to make REST calls! As part of Camunda Run distribution you can access SwaggerUI. This (if you haven&#8217;t heard about it) is a way of making REST calls to a service if provided a description of their REST API. <a href="http://localhost:8080/swaggerui">Click here</a> to access it on: <a href="http://localhost:8080/swaggerui">http://localhost:8080/swaggerui</a>&nbsp;</p>
 
 
 
-                        <p>What you should see is this:&nbsp;</p>
+                    <p>What you should see is this:&nbsp;</p>
 
 
 
-                        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+                    <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
 
 
 
-                        <div class="wp-block-image"><figure class="aligncenter size-large"><img loading="lazy" width="1024" height="601" src="https://camunda.com/wp-content/uploads/2021/10/image6-1024x601.png" alt="Camunda Platform Rest API" class="wp-image-35271" srcset="https://camunda.com/wp-content/uploads/2021/10/image6-1024x601.png 1024w, https://camunda.com/wp-content/uploads/2021/10/image6-300x176.png 300w, https://camunda.com/wp-content/uploads/2021/10/image6-768x451.png 768w, https://camunda.com/wp-content/uploads/2021/10/image6.png 1402w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure></div>
+                    <div class="wp-block-image"><figure class="aligncenter size-large"><img loading="lazy" width="1024" height="601" src="https://camunda.com/wp-content/uploads/2021/10/image6-1024x601.png" alt="Camunda Platform Rest API" class="wp-image-35271" srcset="https://camunda.com/wp-content/uploads/2021/10/image6-1024x601.png 1024w, https://camunda.com/wp-content/uploads/2021/10/image6-300x176.png 300w, https://camunda.com/wp-content/uploads/2021/10/image6-768x451.png 768w, https://camunda.com/wp-content/uploads/2021/10/image6.png 1402w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure></div>
 
 
 
-                        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+                    <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
 
 
 
-                        <p><strong>NOTE</strong>: If you don’t see it, chances are you&#8217;re using the wrong distribution or an older version of Camunda Run. Follow <a href="https://camunda.com/download/">this link</a> to get the right version.</p>
+                    <p><strong>NOTE</strong>: If you don’t see it, chances are you&#8217;re using the wrong distribution or an older version of Camunda Run. Follow <a href="https://camunda.com/download/">this link</a> to get the right version.</p>
 
 
 
-                        <p>From here, you can peruse the REST calls that are available to you. We’re looking to start a process instance, so head to the <em>Process Definition</em> section and find the start process instance post call.</p>
+                    <p>From here, you can peruse the REST calls that are available to you. We’re looking to start a process instance, so head to the <em>Process Definition</em> section and find the start process instance post call.</p>
 
 
 
-                        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+                    <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
 
 
 
-                        <div class="wp-block-image"><figure class="aligncenter size-large"><img loading="lazy" width="1024" height="433" src="https://camunda.com/wp-content/uploads/2021/10/image8-1024x433.png" alt="Camunda start process instance REST API" class="wp-image-35275" srcset="https://camunda.com/wp-content/uploads/2021/10/image8-1024x433.png 1024w, https://camunda.com/wp-content/uploads/2021/10/image8-300x127.png 300w, https://camunda.com/wp-content/uploads/2021/10/image8-768x325.png 768w, https://camunda.com/wp-content/uploads/2021/10/image8.png 1354w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure></div>
+                    <div class="wp-block-image"><figure class="aligncenter size-large"><img loading="lazy" width="1024" height="433" src="https://camunda.com/wp-content/uploads/2021/10/image8-1024x433.png" alt="Camunda start process instance REST API" class="wp-image-35275" srcset="https://camunda.com/wp-content/uploads/2021/10/image8-1024x433.png 1024w, https://camunda.com/wp-content/uploads/2021/10/image8-300x127.png 300w, https://camunda.com/wp-content/uploads/2021/10/image8-768x325.png 768w, https://camunda.com/wp-content/uploads/2021/10/image8.png 1354w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure></div>
 
 
 
-                        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+                    <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
 
 
 
-                        <p>The POST call we’re making to kick off the process is:<strong> /process-definition/key/{key}/start</strong>, which requires a process definition key &#8211; that’s “invoice”&nbsp;in this case. It also requires some variables which can be added as a JSON payload.</p>
+                    <p>The POST call we’re making to kick off the process is:<strong> /process-definition/key/{key}/start</strong>, which requires a process definition key &#8211; that’s “invoice”&nbsp;in this case. It also requires some variables which can be added as a JSON payload.</p>
 
 
 
-                        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+                    <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
 
 
 
-                        <pre class="wp-block-prismatic-blocks"><code class="language-json">{
+                    <pre class="wp-block-prismatic-blocks"><code class="language-json">{
       &quot;variables&quot;: {
         &quot;amount&quot;: {
         &quot;value&quot;: 30,
@@ -218,103 +218,103 @@
 
 
 
-                        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+                    <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
 
 
 
-                        <p>Once you&#8217;ve added the requirement you can click <em>Execute. </em>If you’ve done everything correctly, you should get a response code of 200, which is being cleverly pointed at by the green arrow below.</p>
+                    <p>Once you&#8217;ve added the requirement you can click <em>Execute. </em>If you’ve done everything correctly, you should get a response code of 200, which is being cleverly pointed at by the green arrow below.</p>
 
 
 
-                        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+                    <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
 
 
 
-                        <div class="wp-block-image"><figure class="aligncenter size-large"><img loading="lazy" width="1024" height="610" src="https://camunda.com/wp-content/uploads/2021/10/image10-1024x610.png" alt="Start process POST call response" class="wp-image-35279" srcset="https://camunda.com/wp-content/uploads/2021/10/image10-1024x610.png 1024w, https://camunda.com/wp-content/uploads/2021/10/image10-300x179.png 300w, https://camunda.com/wp-content/uploads/2021/10/image10-768x458.png 768w, https://camunda.com/wp-content/uploads/2021/10/image10.png 1297w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure></div>
+                    <div class="wp-block-image"><figure class="aligncenter size-large"><img loading="lazy" width="1024" height="610" src="https://camunda.com/wp-content/uploads/2021/10/image10-1024x610.png" alt="Start process POST call response" class="wp-image-35279" srcset="https://camunda.com/wp-content/uploads/2021/10/image10-1024x610.png 1024w, https://camunda.com/wp-content/uploads/2021/10/image10-300x179.png 300w, https://camunda.com/wp-content/uploads/2021/10/image10-768x458.png 768w, https://camunda.com/wp-content/uploads/2021/10/image10.png 1297w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure></div>
 
 
 
-                        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+                    <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
 
 
 
-                        <p>The red arrow is pointing at a very important variable for us, which is the ID of the process that we’ve created. We’ll need that to continue stepping through the process. So copy it and keep it safe.&nbsp;</p>
+                    <p>The red arrow is pointing at a very important variable for us, which is the ID of the process that we’ve created. We’ll need that to continue stepping through the process. So copy it and keep it safe.&nbsp;</p>
 
 
 
-                        <h3>Finding a User Task</h3>
+                    <h3>Finding a User Task</h3>
 
 
 
-                        <p>We can use the process instance ID from&nbsp; the previous step to find out what is going on with the process we’ve just started. Specifically finding out which user task the process is currently waiting at.&nbsp;</p>
+                    <p>We can use the process instance ID from&nbsp; the previous step to find out what is going on with the process we’ve just started. Specifically finding out which user task the process is currently waiting at.&nbsp;</p>
 
 
 
-                        <p>This is once again done through the SwaggerUI. Find the <em>Task</em> section and select the GET call&nbsp; <strong>/task </strong>as indicated by the friendly red arrow below.</p>
+                    <p>This is once again done through the SwaggerUI. Find the <em>Task</em> section and select the GET call&nbsp; <strong>/task </strong>as indicated by the friendly red arrow below.</p>
 
 
 
-                        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+                    <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
 
 
 
-                        <div class="wp-block-image"><figure class="aligncenter size-large"><img loading="lazy" width="1024" height="451" src="https://camunda.com/wp-content/uploads/2021/10/image1-3-1024x451.png" alt="find user task Camunda REST API" class="wp-image-35261" srcset="https://camunda.com/wp-content/uploads/2021/10/image1-3-1024x451.png 1024w, https://camunda.com/wp-content/uploads/2021/10/image1-3-300x132.png 300w, https://camunda.com/wp-content/uploads/2021/10/image1-3-768x338.png 768w, https://camunda.com/wp-content/uploads/2021/10/image1-3.png 1394w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure></div>
+                    <div class="wp-block-image"><figure class="aligncenter size-large"><img loading="lazy" width="1024" height="451" src="https://camunda.com/wp-content/uploads/2021/10/image1-3-1024x451.png" alt="find user task Camunda REST API" class="wp-image-35261" srcset="https://camunda.com/wp-content/uploads/2021/10/image1-3-1024x451.png 1024w, https://camunda.com/wp-content/uploads/2021/10/image1-3-300x132.png 300w, https://camunda.com/wp-content/uploads/2021/10/image1-3-768x338.png 768w, https://camunda.com/wp-content/uploads/2021/10/image1-3.png 1394w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure></div>
 
 
 
-                        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+                    <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
 
 
 
-                        <p>Then, enter the process instance ID where the green arrow is indicating and click on Execute. If the call was made successfully, you’ll have a code of 200 and the response body will contain a JSON object describing the user task.&nbsp;</p>
+                    <p>Then, enter the process instance ID where the green arrow is indicating and click on Execute. If the call was made successfully, you’ll have a code of 200 and the response body will contain a JSON object describing the user task.&nbsp;</p>
 
 
 
-                        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+                    <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
 
 
 
-                        <div class="wp-block-image"><figure class="aligncenter size-large"><img loading="lazy" width="1024" height="626" src="https://camunda.com/wp-content/uploads/2021/10/image3-1024x626.png" alt="GET call task response" class="wp-image-35265" srcset="https://camunda.com/wp-content/uploads/2021/10/image3-1024x626.png 1024w, https://camunda.com/wp-content/uploads/2021/10/image3-300x183.png 300w, https://camunda.com/wp-content/uploads/2021/10/image3-768x469.png 768w, https://camunda.com/wp-content/uploads/2021/10/image3.png 1332w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure></div>
+                    <div class="wp-block-image"><figure class="aligncenter size-large"><img loading="lazy" width="1024" height="626" src="https://camunda.com/wp-content/uploads/2021/10/image3-1024x626.png" alt="GET call task response" class="wp-image-35265" srcset="https://camunda.com/wp-content/uploads/2021/10/image3-1024x626.png 1024w, https://camunda.com/wp-content/uploads/2021/10/image3-300x183.png 300w, https://camunda.com/wp-content/uploads/2021/10/image3-768x469.png 768w, https://camunda.com/wp-content/uploads/2021/10/image3.png 1332w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure></div>
 
 
 
-                        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+                    <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
 
 
 
-                        <p>We’ve also got another very important ID as part of the response, the ID of the user task itself. Helpfully indicated above with that trusty green arrow again.</p>
+                    <p>We’ve also got another very important ID as part of the response, the ID of the user task itself. Helpfully indicated above with that trusty green arrow again.</p>
 
 
 
-                        <h3>Completing a User Task</h3>
+                    <h3>Completing a User Task</h3>
 
 
 
-                        <p>We now have the ID of the task that the process is currently waiting at, so the only thing left to do is to complete the task and have the process move on. This means scrolling down to the <strong>task/{id}/complete</strong> POST call and entering the task ID as a parameter.&nbsp;</p>
+                    <p>We now have the ID of the task that the process is currently waiting at, so the only thing left to do is to complete the task and have the process move on. This means scrolling down to the <strong>task/{id}/complete</strong> POST call and entering the task ID as a parameter.&nbsp;</p>
 
 
 
-                        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+                    <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
 
 
 
-                        <div class="wp-block-image"><figure class="aligncenter size-large"><img loading="lazy" width="1024" height="297" src="https://camunda.com/wp-content/uploads/2021/10/image5-1024x297.png" alt="complete user task Camunda REST API" class="wp-image-35269" srcset="https://camunda.com/wp-content/uploads/2021/10/image5-1024x297.png 1024w, https://camunda.com/wp-content/uploads/2021/10/image5-300x87.png 300w, https://camunda.com/wp-content/uploads/2021/10/image5-768x223.png 768w, https://camunda.com/wp-content/uploads/2021/10/image5.png 1317w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure></div>
+                    <div class="wp-block-image"><figure class="aligncenter size-large"><img loading="lazy" width="1024" height="297" src="https://camunda.com/wp-content/uploads/2021/10/image5-1024x297.png" alt="complete user task Camunda REST API" class="wp-image-35269" srcset="https://camunda.com/wp-content/uploads/2021/10/image5-1024x297.png 1024w, https://camunda.com/wp-content/uploads/2021/10/image5-300x87.png 300w, https://camunda.com/wp-content/uploads/2021/10/image5-768x223.png 768w, https://camunda.com/wp-content/uploads/2021/10/image5.png 1317w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure></div>
 
 
 
-                        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+                    <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
 
 
 
-                        <p>But this task needs a little more than just the ID, it also needs a variable so that process knows how to progress past the gateway. So if you try to send this call without those variables, you’ll end up getting an error and the task will not complete. The variable we need to add is a boolean variable “approved” which we’ll set to true.&nbsp;</p>
+                    <p>But this task needs a little more than just the ID, it also needs a variable so that process knows how to progress past the gateway. So if you try to send this call without those variables, you’ll end up getting an error and the task will not complete. The variable we need to add is a boolean variable “approved” which we’ll set to true.&nbsp;</p>
 
 
 
-                        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+                    <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
 
 
 
-                        <pre class="wp-block-prismatic-blocks"><code class="language-java">{
+                    <pre class="wp-block-prismatic-blocks"><code class="language-java">{
       &quot;variables&quot;: {
         &quot;approved&quot;: {
         &quot;value&quot;: true
@@ -325,59 +325,59 @@
 
 
 
-                        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+                    <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
 
 
 
-                        <p>After clicking Execute, you should be greeted with a response and a very happy 200 response code.&nbsp;</p>
+                    <p>After clicking Execute, you should be greeted with a response and a very happy 200 response code.&nbsp;</p>
 
 
 
-                        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+                    <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
 
 
 
-                        <div class="wp-block-image"><figure class="aligncenter size-large"><img loading="lazy" width="1024" height="589" src="https://camunda.com/wp-content/uploads/2021/10/image9-1024x589.png" alt="" class="wp-image-35277" srcset="https://camunda.com/wp-content/uploads/2021/10/image9-1024x589.png 1024w, https://camunda.com/wp-content/uploads/2021/10/image9-300x172.png 300w, https://camunda.com/wp-content/uploads/2021/10/image9-768x442.png 768w, https://camunda.com/wp-content/uploads/2021/10/image9.png 1348w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure></div>
+                    <div class="wp-block-image"><figure class="aligncenter size-large"><img loading="lazy" width="1024" height="589" src="https://camunda.com/wp-content/uploads/2021/10/image9-1024x589.png" alt="" class="wp-image-35277" srcset="https://camunda.com/wp-content/uploads/2021/10/image9-1024x589.png 1024w, https://camunda.com/wp-content/uploads/2021/10/image9-300x172.png 300w, https://camunda.com/wp-content/uploads/2021/10/image9-768x442.png 768w, https://camunda.com/wp-content/uploads/2021/10/image9.png 1348w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure></div>
 
 
 
-                        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+                    <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
 
 
 
-                        <p>Now, you can feel free to go into Camunda Cockpit (<a href="http://localhost:8080/camunda/app/cockpit/default/">http://localhost:8080/camunda/app/cockpit/default/</a>) and take a look at how far your little process has come. With just three little REST calls.</p>
+                    <p>Now, you can feel free to go into Camunda Cockpit (<a href="http://localhost:8080/camunda/app/cockpit/default/">http://localhost:8080/camunda/app/cockpit/default/</a>) and take a look at how far your little process has come. With just three little REST calls.</p>
 
 
 
-                        <h3>In Summary</h3>
+                    <h3>In Summary</h3>
 
 
 
-                        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+                    <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
 
 
 
-                        <div class="wp-block-image"><figure class="aligncenter size-large"><img loading="lazy" width="1024" height="366" src="https://camunda.com/wp-content/uploads/2021/10/image2-1-1024x366.png" alt="" class="wp-image-35263" srcset="https://camunda.com/wp-content/uploads/2021/10/image2-1-1024x366.png 1024w, https://camunda.com/wp-content/uploads/2021/10/image2-1-300x107.png 300w, https://camunda.com/wp-content/uploads/2021/10/image2-1-768x274.png 768w, https://camunda.com/wp-content/uploads/2021/10/image2-1-1536x549.png 1536w, https://camunda.com/wp-content/uploads/2021/10/image2-1.png 1856w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure></div>
+                    <div class="wp-block-image"><figure class="aligncenter size-large"><img loading="lazy" width="1024" height="366" src="https://camunda.com/wp-content/uploads/2021/10/image2-1-1024x366.png" alt="" class="wp-image-35263" srcset="https://camunda.com/wp-content/uploads/2021/10/image2-1-1024x366.png 1024w, https://camunda.com/wp-content/uploads/2021/10/image2-1-300x107.png 300w, https://camunda.com/wp-content/uploads/2021/10/image2-1-768x274.png 768w, https://camunda.com/wp-content/uploads/2021/10/image2-1-1536x549.png 1536w, https://camunda.com/wp-content/uploads/2021/10/image2-1.png 1856w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure></div>
 
 
 
-                        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+                    <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
 
 
 
-                        <p>It took three different calls to step through this process, which goes as follows in the screenshot above.</p>
+                    <p>It took three different calls to step through this process, which goes as follows in the screenshot above.</p>
 
 
 
-                        <h3>Start the process:</h3>
+                    <h3>Start the process:</h3>
 
 
 
-                        <p class="has-light-green-cyan-color has-text-color"><strong>http://localhost:8080/engine-rest/process-definition/key/{processDefinitionKey}/start</strong></p>
+                    <p class="has-light-green-cyan-color has-text-color"><strong>http://localhost:8080/engine-rest/process-definition/key/{processDefinitionKey}/start</strong></p>
 
 
 
-                        <pre class="wp-block-prismatic-blocks"><code class="language-java">{
+                    <pre class="wp-block-prismatic-blocks"><code class="language-java">{
       &quot;variables&quot;: {
         &quot;amount&quot;: {
         &quot;value&quot;: 30,
@@ -402,35 +402,35 @@
 
 
 
-                        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+                    <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
 
 
 
-                        <h3>Query for the Task:</h3>
+                    <h3>Query for the Task:</h3>
 
 
 
-                        <p class="has-light-green-cyan-color has-text-color"><strong>http://localhost:8080/engine-rest/task?processInstanceId={processInstanceId}/</strong></p>
+                    <p class="has-light-green-cyan-color has-text-color"><strong>http://localhost:8080/engine-rest/task?processInstanceId={processInstanceId}/</strong></p>
 
 
 
-                        <pre class="wp-block-prismatic-blocks"><code class="language-java">{}</code></pre>
+                    <pre class="wp-block-prismatic-blocks"><code class="language-java">{}</code></pre>
 
 
 
-                        <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
+                    <div style="height:50px" aria-hidden="true" class="wp-block-spacer"></div>
 
 
 
-                        <h3>Complete the Task:</h3>
+                    <h3>Complete the Task:</h3>
 
 
 
-                        <p class="has-light-green-cyan-color has-text-color"><strong>http://localhost:8080/engine-rest/task/{taskId}/complete</strong></p>
+                    <p class="has-light-green-cyan-color has-text-color"><strong>http://localhost:8080/engine-rest/task/{taskId}/complete</strong></p>
 
 
 
-                        <pre class="wp-block-prismatic-blocks"><code class="language-java">{
+                    <pre class="wp-block-prismatic-blocks"><code class="language-java">{
                           &quot;variables&quot;: {
                             &quot;approved&quot;: {
                             &quot;value&quot;: true
@@ -441,232 +441,244 @@
 
 
 
-                        <p></p>
+                    <p></p>
 
-                    </div>
                 </div>
-                <p class="alert-danger small">The content above has been taken from <a href="https://camunda.com/blog/2021/10/start-and-step-through-a-process-with-rest-feat-swaggerui/">this web page.</a> &copy; Camunda -2022. It is listed here for <i>illustrative purposes only</i> and to allow users to see how our ASP.NET Core MVC Web app interacts with the Camunda engine through REST API to start and finish <b>Invoice Receipt</b> process.</p>
             </div>
-            <div id="menu2" class="tab-pane">
-                <div class="row">
-                    <header class="col entry-header">
+            <p class="alert-danger small">The content above has been taken from <a href="https://camunda.com/blog/2021/10/start-and-step-through-a-process-with-rest-feat-swaggerui/">this web page.</a> &copy; Camunda -2022. It is listed here for <i>illustrative purposes only</i> and to allow users to see how our ASP.NET Core MVC Web app interacts with the Camunda engine through REST API to start and finish <b>Invoice Receipt</b> process.</p>
+        </div>
+        <div id="menu2" class="tab-pane">
+            <div class="row">
+                <header class="col entry-header">
 
 
 
-                        <hr />
-                        <h3 class="entry-title">Starting and stepping through an example of employee evaluation process with REST (featuring SwaggerUI) on the <b><a href="https://www.jbpm.org/download/download.html">jBPM Platform</a></b></h3>
+                    <hr />
+                    <h3 class="entry-title">Starting and stepping through an example of employee evaluation process with REST (featuring SwaggerUI) on the <b><a href="https://www.jbpm.org/download/download.html">jBPM Platform</a></b></h3>
 
-                    </header><!-- .entry-header -->
-                </div>
+                </header><!-- .entry-header -->
+            </div>
 
 
-                <div class="sect1">
-                    <h4 id="_download_jbpm">Download jBPM</h4>
-                    <div class="sectionbody">
-                        <div class="paragraph">
-                            <p>First things first, download jBPM server distribution (if not already done) to start quickly with complete environment.</p>
-                        </div>
-                        <div class="ulist">
-                            <ul>
-                                <li>
-                                    <p><a href="https://download.jboss.org/jbpm/release/7.65.0.Final/jbpm-server-7.65.0.Final-dist.zip">Download jBPM 7.65.0.Final server (single zip) distribution</a></p>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="paragraph">
-                            <p>Just download, unzip and run</p>
-                        </div>
-                        <div class="listingblock">
-                            <div class="content">
-                                <pre class="highlight"><code class="language-bash" data-lang="bash">jbpm-server/bin/standalone.sh     (Unix / Linux)&#x000A;&#x000A;jbpm-server/bin/standalone.bat    (Windows)</code></pre>
-                            </div>
+            <div class="sect1">
+                <h4 id="_download_jbpm">Download jBPM</h4>
+                <div class="sectionbody">
+                    <div class="paragraph">
+                        <p>First things first, download jBPM server distribution (if not already done) to start quickly with complete environment.</p>
+                    </div>
+                    <div class="ulist">
+                        <ul>
+                            <li>
+                                <p><a href="https://download.jboss.org/jbpm/release/7.65.0.Final/jbpm-server-7.65.0.Final-dist.zip">Download jBPM 7.65.0.Final server (single zip) distribution</a></p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="paragraph">
+                        <p>Just download, unzip and run</p>
+                    </div>
+                    <div class="listingblock">
+                        <div class="content">
+                            <pre class="highlight"><code class="language-bash" data-lang="bash">jbpm-server/bin/standalone.sh     (Unix / Linux)&#x000A;&#x000A;jbpm-server/bin/standalone.bat    (Windows)</code></pre>
                         </div>
                     </div>
                 </div>
-                <div class="sect1">
-                    <h4 id="_explore_your_running_environment">Explore your running environment</h4>
-                    <div class="sectionbody">
-                        <div class="paragraph">
-                            <p><strong>Business Central</strong></p>
-                        </div>
-                        <div class="paragraph">
-                            <p>Business Central provides feature rich authoring and management environment. It consists of:</p>
-                        </div>
-                        <div class="ulist">
-                            <ul>
-                                <li>
-                                    <p>Design perspectives where users can create projects and pages</p>
-                                </li>
-                                <li>
-                                    <p>Deploy perspectives where users can manage execution servers</p>
-                                </li>
-                                <li>
-                                    <p>Manage perspectives where users can take control over process and case instances</p>
-                                </li>
-                                <li>
-                                    <p>Track perspectives where users can access assigned tasks and reports</p>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="paragraph">
-                            <p>Business Central can be accessed (once the server was started) at <a href="http://localhost:8080/business-central"><strong>http://localhost:8080/business-central</strong></a></p>
-                        </div>
-                        <div class="paragraph">
-                            <p>There are set of predefined users that can be used to directly logon to Business Central:</p>
-                        </div>
-                        <div class="ulist">
-                            <ul>
-                                <li>
-                                    <p>wbadmin/wbadmin</p>
-                                </li>
-                                <li>
-                                    <p>krisv/krisv</p>
-                                </li>
-                                <li>
-                                    <p>john/john</p>
-                                </li>
-                                <li>
-                                    <p>mary/mary</p>
-                                </li>
-                                <li>
-                                    <p>katy/katy</p>
-                                </li>
-                                <li>
-                                    <p>jack/jack</p>
-                                </li>
-                                <li>
-                                    <p>kieserver/kieserver1!</p>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="paragraph">
-                            <p>Additional users can be created via Business Central Admin section.</p>
-                        </div>
-                        <hr>
-                        <div class="paragraph">
-                            <p><strong>KIE Server Swagger documentation</strong></p>
-                        </div>
-                        <div class="paragraph">
-                            <p>KIE Server is the execution server that provides various capabilities</p>
-                        </div>
-                        <div class="ulist">
-                            <ul>
-                                <li>
-                                    <p>BRM (business rules)</p>
-                                </li>
-                                <li>
-                                    <p>BPM (business processes)</p>
-                                </li>
-                                <li>
-                                    <p>BRP (planning/solver)</p>
-                                </li>
-                                <li>
-                                    <p>Case Management</p>
-                                </li>
-                                <li>
-                                    <p>DMN (decisions)</p>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="paragraph">
-                            <p>Its complete REST api documentation can be accessed at <a href="http://localhost:8080/kie-server/docs"><strong>http://localhost:8080/kie-server/docs</strong></a></p>
-                        </div>
-                        <hr>
-                        <div class="paragraph">
-                            <p><strong>jBPM Case Management Showcase</strong></p>
-                        </div>
-                        <div class="paragraph">
-                            <p>
-                                jBPM Case Management Showcase is a web application that aims at illustrating various case management building blocks in action. These
-                                are UI components built on top of KIE Server REST api for case management. It&#8217;s not intended for production usage but more for getting better
-                                understanding of the capabilities.
-                                Case management, in general should be business focused so generic UI won&#8217;t provide much business context to the knowledge workers.
-                            </p>
-                        </div>
-                        <div class="paragraph">
-                            <p>jBPM Case Management application can be accessed at <a href="http://localhost:8080/jbpm-casemgmt"><strong>http://localhost:8080/jbpm-casemgmt</strong></a></p>
-                        </div>
-                        <div class="paragraph">
-                            <p>Same users as for Business Central can be used to logon to this application.</p>
-                        </div>
-                        <hr>
+            </div>
+            <div class="sect1">
+                <h4 id="_explore_your_running_environment">Explore your running environment</h4>
+                <div class="sectionbody">
+                    <div class="paragraph">
+                        <p><strong>Business Central</strong></p>
                     </div>
+                    <div class="paragraph">
+                        <p>Business Central provides feature rich authoring and management environment. It consists of:</p>
+                    </div>
+                    <div class="ulist">
+                        <ul>
+                            <li>
+                                <p>Design perspectives where users can create projects and pages</p>
+                            </li>
+                            <li>
+                                <p>Deploy perspectives where users can manage execution servers</p>
+                            </li>
+                            <li>
+                                <p>Manage perspectives where users can take control over process and case instances</p>
+                            </li>
+                            <li>
+                                <p>Track perspectives where users can access assigned tasks and reports</p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="paragraph">
+                        <p>Business Central can be accessed (once the server was started) at <a href="http://localhost:8080/business-central"><strong>http://localhost:8080/business-central</strong></a></p>
+                    </div>
+                    <div class="paragraph">
+                        <p>There are set of predefined users that can be used to directly logon to Business Central:</p>
+                    </div>
+                    <div class="ulist">
+                        <ul>
+                            <li>
+                                <p>wbadmin/wbadmin</p>
+                            </li>
+                            <li>
+                                <p>krisv/krisv</p>
+                            </li>
+                            <li>
+                                <p>john/john</p>
+                            </li>
+                            <li>
+                                <p>mary/mary</p>
+                            </li>
+                            <li>
+                                <p>katy/katy</p>
+                            </li>
+                            <li>
+                                <p>jack/jack</p>
+                            </li>
+                            <li>
+                                <p>kieserver/kieserver1!</p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="paragraph">
+                        <p>Additional users can be created via Business Central Admin section.</p>
+                    </div>
+                    <hr>
+                    <div class="paragraph">
+                        <p><strong>KIE Server Swagger documentation</strong></p>
+                    </div>
+                    <div class="paragraph">
+                        <p>KIE Server is the execution server that provides various capabilities</p>
+                    </div>
+                    <div class="ulist">
+                        <ul>
+                            <li>
+                                <p>BRM (business rules)</p>
+                            </li>
+                            <li>
+                                <p>BPM (business processes)</p>
+                            </li>
+                            <li>
+                                <p>BRP (planning/solver)</p>
+                            </li>
+                            <li>
+                                <p>Case Management</p>
+                            </li>
+                            <li>
+                                <p>DMN (decisions)</p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="paragraph">
+                        <p>Its complete REST api documentation can be accessed at <a href="http://localhost:8080/kie-server/docs"><strong>http://localhost:8080/kie-server/docs</strong></a></p>
+                    </div>
+                    <hr>
+                    <div class="paragraph">
+                        <p><strong>jBPM Case Management Showcase</strong></p>
+                    </div>
+                    <div class="paragraph">
+                        <p>
+                            jBPM Case Management Showcase is a web application that aims at illustrating various case management building blocks in action. These
+                            are UI components built on top of KIE Server REST api for case management. It&#8217;s not intended for production usage but more for getting better
+                            understanding of the capabilities.
+                            Case management, in general should be business focused so generic UI won&#8217;t provide much business context to the knowledge workers.
+                        </p>
+                    </div>
+                    <div class="paragraph">
+                        <p>jBPM Case Management application can be accessed at <a href="http://localhost:8080/jbpm-casemgmt"><strong>http://localhost:8080/jbpm-casemgmt</strong></a></p>
+                    </div>
+                    <div class="paragraph">
+                        <p>Same users as for Business Central can be used to logon to this application.</p>
+                    </div>
+                    <hr>
                 </div>
-                <div class="sect1">
-                    <h4 id="_try_examples">Try examples</h4>
-                    <div class="sectionbody">
-                        <div class="paragraph">
-                            <p>
-                                Once you get yourself familiar with the tools of the jBPM it&#8217;s time to see something running. The easiest way is to try one of the examples
-                                shipped with the platform, it will show typical path users take to design, build and execute business logic.
-                            </p>
-                        </div>
-                        <div class="sect2">
-                            <h4 id="_evaluation_process">Evaluation process</h4>
-                            <table class="tableblock frame-none grid-all stretch">
-                                <colgroup>
-                                    <col style="width: 66.6666%;">
-                                    <col style="width: 33.3334%;">
-                                </colgroup>
-                                <tbody>
-                                    <tr>
-                                        <td class="tableblock halign-left valign-top">
-                                            <div class="content">
-                                                <div class="paragraph">
-                                                    <p>
-                                                        Evaluation process is a business process that is human centric (heavily uses human actors to perform work) that defines a complete flow of
-                                                        activities to perform employee evaluation. This examples shows:
-                                                    </p>
-                                                </div>
-                                                <div class="ulist">
-                                                    <ul>
-                                                        <li>
-                                                            <p>importing example project</p>
-                                                        </li>
-                                                        <li>
-                                                            <p>building and deploying project</p>
-                                                        </li>
-                                                        <li>
-                                                            <p>verifying deployment to execution server</p>
-                                                        </li>
-                                                        <li>
-                                                            <p>executing process instance and work with human tasks</p>
-                                                        </li>
-                                                        <li>
-                                                            <p>exploring reporting capabilities</p>
-                                                        </li>
-                                                    </ul>
+            </div>
+            <div class="sect1">
+                <h4 id="_try_examples">Try examples</h4>
+                <div class="sectionbody">
+                    <div class="paragraph">
+                        <p>
+                            Once you get yourself familiar with the tools of the jBPM it&#8217;s time to see something running. The easiest way is to try one of the examples
+                            shipped with the platform, it will show typical path users take to design, build and execute business logic.
+                        </p>
+                    </div>
+                    <div class="sect2">
+                        <h4 id="_evaluation_process">Evaluation process</h4>
+                        <table class="tableblock frame-none grid-all stretch">
+                            <colgroup>
+                                <col style="width: 66.6666%;">
+                                <col style="width: 33.3334%;">
+                            </colgroup>
+                            <tbody>
+                                <tr>
+                                    <td class="tableblock halign-left valign-top">
+                                        <div class="content">
+                                            <div class="paragraph">
+                                                <p>
+                                                    Evaluation process is a business process that is human centric (heavily uses human actors to perform work) that defines a complete flow of
+                                                    activities to perform employee evaluation. This examples shows:
+                                                </p>
+                                            </div>
+                                            <div class="ulist">
+                                                <ul>
+                                                    <li>
+                                                        <p>importing example project</p>
+                                                    </li>
+                                                    <li>
+                                                        <p>building and deploying project</p>
+                                                    </li>
+                                                    <li>
+                                                        <p>verifying deployment to execution server</p>
+                                                    </li>
+                                                    <li>
+                                                        <p>executing process instance and work with human tasks</p>
+                                                    </li>
+                                                    <li>
+                                                        <p>exploring reporting capabilities</p>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="tableblock halign-left valign-top">
+                                        <div class="content">
+                                            <div class="videoblock">
+                                                <div class="content">
+                                                    <iframe src="https://www.youtube.com/embed/-fxL2iioPRI?rel=0" frameborder="0" allowfullscreen></iframe>
                                                 </div>
                                             </div>
-                                        </td>
-                                        <td class="tableblock halign-left valign-top">
-                                            <div class="content">
-                                                <div class="videoblock">
-                                                    <div class="content">
-                                                        <iframe src="https://www.youtube.com/embed/-fxL2iioPRI?rel=0" frameborder="0" allowfullscreen></iframe>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                <p class="alert-danger small">The content above has been taken from <a href="https://www.jbpm.org/learn/gettingStarted.html">this web page.</a> &copy; 2006 -2022 RedHat, Inc. and others. It is taken here for illustrative purposes only and to allow users to see how our ASP.NET Core MVC Web app interacts with the jBPM engine through REST API to start and finish <b>Employee evaluation</b> process.</p>
             </div>
-            <div id="menu3" class="tab-pane">
-                <hr />
-                <div class="row">
-                    <h3>Coming Soon...</h3>
-                </div>
-                
+            <p class="alert-danger small">The content above has been taken from <a href="https://www.jbpm.org/learn/gettingStarted.html">this web page.</a> &copy; 2006 -2022 RedHat, Inc. and others. It is taken here for illustrative purposes only and to allow users to see how our ASP.NET Core MVC Web app interacts with the jBPM engine through REST API to start and finish <b>Employee evaluation</b> process.</p>
+        </div>
+        <div id="menu3" class="tab-pane">
+            <hr />
+            <div class="row">
+                <h3>Starting and stepping through a simple Employee Evaluation process using Activiti REST API.</h3>
+                <div class="paragraph">
+                    <p>
+                        This example uses Alfresco Activiti RESTful API and an example employee evaluation process is completed start to finish using that API.
 
+                        Alfresco Activiti must be running for this to work. Please refer to <a href="https://www.activiti.org/userguide/">this page</a> and follow the simple instructions. There are links to download the Activiti Web apps (WARs) and then deploy them in Apache Tomcat. Activiti user roles are ignored here. You can enforce them using a mapping of web app users and Activiti users.
+                    </p>
+                </div>
+                <div class="paragraph">
+                    <p>
+                        Please refer to <a href="https://www.activiti.org/userguide/#_rest_api">Alfresco Activiti User Guide </a>to know more on usage of REST API.
+                    </p>
+                </div>
             </div>
+
+
         </div>
     </div>
+</div>
 
-    
+
 
 

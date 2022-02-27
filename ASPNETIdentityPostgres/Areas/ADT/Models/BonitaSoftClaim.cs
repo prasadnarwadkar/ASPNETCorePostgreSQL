@@ -11,10 +11,106 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Models
         public claimInput claimInput { get; set; }
     }
 
+    public class ActivitiProcessInstanceVar
+    {
+        public string name { get; set; }
+        public string type { get; set; }
+        public string value { get; set; }
+        public string scope { get; set; }
+    }
+
     public class valueInfo
     {
         public string objectTypeName { get; set; }
         public string serializationDataFormat { get; set; }
+    }
+
+    public class AlfrescoActivitiProcessInstance
+    {
+        public string id { get; set; }
+        public string url { get; set; }
+        public object businessKey { get; set; }
+        public bool suspended { get; set; }
+        public bool ended { get; set; }
+        public string processDefinitionId { get; set; }
+        public string processDefinitionUrl { get; set; }
+        public string processDefinitionKey { get; set; }
+        public object activityId { get; set; }
+        public List<object> variables { get; set; }
+        public string tenantId { get; set; }
+        public object name { get; set; }
+        public bool completed { get; set; }
+    }
+
+    public class AlfrescoActivitiTaskInstance
+    {
+        public string id { get; set; }
+        public string url { get; set; }
+        public object owner { get; set; }
+        public string assignee { get; set; }
+        public object delegationState { get; set; }
+        public string name { get; set; }
+        public object description { get; set; }
+        public DateTime createTime { get; set; }
+        public object dueDate { get; set; }
+        public int priority { get; set; }
+        public bool suspended { get; set; }
+        public string taskDefinitionKey { get; set; }
+        public string tenantId { get; set; }
+        public object category { get; set; }
+        public string formKey { get; set; }
+        public object parentTaskId { get; set; }
+        public object parentTaskUrl { get; set; }
+        public string executionId { get; set; }
+        public string executionUrl { get; set; }
+        public string processInstanceId { get; set; }
+        public string processInstanceUrl { get; set; }
+        public string processDefinitionId { get; set; }
+        public string processDefinitionUrl { get; set; }
+        public List<object> variables { get; set; }
+    }
+
+    public class Variable
+    {
+        public string name { get; set; }
+        public string value { get; set; }
+    }
+
+    public class AlfrescoTaskCompletionVars
+    {
+        public string action { get; set; }
+
+        public string taskid { get; set; }
+
+        public string taskname { get; set; }
+        public List<ActivitiProcessInstanceVar> variables { get; set; }
+    }
+
+    public class AlfrescoActivitiTaskList
+    {
+        public List<AlfrescoActivitiTaskInstance> data { get; set; }
+        public int total { get; set; }
+        public int start { get; set; }
+        public string sort { get; set; }
+        public string order { get; set; }
+        public int size { get; set; }
+    }
+
+    public class AlfrescoActivitiProcessInstanceList
+    {
+        public List<AlfrescoActivitiProcessInstance> data { get; set; }
+        public int total { get; set; }
+        public int start { get; set; }
+        public string sort { get; set; }
+        public string order { get; set; }
+        public int size { get; set; }
+    }
+
+
+    public class AlfrescoActivitiProcessInstancePostData
+    {
+        public string processDefinitionKey { get; set; }
+        public List<ActivitiProcessInstanceVar> variables {get;set;}
     }
 
     public class CamundaProcessInstVar
@@ -336,6 +432,7 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Models
     {
         public static string jBPMEvalProcessContainerID = "evaluation_1.0";
         public static string jBPMEvalProcessID = "evaluation";
+        public static string ActivitiProcessDefId = "evaluation";
     }
 
     public static class WebAppAndBPMUserMap

@@ -45,6 +45,7 @@ namespace ASPNETIdentityPostgres
         private static Uri CamundaRestBaseUri;
         private static Uri jBPMRestBaseUri;
         private static Uri jBPMRestUri;
+        private static Uri ActivitiRestUri;
         private static string usernameBPM = "";
         private static string passwordBPM = "";
 
@@ -66,8 +67,7 @@ namespace ASPNETIdentityPostgres
             CamundaRestBaseUri = new Uri(_iconfiguration["CamundaRestBaseUri"]);
             jBPMRestBaseUri = new Uri(_iconfiguration["jBPMRestBaseUri"]);
             jBPMRestUri = new Uri(_iconfiguration["jBPMRestUri"]);
-
-
+            ActivitiRestUri = new Uri(_iconfiguration["ActivitiRestUri"]);
 
             getCookies("walter.bates", "bpm").Wait(2000);
 
@@ -138,6 +138,22 @@ namespace ASPNETIdentityPostgres
             if (list != null)
             {
                 return View(list.ProcessInstance);
+            }
+            else
+            {
+                return View(null);
+            }
+        }
+
+        public async Task<IActionResult> MySimpleProcesses()
+        {
+            var list = await AlfrescoActivitiRestApiInvoker.GetProcessInstances(ActivitiRestUri, 
+                                                                                "kermit", 
+                                                                                "kermit");
+
+            if (list != null)
+            {
+                return View(list.data);
             }
             else
             {
@@ -574,6 +590,42 @@ namespace ASPNETIdentityPostgres
                                                                 passwordBPM);
 
             return View("MyEmpEvals", list.ProcessInstance);
+        }
+
+        public async Task<IActionResult> ActivitiProcInstDetails(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            int processInstanceId = 0;
+
+            int.TryParse(id, out processInstanceId);
+
+            var tasks = await AlfrescoActivitiRestApiInvoker.GetTaskInstances(processInstanceId,
+                                                            ActivitiRestUri,
+                                                            "kermit",
+                                                            "kermit");
+            foreach (var taskObj in tasks.data)
+            {
+                var dataForView = new AlfrescoTaskCompletionVars();
+                dataForView.taskname = taskObj.name;
+                dataForView.taskid = taskObj.id;
+                dataForView.action = "complete";
+                dataForView.variables = await AlfrescoActivitiRestApiInvoker.GetProcessInstanceVars(ActivitiRestUri,
+                                                                                                    processInstanceId.ToString(),
+                                                                                                    "kermit",
+                                                                                                    "kermit");
+                
+                return View("ActivitiCompleteSimpleTask", dataForView);
+            }
+
+            var list = await AlfrescoActivitiRestApiInvoker.GetProcessInstances(ActivitiRestUri,
+                                                                    "kermit",
+                                                                    "kermit");
+
+            return View("MySimpleProcesses", list.data);
         }
 
         // GET: Patients/Details/5
@@ -1037,6 +1089,72 @@ namespace ASPNETIdentityPostgres
             return View();
         }
 
+        public IActionResult ActivitiStartProcessInstance()
+        {
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ActivitiStartProcessInstance(AlfrescoActivitiProcessInstancePostData data)
+        {
+            if (data.processDefinitionKey?.Length > 0)
+            {
+                // Username and password are hardcoded. You can get them from a db.
+                data.variables = new List<ActivitiProcessInstanceVar>();
+                data.variables.Add(new ActivitiProcessInstanceVar { 
+                    name = "employee",
+                    value="katy"
+                });
+
+                data.variables.Add(new ActivitiProcessInstanceVar
+                {
+                    name = "self",
+                    value = ""
+                });
+
+                data.variables.Add(new ActivitiProcessInstanceVar
+                {
+                    name = "pm",
+                    value = ""
+                });
+
+                data.variables.Add(new ActivitiProcessInstanceVar
+                {
+                    name = "hr",
+                    value = ""
+                });
+
+                var result = await AlfrescoActivitiRestApiInvoker.CreateAProcessInstance(data,
+                                                                    Constants.ActivitiProcessDefId,
+                                                                    ActivitiRestUri,
+                                                                    "kermit",
+                                                                    "kermit");
+
+                int instanceId = 0;
+
+                int.TryParse(result?.id, out instanceId);
+
+                if (instanceId > 0)
+                {
+                    var list = await AlfrescoActivitiRestApiInvoker.GetProcessInstances(ActivitiRestUri,
+                                                                    "kermit",
+                                                                    "kermit");
+
+                    return View("MySimpleProcesses", list.data);
+                }
+                else
+                {
+                    return View(data);
+                }
+            }
+            else
+            {
+                return View(data);
+            }
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> jBPMStartEmpVal(EmployeeEvalStartProcessData data)
@@ -1215,6 +1333,30 @@ namespace ASPNETIdentityPostgres
             }
 
             return View("jBPMPMEval", data);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ActivitiCompleteSimpleTask(AlfrescoTaskCompletionVars vars)
+        {
+            var result = await AlfrescoActivitiRestApiInvoker.CompleteATask(vars.taskid.ToString(),
+                                                                            ActivitiRestUri,
+                                                                            "kermit",
+                                                                            "kermit",
+                                                                            vars);
+
+            if (result == 200 || result == 201)
+            {
+                var list = await AlfrescoActivitiRestApiInvoker.GetProcessInstances(ActivitiRestUri,
+                                                                        "kermit",
+                                                                        "kermit");
+
+                return View("MySimpleProcesses", list.data);
+            }
+            else
+            {
+                return View(vars);
+            }
         }
 
         [HttpPost]

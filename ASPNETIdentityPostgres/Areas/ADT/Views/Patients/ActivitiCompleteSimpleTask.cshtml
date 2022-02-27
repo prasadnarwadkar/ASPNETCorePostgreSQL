@@ -1,0 +1,164 @@
+﻿@model ASPNETIdentityPostgres.Areas.ADT.Models.AlfrescoTaskCompletionVars
+
+@{
+    ViewData["Title"] = "Complete User Message Task";
+    
+}
+
+<h3>Complete User Message Task (Alfresco Activiti)</h3>
+
+<div>
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="ActivitiCompleteSimpleTask">
+                @Html.HiddenFor(model => model.taskid)
+                @Html.HiddenFor(model => model.taskname)
+                @Html.HiddenFor(model => model.action)
+
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <h5>Process Instance Variables</h5>
+
+                @if (Model != null && Model.variables?.Count() == 0)
+                {
+                    <p class="alert-danger">No process variables set/available.</p>
+                }
+                @if (Model != null && Model.variables?.Count() > 0)
+                {
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Name
+                                </th>
+
+                                <th>Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.variables)
+                            {
+                                <tr>
+                                    <td>
+                                        @item.name
+                                    </td>
+
+                                    <td>
+                                        @item.value
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <p class="alert-danger">No process variables set/available.</p>
+                }
+
+                @if (Model != null && Model.variables?.Count() > 0)
+                {
+                    @if (Model.taskname == "Self Evaluation")
+                    {
+                        int i = Model.variables.IndexOf(Model.variables.FirstOrDefault(v => v.name == "self"));
+                        @Html.HiddenFor(model => model.variables[i].name)
+
+                        int employeeVar = Model.variables.IndexOf(Model.variables.FirstOrDefault(v => v.name == "employee"));
+                        @Html.HiddenFor(model => model.variables[employeeVar].name)
+                        @Html.HiddenFor(model => model.variables[employeeVar].value)
+
+                        int hrVar = Model.variables.IndexOf(Model.variables.FirstOrDefault(v => v.name == "hr"));
+
+                        if (hrVar != -1)
+                        {
+                            @Html.HiddenFor(model => model.variables[hrVar].name)
+                            @Html.HiddenFor(model => model.variables[hrVar].value)
+                        }
+
+                        int pmVar = Model.variables.IndexOf(Model.variables.FirstOrDefault(v => v.name == "pm"));
+
+                        if (pmVar != -1)
+                        {
+                            @Html.HiddenFor(model => model.variables[pmVar].name)
+                            @Html.HiddenFor(model => model.variables[pmVar].value)
+                        }
+
+                        <div class="form-group">
+                            <label asp-for="variables[i].value" class="control-label">Self Evaluation</label>
+                            <input asp-for="variables[i].value" class="form-control" />
+                            <span asp-validation-for="variables[i].value" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="submit" value="Submit" class="btn btn-primary" />
+                        </div>
+                    }
+
+                    @if (Model.taskname == "PM Evaluation")
+                    {
+                        int employeeVar = Model.variables.IndexOf(Model.variables.FirstOrDefault(v => v.name == "employee"));
+                        @Html.HiddenFor(model => model.variables[employeeVar].name)
+                        @Html.HiddenFor(model => model.variables[employeeVar].value)
+
+                        int selfVar = Model.variables.IndexOf(Model.variables.FirstOrDefault(v => v.name == "self"));
+                        @Html.HiddenFor(model => model.variables[selfVar].name)
+                        @Html.HiddenFor(model => model.variables[selfVar].value)
+
+                        int hrVar = Model.variables.IndexOf(Model.variables.FirstOrDefault(v => v.name == "hr"));
+                        @Html.HiddenFor(model => model.variables[hrVar].name)
+                        @Html.HiddenFor(model => model.variables[hrVar].value)
+
+                        int pmVar = Model.variables.IndexOf(Model.variables.FirstOrDefault(v => v.name == "pm"));
+                        @Html.HiddenFor(model => model.variables[pmVar].name)
+
+                        <div class="form-group">
+                            <label asp-for="variables[pmVar].value" class="control-label">PM Evaluation</label>
+                            <input asp-for="variables[pmVar].value" class="form-control" />
+                            <span asp-validation-for="variables[pmVar].value" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="submit" value="Submit" class="btn btn-primary" />
+                        </div>
+                    }
+
+                    @if (Model.taskname == "HR Evaluation")
+                    {
+                        int i = Model.variables.IndexOf(Model.variables.FirstOrDefault(v => v.name == "hr"));
+
+                        if (i != -1)
+                        {
+                            @Html.HiddenFor(model => model.variables[i].name)
+                            <div class="form-group">
+                                <label asp-for="variables[i].value" class="control-label">HR Evaluation</label>
+                                <input asp-for="variables[i].value" class="form-control" />
+                                <span asp-validation-for="variables[i].value" class="text-danger"></span>
+                            </div>
+                        }
+
+                        int employeeVar = Model.variables.IndexOf(Model.variables.FirstOrDefault(v => v.name == "employee"));
+                        @Html.HiddenFor(model => model.variables[employeeVar].name)
+                        @Html.HiddenFor(model => model.variables[employeeVar].value)
+
+                        int selfVar = Model.variables.IndexOf(Model.variables.FirstOrDefault(v => v.name == "self"));
+                        @Html.HiddenFor(model => model.variables[selfVar].name)
+                        @Html.HiddenFor(model => model.variables[selfVar].value)
+
+                        int pmVar = Model.variables.IndexOf(Model.variables.FirstOrDefault(v => v.name == "pm"));
+                        @Html.HiddenFor(model => model.variables[pmVar].name)
+                        @Html.HiddenFor(model => model.variables[pmVar].value)
+
+                        <div class="form-group">
+                            <input type="submit" value="Submit" class="btn btn-primary" />
+                        </div>
+                    }
+                }
+
+
+                <div class="form-group">
+                    <a asp-action="MySimpleProcesses" class="btn btn-danger" title="I do not have Alfresco Activiti running on my machine.">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
