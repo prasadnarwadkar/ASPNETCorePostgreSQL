@@ -9,7 +9,7 @@
 
 }
 
-<h3>Start A New Process Instance</h3>
+<h3>Start a New Employee Evaluation</h3>
 
 <div>
 
@@ -21,8 +21,14 @@
 
                 <div class="row">
                     <div class="col-md-4">
+                        <label class="control-label">Select Employee:</label>
+                        <select class="form-control" asp-for="employee">
+                            <option value="Jack">Jack</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
                         <div class="form-group">
-                            <input type="submit" value="Start the Process" class="btn btn-primary" />
+                            <input type="submit" value="Start a New Employee Evaluation" class="btn btn-primary" />
 
                         </div>
                         <div class="form-group">

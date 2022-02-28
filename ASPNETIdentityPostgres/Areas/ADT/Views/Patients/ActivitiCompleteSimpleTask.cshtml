@@ -2,21 +2,35 @@
 
 @{
     ViewData["Title"] = "Complete User Message Task";
-    
+
+    var username = User.Identity.Name;
+
+    var bpmRole = "";
+
+    var mapping = ASPNETIdentityPostgres.Areas.ADT.Models.WebAppAndBPMUserMap.mappings.FirstOrDefault(m => m.UserNameOnWebApp.ToLower() == username.ToLower());
+
+    if (mapping != null)
+    {
+        bpmRole = mapping.UserRoleOnjBPMEngineOrApp;
+    }
+
+    var employeeUsername = ASPNETIdentityPostgres.Areas.ADT.Models.WebAppAndBPMUserMap.mappings.FirstOrDefault(m => m.UserRoleOnActivitiEngineOrApp.ToLower() == "employee")?.UserNameOnWebApp;
+    var hrUsername = ASPNETIdentityPostgres.Areas.ADT.Models.WebAppAndBPMUserMap.mappings.FirstOrDefault(m => m.UserRoleOnActivitiEngineOrApp.ToLower() == "hr_admin")?.UserNameOnWebApp;
+    var pmUsername = ASPNETIdentityPostgres.Areas.ADT.Models.WebAppAndBPMUserMap.mappings.FirstOrDefault(m => m.UserRoleOnActivitiEngineOrApp.ToLower() == "pm")?.UserNameOnWebApp;
 }
 
-<h3>Complete User Message Task (Alfresco Activiti)</h3>
+<h3>Complete Task: @Model.taskname (Alfresco Activiti)</h3>
 
 <div>
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-6">
             <form asp-action="ActivitiCompleteSimpleTask">
                 @Html.HiddenFor(model => model.taskid)
                 @Html.HiddenFor(model => model.taskname)
                 @Html.HiddenFor(model => model.action)
 
                 <div asp-validation-summary="All" class="text-danger"></div>
-                <h5>Process Instance Variables</h5>
+                <h5>Process Instance Variables/Parameters so far:</h5>
 
                 @if (Model != null && Model.variables?.Count() == 0)
                 {
@@ -59,97 +73,118 @@
                 {
                     @if (Model.taskname == "Self Evaluation")
                     {
-                        int i = Model.variables.IndexOf(Model.variables.FirstOrDefault(v => v.name == "self"));
-                        @Html.HiddenFor(model => model.variables[i].name)
-
-                        int employeeVar = Model.variables.IndexOf(Model.variables.FirstOrDefault(v => v.name == "employee"));
-                        @Html.HiddenFor(model => model.variables[employeeVar].name)
-                        @Html.HiddenFor(model => model.variables[employeeVar].value)
-
-                        int hrVar = Model.variables.IndexOf(Model.variables.FirstOrDefault(v => v.name == "hr"));
-
-                        if (hrVar != -1)
+                        if (bpmRole == "employee")
                         {
-                            @Html.HiddenFor(model => model.variables[hrVar].name)
-                            @Html.HiddenFor(model => model.variables[hrVar].value)
+                            int i = Model.variables.IndexOf(Model.variables.FirstOrDefault(v => v.name == "self"));
+                            @Html.HiddenFor(model => model.variables[i].name)
+
+                            int employeeVar = Model.variables.IndexOf(Model.variables.FirstOrDefault(v => v.name == "employee"));
+                            @Html.HiddenFor(model => model.variables[employeeVar].name)
+                            @Html.HiddenFor(model => model.variables[employeeVar].value)
+
+                            int hrVar = Model.variables.IndexOf(Model.variables.FirstOrDefault(v => v.name == "hr"));
+
+                            if (hrVar != -1)
+                            {
+                                @Html.HiddenFor(model => model.variables[hrVar].name)
+                                @Html.HiddenFor(model => model.variables[hrVar].value)
+                            }
+
+                            int pmVar = Model.variables.IndexOf(Model.variables.FirstOrDefault(v => v.name == "pm"));
+
+                            if (pmVar != -1)
+                            {
+                                @Html.HiddenFor(model => model.variables[pmVar].name)
+                                @Html.HiddenFor(model => model.variables[pmVar].value)
+                            }
+
+                            <div class="form-group">
+                                <label asp-for="variables[i].value" class="control-label">Self Evaluation</label>
+                                <input asp-for="variables[i].value" class="form-control" />
+                                <span asp-validation-for="variables[i].value" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="submit" value="Submit" class="btn btn-primary" />
+                            </div>
                         }
-
-                        int pmVar = Model.variables.IndexOf(Model.variables.FirstOrDefault(v => v.name == "pm"));
-
-                        if (pmVar != -1)
+                        else
                         {
-                            @Html.HiddenFor(model => model.variables[pmVar].name)
-                            @Html.HiddenFor(model => model.variables[pmVar].value)
+                            <p class="alert-danger">Please login as @employeeUsername to evaluate yourself as an employee.</p>
                         }
-
-                        <div class="form-group">
-                            <label asp-for="variables[i].value" class="control-label">Self Evaluation</label>
-                            <input asp-for="variables[i].value" class="form-control" />
-                            <span asp-validation-for="variables[i].value" class="text-danger"></span>
-                        </div>
-
-                        <div class="form-group">
-                            <input type="submit" value="Submit" class="btn btn-primary" />
-                        </div>
                     }
 
                     @if (Model.taskname == "PM Evaluation")
                     {
-                        int employeeVar = Model.variables.IndexOf(Model.variables.FirstOrDefault(v => v.name == "employee"));
-                        @Html.HiddenFor(model => model.variables[employeeVar].name)
-                        @Html.HiddenFor(model => model.variables[employeeVar].value)
+                        if (bpmRole == "pm")
+                        {
+                            int employeeVar = Model.variables.IndexOf(Model.variables.FirstOrDefault(v => v.name == "employee"));
+                            @Html.HiddenFor(model => model.variables[employeeVar].name)
+                            @Html.HiddenFor(model => model.variables[employeeVar].value)
 
-                        int selfVar = Model.variables.IndexOf(Model.variables.FirstOrDefault(v => v.name == "self"));
-                        @Html.HiddenFor(model => model.variables[selfVar].name)
-                        @Html.HiddenFor(model => model.variables[selfVar].value)
+                            int selfVar = Model.variables.IndexOf(Model.variables.FirstOrDefault(v => v.name == "self"));
+                            @Html.HiddenFor(model => model.variables[selfVar].name)
+                            @Html.HiddenFor(model => model.variables[selfVar].value)
 
-                        int hrVar = Model.variables.IndexOf(Model.variables.FirstOrDefault(v => v.name == "hr"));
-                        @Html.HiddenFor(model => model.variables[hrVar].name)
-                        @Html.HiddenFor(model => model.variables[hrVar].value)
+                            int hrVar = Model.variables.IndexOf(Model.variables.FirstOrDefault(v => v.name == "hr"));
+                            @Html.HiddenFor(model => model.variables[hrVar].name)
+                            @Html.HiddenFor(model => model.variables[hrVar].value)
 
-                        int pmVar = Model.variables.IndexOf(Model.variables.FirstOrDefault(v => v.name == "pm"));
-                        @Html.HiddenFor(model => model.variables[pmVar].name)
+                            int pmVar = Model.variables.IndexOf(Model.variables.FirstOrDefault(v => v.name == "pm"));
+                            @Html.HiddenFor(model => model.variables[pmVar].name)
 
-                        <div class="form-group">
-                            <label asp-for="variables[pmVar].value" class="control-label">PM Evaluation</label>
-                            <input asp-for="variables[pmVar].value" class="form-control" />
-                            <span asp-validation-for="variables[pmVar].value" class="text-danger"></span>
-                        </div>
+                            <div class="form-group">
+                                <label asp-for="variables[pmVar].value" class="control-label">PM Evaluation</label>
+                                <input asp-for="variables[pmVar].value" class="form-control" />
+                                <span asp-validation-for="variables[pmVar].value" class="text-danger"></span>
+                            </div>
 
-                        <div class="form-group">
-                            <input type="submit" value="Submit" class="btn btn-primary" />
-                        </div>
+                            <div class="form-group">
+                                <input type="submit" value="Submit" class="btn btn-primary" />
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="alert-danger">Please login as @pmUsername to evaluate an employee as a PM.</p>
+                        }
                     }
 
                     @if (Model.taskname == "HR Evaluation")
                     {
-                        int i = Model.variables.IndexOf(Model.variables.FirstOrDefault(v => v.name == "hr"));
-
-                        if (i != -1)
+                        if (bpmRole == "hr_admin")
                         {
-                            @Html.HiddenFor(model => model.variables[i].name)
+                            int i = Model.variables.IndexOf(Model.variables.FirstOrDefault(v => v.name == "hr"));
+
+                            if (i != -1)
+                            {
+                                @Html.HiddenFor(model => model.variables[i].name)
+                                <div class="form-group">
+                                    <label asp-for="variables[i].value" class="control-label">HR Evaluation</label>
+                                    <input asp-for="variables[i].value" class="form-control" />
+                                    <span asp-validation-for="variables[i].value" class="text-danger"></span>
+                                </div>
+                            }
+
+                            int employeeVar = Model.variables.IndexOf(Model.variables.FirstOrDefault(v => v.name == "employee"));
+                            @Html.HiddenFor(model => model.variables[employeeVar].name)
+                            @Html.HiddenFor(model => model.variables[employeeVar].value)
+
+                            int selfVar = Model.variables.IndexOf(Model.variables.FirstOrDefault(v => v.name == "self"));
+                            @Html.HiddenFor(model => model.variables[selfVar].name)
+                            @Html.HiddenFor(model => model.variables[selfVar].value)
+
+                            int pmVar = Model.variables.IndexOf(Model.variables.FirstOrDefault(v => v.name == "pm"));
+                            @Html.HiddenFor(model => model.variables[pmVar].name)
+                            @Html.HiddenFor(model => model.variables[pmVar].value)
+
                             <div class="form-group">
-                                <label asp-for="variables[i].value" class="control-label">HR Evaluation</label>
-                                <input asp-for="variables[i].value" class="form-control" />
-                                <span asp-validation-for="variables[i].value" class="text-danger"></span>
+                                <input type="submit" value="Submit" class="btn btn-primary" />
                             </div>
                         }
-
-                        int employeeVar = Model.variables.IndexOf(Model.variables.FirstOrDefault(v => v.name == "employee"));
-                        @Html.HiddenFor(model => model.variables[employeeVar].name)
-                        @Html.HiddenFor(model => model.variables[employeeVar].value)
-
-                        int selfVar = Model.variables.IndexOf(Model.variables.FirstOrDefault(v => v.name == "self"));
-                        @Html.HiddenFor(model => model.variables[selfVar].name)
-                        @Html.HiddenFor(model => model.variables[selfVar].value)
-
-                        int pmVar = Model.variables.IndexOf(Model.variables.FirstOrDefault(v => v.name == "pm"));
-                        @Html.HiddenFor(model => model.variables[pmVar].name)
-                        @Html.HiddenFor(model => model.variables[pmVar].value)
-
-                        <div class="form-group">
-                            <input type="submit" value="Submit" class="btn btn-primary" />
-                        </div>
+                        else
+                        {
+                            <p class="alert-danger">Please login as @hrUsername to evaluate an employee as an HR.</p>
+                        }
                     }
                 }
 

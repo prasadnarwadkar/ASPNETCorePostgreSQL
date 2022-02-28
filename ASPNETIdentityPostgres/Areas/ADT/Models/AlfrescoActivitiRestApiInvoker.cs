@@ -146,6 +146,8 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Models
                 MissingMemberHandling = MissingMemberHandling.Ignore
             };
 
+            data.employee = null;
+
             request.AddParameter("application/json", JsonConvert.SerializeObject(new AlfrescoActivitiProcessInstancePostData
             {
                 processDefinitionKey = processDefID,

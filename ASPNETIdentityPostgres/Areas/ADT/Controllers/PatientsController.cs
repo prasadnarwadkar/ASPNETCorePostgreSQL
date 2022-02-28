@@ -1105,7 +1105,7 @@ namespace ASPNETIdentityPostgres
                 data.variables = new List<ActivitiProcessInstanceVar>();
                 data.variables.Add(new ActivitiProcessInstanceVar { 
                     name = "employee",
-                    value="katy"
+                    value=data.employee
                 });
 
                 data.variables.Add(new ActivitiProcessInstanceVar

@@ -111,6 +111,8 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Models
     {
         public string processDefinitionKey { get; set; }
         public List<ActivitiProcessInstanceVar> variables {get;set;}
+
+        public string employee { get; set; }
     }
 
     public class CamundaProcessInstVar
@@ -409,6 +411,10 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Models
         public string UserRoleOnjBPMEngineOrApp { get; internal set; }
         public string UserNameOnjBPMEngineOrApp { get; internal set; }
         public string PasswordOnjBPMEngineOrApp { get; internal set; }
+        public string UserIdOnActivitiEngineOrApp { get; internal set; }
+        public string UserRoleOnActivitiEngineOrApp { get; internal set; }
+        public string UserNameOnActivitiEngineOrApp { get; internal set; }
+        public string PasswordOnActivitiEngineOrApp { get; internal set; }
     }
 
     /// <summary>
@@ -460,6 +466,10 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Models
                 UserRoleOnjBPMEngineOrApp = "employee",
                 UserNameOnjBPMEngineOrApp = "jack",
                 PasswordOnjBPMEngineOrApp = "jack",
+                UserIdOnActivitiEngineOrApp = "",
+                UserRoleOnActivitiEngineOrApp = "employee",
+                UserNameOnActivitiEngineOrApp = "kermit",
+                PasswordOnActivitiEngineOrApp = "kermit"
             });
 
             mappings.Add(new mapping { 
@@ -476,6 +486,10 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Models
                 UserRoleOnjBPMEngineOrApp = "pm",
                 UserNameOnjBPMEngineOrApp = "john",
                 PasswordOnjBPMEngineOrApp = "john",
+                UserIdOnActivitiEngineOrApp = "",
+                UserRoleOnActivitiEngineOrApp = "pm",
+                UserNameOnActivitiEngineOrApp = "kermit",
+                PasswordOnActivitiEngineOrApp = "kermit"
             });
 
             mappings.Add(new mapping
@@ -493,6 +507,10 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Models
                 UserRoleOnjBPMEngineOrApp = "hr_admin",
                 UserNameOnjBPMEngineOrApp = "wbadmin",
                 PasswordOnjBPMEngineOrApp = "wbadmin",
+                UserIdOnActivitiEngineOrApp = "",
+                UserRoleOnActivitiEngineOrApp = "hr_admin",
+                UserNameOnActivitiEngineOrApp = "kermit",
+                PasswordOnActivitiEngineOrApp = "kermit"
             });
 
             
