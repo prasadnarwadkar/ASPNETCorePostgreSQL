@@ -5,16 +5,18 @@
 
     var username = User.Identity.Name;
 
+    var employeeBeingEvaluated = Model.variables.FirstOrDefault(v => v.name == "employee").value;
+
     var bpmRole = "";
 
     var mapping = ASPNETIdentityPostgres.Areas.ADT.Models.WebAppAndBPMUserMap.mappings.FirstOrDefault(m => m.UserNameOnWebApp.ToLower() == username.ToLower());
 
     if (mapping != null)
     {
-        bpmRole = mapping.UserRoleOnjBPMEngineOrApp;
+        bpmRole = mapping.UserRoleOnActivitiEngineOrApp;
     }
 
-    var employeeUsername = ASPNETIdentityPostgres.Areas.ADT.Models.WebAppAndBPMUserMap.mappings.FirstOrDefault(m => m.UserRoleOnActivitiEngineOrApp.ToLower() == "employee")?.UserNameOnWebApp;
+    var employeeUsernames = ASPNETIdentityPostgres.Areas.ADT.Models.WebAppAndBPMUserMap.mappings.Where(m => m.UserIdOnActivitiEngineOrApp.ToLower() == username.ToLower());
     var hrUsername = ASPNETIdentityPostgres.Areas.ADT.Models.WebAppAndBPMUserMap.mappings.FirstOrDefault(m => m.UserRoleOnActivitiEngineOrApp.ToLower() == "hr_admin")?.UserNameOnWebApp;
     var pmUsername = ASPNETIdentityPostgres.Areas.ADT.Models.WebAppAndBPMUserMap.mappings.FirstOrDefault(m => m.UserRoleOnActivitiEngineOrApp.ToLower() == "pm")?.UserNameOnWebApp;
 }
@@ -73,7 +75,7 @@
                 {
                     @if (Model.taskname == "Self Evaluation")
                     {
-                        if (bpmRole == "employee")
+                        if (bpmRole == "employee" && username.ToLower() == employeeBeingEvaluated.ToLower())
                         {
                             int i = Model.variables.IndexOf(Model.variables.FirstOrDefault(v => v.name == "self"));
                             @Html.HiddenFor(model => model.variables[i].name)
@@ -110,7 +112,7 @@
                         }
                         else
                         {
-                            <p class="alert-danger">Please login as @employeeUsername to evaluate yourself as an employee.</p>
+                            <p class="alert-danger">Please login as @employeeBeingEvaluated to evaluate yourself as an employee.</p>
                         }
                     }
 

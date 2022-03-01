@@ -7,6 +7,20 @@
         .Select(c => new SelectListItem() { Text = c.Key, Value = c.Value })
     .ToList();
 
+    var username = User.Identity.Name;
+
+    var bpmRole = "";
+
+    var mapping = ASPNETIdentityPostgres.Areas.ADT.Models.WebAppAndBPMUserMap.mappings.FirstOrDefault(m => m.UserNameOnWebApp.ToLower() == username.ToLower());
+
+    if (mapping != null)
+    {
+        bpmRole = mapping.UserRoleOnActivitiEngineOrApp;
+    }
+
+    var employeeUsernames = ASPNETIdentityPostgres.Areas.ADT.Models.WebAppAndBPMUserMap.mappings.Where(m => m.UserRoleOnActivitiEngineOrApp.ToLower() == "employee").Select(e => new SelectListItem { Text = e.UserIdOnActivitiEngineOrApp, Value = e.UserIdOnActivitiEngineOrApp }).ToList();
+    var hrUsername = ASPNETIdentityPostgres.Areas.ADT.Models.WebAppAndBPMUserMap.mappings.FirstOrDefault(m => m.UserRoleOnActivitiEngineOrApp.ToLower() == "hr_admin")?.UserNameOnWebApp;
+    var pmUsername = ASPNETIdentityPostgres.Areas.ADT.Models.WebAppAndBPMUserMap.mappings.FirstOrDefault(m => m.UserRoleOnActivitiEngineOrApp.ToLower() == "pm")?.UserNameOnWebApp;
 }
 
 <h3>Start a New Employee Evaluation</h3>
@@ -22,15 +36,22 @@
                 <div class="row">
                     <div class="col-md-4">
                         <label class="control-label">Select Employee:</label>
-                        <select class="form-control" asp-for="employee">
-                            <option value="Jack">Jack</option>
+                        <select class="form-control" asp-for="employee" asp-items="employeeUsernames">
+                            
                         </select>
                     </div>
                     <div class="col-md-4">
-                        <div class="form-group">
-                            <input type="submit" value="Start a New Employee Evaluation" class="btn btn-primary" />
+                        @if (bpmRole == "pm" || bpmRole == "hr_admin")
+                        {
+                            <div class="form-group">
+                                <input type="submit" value="Start a New Employee Evaluation" class="btn btn-primary" />
 
-                        </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="alert-danger">Please login as @pmUsername or @hrUsername to start an evaluation of an employee.</p>
+                        }
                         <div class="form-group">
                             <a asp-action="MySimpleProcesses" class="btn btn-danger" title="I do not have Alfresco Activiti running on my machine.">Cancel</a>
                         </div>

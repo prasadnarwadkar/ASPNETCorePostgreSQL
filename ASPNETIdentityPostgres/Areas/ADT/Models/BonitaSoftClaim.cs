@@ -466,7 +466,28 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Models
                 UserRoleOnjBPMEngineOrApp = "employee",
                 UserNameOnjBPMEngineOrApp = "jack",
                 PasswordOnjBPMEngineOrApp = "jack",
-                UserIdOnActivitiEngineOrApp = "",
+                UserIdOnActivitiEngineOrApp = "jack@example.com",
+                UserRoleOnActivitiEngineOrApp = "employee",
+                UserNameOnActivitiEngineOrApp = "kermit",
+                PasswordOnActivitiEngineOrApp = "kermit"
+            });
+
+            mappings.Add(new mapping
+            {
+                UserNameOnWebApp = "44310_a@b.com",
+                UserIdOnBPMEngineOrApp = "4",
+                UserRoleOnBPMEngineOrApp = "claim_initiator",
+                UserNameOnBPMEngineOrApp = "walter.bates",
+                PasswordOnBPMEngineOrApp = "bpm",
+                UserIdOnBPMEngineOrApp2 = "",
+                UserRoleOnBPMEngineOrApp2 = "invoice_initiator",
+                UserNameOnBPMEngineOrApp2 = "demo",
+                PasswordOnBPMEngineOrApp2 = "demo",
+                UserIdOnjBPMEngineOrApp = "",
+                UserRoleOnjBPMEngineOrApp = "employee",
+                UserNameOnjBPMEngineOrApp = "jack",
+                PasswordOnjBPMEngineOrApp = "jack",
+                UserIdOnActivitiEngineOrApp = "44310_a@b.com",
                 UserRoleOnActivitiEngineOrApp = "employee",
                 UserNameOnActivitiEngineOrApp = "kermit",
                 PasswordOnActivitiEngineOrApp = "kermit"
