@@ -2,6 +2,7 @@
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,13 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Models
     /// </summary>
     public static class AlfrescoActivitiRestApiInvoker
     {
+        public static Uri ActivitiRestUri { get; internal set; }
+
+        public static void SetActivitiRestUri(Uri restUri)
+        {
+            ActivitiRestUri = restUri;
+        }
+
         /// <summary>
         /// Get all the process instances.
         /// kermit/kermit
@@ -68,6 +76,33 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Models
             var list = JsonConvert.DeserializeObject<List<ActivitiProcessInstanceVar>>(response.Content, settings);
 
             return list;
+        }
+
+        public static async Task<MemoryStream> GetProcessInstanceDiagram(Uri baseUri,
+                                                string processInstanceId,
+                                                string username,
+                                                string password)
+        {
+            var url = new Uri(baseUri, "runtime/process-instances/" + processInstanceId + "/diagram");
+
+            var client = new RestClient(url);
+            client.Timeout = -1;
+            var request = new RestRequest(Method.GET);
+
+            request.AddHeader("Accept", "application/json");
+            request.AddHeader("Authorization", "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes(username + ":" + password)));
+
+            IRestResponse response = await client.ExecuteAsync(request);
+
+            var settings = new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                MissingMemberHandling = MissingMemberHandling.Ignore
+            };
+
+            var stream = new MemoryStream(response.RawBytes);
+
+            return stream;
         }
 
         /// <summary>
@@ -178,6 +213,7 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Models
 
             taskVars.taskid = null;
             taskVars.taskname = null;
+            taskVars.processInstanceId = null;
 
             var client = new RestClient(url);
 

@@ -1,6 +1,8 @@
 ﻿@model ASPNETIdentityPostgres.Areas.ADT.Models.AlfrescoTaskCompletionVars
 
 @{
+    
+
     ViewData["Title"] = "Complete User Message Task";
 
     var username = User.Identity.Name;
@@ -26,10 +28,25 @@
 <div>
     <div class="row">
         <div class="col-md-6">
+            @if (bpmRole == "pm")
+            {
+                <p>You are a Project Manager.</p>
+            }
+
+            @if (bpmRole == "hr_admin")
+            {
+                <p>You are an HR/administrator.</p>
+            }
+
+            @if (bpmRole == "employee")
+            {
+                <p>You are an employee.</p>
+            }
             <form asp-action="ActivitiCompleteSimpleTask">
                 @Html.HiddenFor(model => model.taskid)
                 @Html.HiddenFor(model => model.taskname)
                 @Html.HiddenFor(model => model.action)
+                @Html.HiddenFor(model => model.processInstanceId)
 
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <h5>Process Instance Variables/Parameters so far:</h5>
@@ -195,6 +212,9 @@
                     <a asp-action="MySimpleProcesses" class="btn btn-danger" title="I do not have Alfresco Activiti running on my machine.">Cancel</a>
                 </div>
             </form>
+        </div>
+        <div class="col-md-6">
+            <img src="@Url.Action("DownloadDiagram", "Patients", new { id = Model.processInstanceId })" class="hide"/>
         </div>
     </div>
 </div>

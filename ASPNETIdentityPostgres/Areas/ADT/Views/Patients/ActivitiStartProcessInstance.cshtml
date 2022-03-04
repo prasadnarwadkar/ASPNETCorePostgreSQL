@@ -29,6 +29,20 @@
 
     <div class="row">
         <div class="col-md-12">
+            @if (bpmRole == "pm")
+            {
+                <p>You are a Project Manager.</p>
+            }
+
+            @if (bpmRole == "hr_admin")
+            {
+                <p>You are an HR/administrator.</p>
+            }
+
+            @if (bpmRole == "employee")
+            {
+                <p>You are an employee.</p>
+            }
             <form asp-action="ActivitiStartProcessInstance">
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <input type="hidden" asp-for="processDefinitionKey" value="@ASPNETIdentityPostgres.Areas.ADT.Models.Constants.ActivitiProcessDefId" />
@@ -37,7 +51,6 @@
                     <div class="col-md-4">
                         <label class="control-label">Select Employee:</label>
                         <select class="form-control" asp-for="employee" asp-items="employeeUsernames">
-                            
                         </select>
                     </div>
                     <div class="col-md-4">

@@ -2,11 +2,28 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
+@{ 
+    var username = User?.Identity?.Name;
+    var bpmRole = "";
+
+    if (!string.IsNullOrWhiteSpace(username))
+    {
+
+
+        var mapping = ASPNETIdentityPostgres.Areas.ADT.Models.WebAppAndBPMUserMap.mappings.FirstOrDefault(m => m.UserNameOnWebApp.ToLower() == username.ToLower());
+
+        if (mapping != null)
+        {
+            bpmRole = mapping.UserRoleOnBPMEngineOrApp;
+        }
+    }
+}
+
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
     <li class="nav-item">
-        <a  class="nav-link text-dark" asp-area="identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
+        <a  class="nav-link text-dark" asp-area="identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name! </a>
     </li>
     <li class="nav-item">
         <form class="form-inline" asp-area="identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Account/Login", new { area = "identity" })" method="post" >

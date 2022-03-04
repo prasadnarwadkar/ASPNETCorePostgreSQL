@@ -83,6 +83,8 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Models
         public string taskid { get; set; }
 
         public string taskname { get; set; }
+
+        public string processInstanceId { get; set; }
         public List<ActivitiProcessInstanceVar> variables { get; set; }
     }
 

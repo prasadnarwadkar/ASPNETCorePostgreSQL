@@ -1,6 +1,8 @@
 ﻿@model IEnumerable<ASPNETIdentityPostgres.Areas.ADT.Models.AlfrescoActivitiProcessInstance>
 
 @{
+    var activitiRestUri = ASPNETIdentityPostgres.Areas.ADT.Models.AlfrescoActivitiRestApiInvoker.ActivitiRestUri;
+    
     ViewData["Title"] = "My Employee Evaluations";
 
     var username = User.Identity.Name;
@@ -19,13 +21,43 @@
     var pmUsername = ASPNETIdentityPostgres.Areas.ADT.Models.WebAppAndBPMUserMap.mappings.FirstOrDefault(m => m.UserRoleOnActivitiEngineOrApp.ToLower() == "pm")?.UserNameOnWebApp;
 }
 
-<div class="row">
-    <div class="col-md-6">
-        <p class="small">This example uses Alfresco Activiti RESTful API and an example employee evaluation process is completed start to finish using that API.</p>
-        <p class="small">Alfresco Activiti must be running for this to work. Please refer to <a href="https://www.activiti.org/userguide/">this page</a> and follow the simple instructions. There are links to download the Activiti Web apps (WARs) and then deploy them  in Apache Tomcat.</p>
+<div class="modal" tabindex="-1" role="dialog" id="exampleModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Alfresco Activiti Engine Must Be Running</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="small">This example uses Alfresco Activiti RESTful API and an example employee evaluation process is completed start to finish using that API.</p>
+                <p class="small">Alfresco Activiti must be running for this to work. Please refer to <a href="https://www.activiti.org/userguide/">this page</a> and follow the simple instructions. There are links to download the Activiti Web apps (WARs) and then deploy them  in Apache Tomcat.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
     </div>
-    
-    <div class="col-md-6">
+</div>
+
+<div class="row">
+    <div class="col-md-10">
+        @if (bpmRole == "pm")
+        {
+            <p>You are a Project Manager.</p>
+        }
+
+        @if (bpmRole == "hr_admin")
+        {
+            <p>You are an HR/administrator.</p>
+        }
+
+        @if (bpmRole == "employee")
+        {
+            <p>You are an employee.</p>
+        }
+
         @if (bpmRole == "pm" || bpmRole == "hr_admin")
         {
             <p>
@@ -37,7 +69,7 @@
             <p class="alert-danger">Please login as @hrUsername or @pmUsername to start a new Employee Evaluation.</p>
         }
         <div>
-            
+
 
             @if (Model == null)
             {
@@ -47,7 +79,7 @@
             <h5>@ViewData["Title"]</h5>
             @if (Model != null && Model.Count() == 0)
             {
-                <p>All tasks have been completed. Please start a new process instance.</p>
+                <p>All tasks have been completed. Please start a new Employee Evaluation.</p>
             }
             @if (Model != null && Model.Count() > 0)
             {
@@ -55,8 +87,20 @@
                     <thead>
                         <tr>
                             <th>
-                                Instance ID
+                                Employee
                             </th>
+                            <th>
+                                Comments by employee
+                            </th>
+                            <th>
+                                Comments by HR
+                            </th>
+                            <th>
+                                Comments by PM
+                            </th>
+                            @*<th>
+                                Instance ID
+                            </th>*@
 
                             <th></th>
                         </tr>
@@ -64,10 +108,26 @@
                     <tbody>
                         @foreach (var item in Model)
                         {
+                            var vars = await ASPNETIdentityPostgres.Areas.ADT.Models.AlfrescoActivitiRestApiInvoker.GetProcessInstanceVars(activitiRestUri,
+                                                                                        item.id,
+                                                                                        "kermit",
+                                                                                        "kermit");
                             <tr>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.id)
+                                    @vars.FirstOrDefault(v => v.name == "employee").value
                                 </td>
+                                <td>
+                                    @vars.FirstOrDefault(v => v.name == "self").value
+                                </td>
+                                <td>
+                                    @vars.FirstOrDefault(v => v.name == "hr").value
+                                </td>
+                                <td>
+                                    @vars.FirstOrDefault(v => v.name == "pm").value
+                                </td>
+                                @*<td>
+                                    @Html.DisplayFor(modelItem => item.id)
+                                </td>*@
 
                                 <td>
                                     <a asp-action="ActivitiProcInstDetails" asp-route-id="@item.id">View Details</a>
@@ -83,6 +143,12 @@
             }
         </div>
     </div>
+     <div class="col-md-2">
+         <!-- Button trigger modal -->
+         <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModal">
+             Info
+         </button>
+     </div>
 </div>
 
 

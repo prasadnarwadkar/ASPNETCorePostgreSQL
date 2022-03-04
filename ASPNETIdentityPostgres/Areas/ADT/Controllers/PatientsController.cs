@@ -19,6 +19,7 @@ using Newtonsoft.Json;
 using System.Text.Json;
 using Newtonsoft.Json.Linq;
 using Microsoft.Extensions.Configuration;
+using System.IO;
 
 namespace ASPNETIdentityPostgres
 {
@@ -70,6 +71,7 @@ namespace ASPNETIdentityPostgres
             ActivitiRestUri = new Uri(_iconfiguration["ActivitiRestUri"]);
 
             getCookies("walter.bates", "bpm").Wait(2000);
+            AlfrescoActivitiRestApiInvoker.SetActivitiRestUri(ActivitiRestUri);
 
             // Call background service.
             Task.WaitAll(_HostedService.StartAsync(new System.Threading.CancellationToken()));
@@ -85,6 +87,19 @@ namespace ASPNETIdentityPostgres
             );
 
             return LocalRedirect(returnUrl);
+        }
+
+        public async Task<IActionResult> DownloadDiagram(string id)
+        {
+            Stream stream = await AlfrescoActivitiRestApiInvoker.GetProcessInstanceDiagram(ActivitiRestUri,
+                                                                            id,
+                                                                            "kermit",
+                                                                            "kermit");
+
+            if (stream == null)
+                return NotFound();
+
+            return File(stream, "application/octet-stream"); // returns a FileStreamResult
         }
 
         // GET: Patients
@@ -613,6 +628,7 @@ namespace ASPNETIdentityPostgres
                 dataForView.taskname = taskObj.name;
                 dataForView.taskid = taskObj.id;
                 dataForView.action = "complete";
+                dataForView.processInstanceId = processInstanceId.ToString();
                 dataForView.variables = await AlfrescoActivitiRestApiInvoker.GetProcessInstanceVars(ActivitiRestUri,
                                                                                                     processInstanceId.ToString(),
                                                                                                     "kermit",
