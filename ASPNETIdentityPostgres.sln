@@ -15,7 +15,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnnaturalDeathsMicroservice
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnnaturalDeathsRcvrMicroservice", "UnnaturalDeathRcvrMicroservice\UnnaturalDeathsRcvrMicroservice.csproj", "{5E6F8BB6-7772-4CE8-A6C4-4E1583DDD719}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "datasyncservice", "datasyncservice\datasyncservice.csproj", "{C366AE88-EEF6-4F52-8D12-98306C6A3367}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "datasyncservice", "datasyncservice\datasyncservice.csproj", "{C366AE88-EEF6-4F52-8D12-98306C6A3367}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B19A12A0-7FE7-4D30-BCD1-98F9EC7E9C97}"
+	ProjectSection(SolutionItems) = preProject
+		db_script.sql = db_script.sql
+		db_script2.sql = db_script2.sql
+		evaluation.bpmn20.xml = evaluation.bpmn20.xml
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
