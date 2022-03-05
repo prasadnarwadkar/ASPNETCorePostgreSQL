@@ -20,50 +20,50 @@
 <div>
     @if (bpmRole == "invoice_approver")
     {
+        <p class="alert-info small">You are an invoice approver. Log on as another user (a@b.com) to raise/post invoices.</p>
+        <div class="row">
+            <div class="col-md-4">
+                <form asp-action="ApproveInvoiceCamunda">
+                    @Html.HiddenFor(model => model.taskId)
+                    <div asp-validation-summary="All" class="text-danger"></div>
 
-    <div class="row">
-        <div class="col-md-4">
-            <form asp-action="ApproveInvoiceCamunda">
-                @Html.HiddenFor(model => model.taskId)
-                <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="form-group">
+                        <label class="control-label">Invoice Number</label>
+                        <input asp-for="vars[0].value" class="form-control" readonly />
+                        <span asp-validation-for="vars[0].value" class="text-danger"></span>
+                    </div>
 
-                <div class="form-group">
-                    <label class="control-label">Invoice Number</label>
-                    <input asp-for="vars[0].value" class="form-control" readonly />
-                    <span asp-validation-for="vars[0].value" class="text-danger"></span>
-                </div>
+                    <div class="form-group">
+                        <label class="control-label">Amount</label>
+                        <input asp-for="vars[1].value" class="form-control" readonly />
+                        <span asp-validation-for="vars[1].value" class="text-danger"></span>
+                    </div>
 
-                <div class="form-group">
-                    <label class="control-label">Amount</label>
-                    <input asp-for="vars[1].value" class="form-control" readonly />
-                    <span asp-validation-for="vars[1].value" class="text-danger"></span>
-                </div>
+                    <div class="form-group">
+                        <label class="control-label">Creditor</label>
+                        <input asp-for="vars[2].value" class="form-control" readonly />
+                        <span asp-validation-for="vars[2].value" class="text-danger"></span>
+                    </div>
 
-                <div class="form-group">
-                    <label class="control-label">Creditor</label>
-                    <input asp-for="vars[2].value" class="form-control" readonly />
-                    <span asp-validation-for="vars[2].value" class="text-danger"></span>
-                </div>
+                    <div class="form-group">
+                        <label class="control-label">Invoice Category</label>
+                        <input asp-for="vars[3].value" class="form-control" readonly />
+                        <span asp-validation-for="vars[3].value" class="text-danger"></span>
+                    </div>
 
-                <div class="form-group">
-                    <label class="control-label">Invoice Category</label>
-                    <input asp-for="vars[3].value" class="form-control" readonly />
-                    <span asp-validation-for="vars[3].value" class="text-danger"></span>
-                </div>
+                    <label class="checkbox-inline">
+                        <input asp-for="variables.approved.value" type="checkbox" /> Check to approve; uncheck to reject
+                    </label>
+                    <div class="form-group">
+                        <input type="submit" value="Approve/Reject Invoice" class="btn btn-primary" />
 
-                <label class="checkbox-inline">
-                    <input asp-for="variables.approved.value" type="checkbox" /> Check to approve; uncheck to reject
-                </label>
-                <div class="form-group">
-                    <input type="submit" value="Approve/Reject Invoice" class="btn btn-primary" />
-
-                </div>
-                <div class="form-group">
-                    <a asp-action="MyInvoices" class="btn btn-danger" title="I do not have Camunda Engine/Platform running on my machine.">Cancel</a>
-                </div>
-            </form>
+                    </div>
+                    <div class="form-group">
+                        <a asp-action="MyInvoices" class="btn btn-danger" title="I do not have Camunda Engine/Platform running on my machine.">Cancel</a>
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
     }
 </div>
 

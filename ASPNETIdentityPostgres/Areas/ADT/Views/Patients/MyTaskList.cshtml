@@ -17,21 +17,35 @@
 
 <p class="alert-danger">@ViewData["NoConnError"]</p>
 
-<div class="row">
-    <div class="col-md-6">
-        <p class="small">This example uses BonitaSoft RESTful API and the claim is submitted using that API. Next steps in the claim management workflow can be implemented using the same REST API (with different URLs and data as per the step)</p>
-        <p class="small">BonitaSoft Engine (Studio) must be running for this to work. Please refer to <a href="https://documentation.bonitasoft.com/bonita/2021.2/getting-started/draw-bpmn-diagram">this page</a> and follow all the instructions from the pages linked on this page. There are links to download the BonitaSoft BPM studio and then work with it. BonitaSoft doesn't expose conventional API. However, HTTP-based API can still be used to interact with it.</p>
+<div class="modal" tabindex="-1" role="dialog" id="exampleModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">BonitaSoft Engine Must Be Running</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="small">This example uses BonitaSoft RESTful API and the claim is submitted using that API. Next steps in the claim management workflow can be implemented using the same REST API (with different URLs and data as per the step)</p>
+                <p class="small">BonitaSoft Engine (Studio) must be running for this to work. Please refer to <a href="https://documentation.bonitasoft.com/bonita/2021.2/getting-started/draw-bpmn-diagram">this page</a> and follow all the instructions from the pages linked on this page. There are links to download the BonitaSoft BPM studio and then work with it. BonitaSoft doesn't expose conventional API. However, HTTP-based API can still be used to interact with it.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
     </div>
-    <div class="col-md-6">
+</div>
+
+<div class="row">
+    <div class="col-md-10">
         @if (bpmRole == "claim_initiator")
         {
-            if (ViewData["NoConnError"]?.ToString().Length == 0)
-            {
+            <p class="alert-info small">You are a claim initiator (a customer). You can raise claims and review the answer/comments from the claim reviewer and rate how satisfied you are with the service.</p>
             <p>
                 <a asp-action="SubmitClaimBonitaSoft" class="btn btn-primary">Submit a new claim</a>
 
             </p>
-            }
         }
         <div>
 
@@ -70,7 +84,7 @@
                                 <td>
                                     @Html.DisplayFor(modelItem => item.displayName)
                                 </td>
-                                
+
                                 <td>
                                     <a asp-action="BonitaSoftTaskDetails" asp-route-id="@item.id">Go To Task Details</a>
                                 </td>
@@ -80,6 +94,12 @@
                 </tbody>
             </table>
         </div>
+    </div>
+    <div class="col-md-2">
+        <!-- Button trigger modal -->
+
+        <button type="button" class="glyphicon glyphicon-info-sign" data-toggle="modal" data-target="#exampleModal">
+        </button>
     </div>
 </div>
 

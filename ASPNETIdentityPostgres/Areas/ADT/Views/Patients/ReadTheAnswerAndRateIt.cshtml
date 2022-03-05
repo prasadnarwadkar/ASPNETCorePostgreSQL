@@ -3,6 +3,17 @@
 @{
     ViewData["Title"] = "Review and Answer Claim";
     Layout = "_Layout";
+
+    var username = User.Identity.Name;
+
+    var bpmRole = "";
+
+    var mapping = ASPNETIdentityPostgres.Areas.ADT.Models.WebAppAndBPMUserMap.mappings.FirstOrDefault(m => m.UserNameOnWebApp.ToLower() == username.ToLower());
+
+    if (mapping != null)
+    {
+        bpmRole = mapping.UserRoleOnBPMEngineOrApp;
+    }
 }
 
 <h3>Read the answer to your claim by the reviewer and rate how satisfied you are.</h3><p class="text-info">Please use authorize attribute to restrict certain role(s) from doing this task. Or you can also do this programmatically. </p>
@@ -10,6 +21,10 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
+        @if (bpmRole == "claim_initiator")
+        {
+            <p class="alert-info small">You are a claim initiator (a customer). You can raise claims and review the answer/comments from the claim reviewer and rate how satisfied you are with the service.</p>
+        }
         <form asp-action="ReadTheAnswerAndRateIt">
             <div asp-validation-summary="All" class="text-danger"></div>
             @Html.HiddenFor(model => model.TaskId)

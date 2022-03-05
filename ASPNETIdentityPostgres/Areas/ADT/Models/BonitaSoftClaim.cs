@@ -76,6 +76,9 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Models
         public string value { get; set; }
     }
 
+    /// <summary>
+    /// Please change this as per your process variables.
+    /// </summary>
     public class AlfrescoTaskCompletionVars
     {
         public string action { get; set; }
@@ -85,6 +88,11 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Models
         public string taskname { get; set; }
 
         public string processInstanceId { get; set; }
+        public string employee { get; set; }
+        public string hr { get; set; }
+        public string self { get; set; }
+        public string pm { get; set; }
+
         public List<ActivitiProcessInstanceVar> variables { get; set; }
     }
 
@@ -115,6 +123,8 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Models
         public List<ActivitiProcessInstanceVar> variables {get;set;}
 
         public string employee { get; set; }
+
+        
     }
 
     public class CamundaProcessInstVar

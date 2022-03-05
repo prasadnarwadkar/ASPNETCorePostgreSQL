@@ -3,6 +3,17 @@
 @{
     ViewData["Title"] = "Review and Answer Claim";
     Layout = "_Layout";
+
+    var username = User.Identity.Name;
+
+    var bpmRole = "";
+
+    var mapping = ASPNETIdentityPostgres.Areas.ADT.Models.WebAppAndBPMUserMap.mappings.FirstOrDefault(m => m.UserNameOnWebApp.ToLower() == username.ToLower());
+
+    if (mapping != null)
+    {
+        bpmRole = mapping.UserRoleOnBPMEngineOrApp;
+    }
 }
 
 <h3>Review and Answer Claim</h3><p class="text-info">Please use authorize attribute to restrict certain role(s) from doing this task. Or you can also do this programmatically. </p>
@@ -10,9 +21,13 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
+        @if (bpmRole == "claim_reviewer")
+        {
+            <p class="alert-info small">You are a claim reviewer (an employee). You can answer the claims raised by customers.</p>
+        }
         <form asp-action="ReviewAndAnswerClaim">
             <div asp-validation-summary="All" class="text-danger"></div>
-            @Html.HiddenFor(model=> model.TaskId)
+            @Html.HiddenFor(model => model.TaskId)
             <div class="form-group">
                 <label asp-for="description" class="control-label">Description</label>
                 <input asp-for="description" class="form-control" readonly />
@@ -32,8 +47,8 @@
 </div>
 
 @*<div>
-    <a asp-action="Index">Back to List</a>
-</div>*@
+        <a asp-action="Index">Back to List</a>
+    </div>*@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

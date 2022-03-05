@@ -215,6 +215,17 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Models
             taskVars.taskname = null;
             taskVars.processInstanceId = null;
 
+            taskVars.variables = new List<ActivitiProcessInstanceVar>();
+            taskVars.variables.Add(new ActivitiProcessInstanceVar { name="employee", value = taskVars.employee});
+            taskVars.variables.Add(new ActivitiProcessInstanceVar { name = "self", value = taskVars.self });
+            taskVars.variables.Add(new ActivitiProcessInstanceVar { name = "hr", value = taskVars.hr });
+            taskVars.variables.Add(new ActivitiProcessInstanceVar { name = "pm", value = taskVars.pm });
+
+            taskVars.employee = null;
+            taskVars.self = null;
+            taskVars.hr = null;
+            taskVars.pm = null;
+
             var client = new RestClient(url);
 
             client.Timeout = -1;

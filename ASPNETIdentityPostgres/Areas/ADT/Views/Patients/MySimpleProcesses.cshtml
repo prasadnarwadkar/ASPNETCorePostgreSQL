@@ -61,7 +61,7 @@
         @if (bpmRole == "pm" || bpmRole == "hr_admin")
         {
             <p>
-                <a asp-action="ActivitiStartProcessInstance" class="btn btn-primary">Start a new Employee Evaluation</a>
+                <a asp-action="ActivitiStartProcessInstance" class="btn btn-primary"><span class="glyphicon glyphicon-play-circle"></span> New Employee Evaluation</a>
             </p>
         }
         else
@@ -87,16 +87,16 @@
                     <thead>
                         <tr>
                             <th>
-                                Employee
+                                <span class="glyphicon glyphicon-user"></span> Employee
                             </th>
                             <th>
-                                Comments by employee
+                                <span class="glyphicon glyphicon-comment"></span> By employee
                             </th>
                             <th>
-                                Comments by HR
+                                <span class="glyphicon glyphicon-comment"></span> By HR
                             </th>
                             <th>
-                                Comments by PM
+                                <span class="glyphicon glyphicon-comment"></span> By PM
                             </th>
                             @*<th>
                                 Instance ID
@@ -130,7 +130,7 @@
                                 </td>*@
 
                                 <td>
-                                    <a asp-action="ActivitiProcInstDetails" asp-route-id="@item.id">View Details</a>
+                                    <a asp-action="ActivitiProcInstDetails" asp-route-id="@item.id"><span class="glyphicon glyphicon-tasks"></span> My Tasks</a>
                                 </td>
                             </tr>
                         }
@@ -145,8 +145,8 @@
     </div>
      <div class="col-md-2">
          <!-- Button trigger modal -->
-         <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModal">
-             Info
+
+         <button type="button" class="glyphicon glyphicon-info-sign" data-toggle="modal" data-target="#exampleModal">
          </button>
      </div>
 </div>

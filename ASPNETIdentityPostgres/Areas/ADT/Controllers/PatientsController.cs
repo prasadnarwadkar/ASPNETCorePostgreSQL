@@ -633,7 +633,11 @@ namespace ASPNETIdentityPostgres
                                                                                                     processInstanceId.ToString(),
                                                                                                     "kermit",
                                                                                                     "kermit");
-                
+                dataForView.employee = dataForView.variables.FirstOrDefault(v => v.name == "employee").value;
+                dataForView.hr = dataForView.variables.FirstOrDefault(v => v.name == "hr").value;
+                dataForView.self = dataForView.variables.FirstOrDefault(v => v.name == "self").value;
+                dataForView.pm = dataForView.variables.FirstOrDefault(v => v.name == "pm").value;
+
                 return View("ActivitiCompleteSimpleTask", dataForView);
             }
 
@@ -1119,28 +1123,11 @@ namespace ASPNETIdentityPostgres
             {
                 // Username and password are hardcoded. You can get them from a db.
                 data.variables = new List<ActivitiProcessInstanceVar>();
-                data.variables.Add(new ActivitiProcessInstanceVar { 
-                    name = "employee",
-                    value=data.employee
-                });
-
-                data.variables.Add(new ActivitiProcessInstanceVar
-                {
-                    name = "self",
-                    value = ""
-                });
-
-                data.variables.Add(new ActivitiProcessInstanceVar
-                {
-                    name = "pm",
-                    value = ""
-                });
-
-                data.variables.Add(new ActivitiProcessInstanceVar
-                {
-                    name = "hr",
-                    value = ""
-                });
+                
+                data.variables.Add(new ActivitiProcessInstanceVar { name = "employee", value = data.employee });
+                data.variables.Add(new ActivitiProcessInstanceVar { name = "self", value = "" });
+                data.variables.Add(new ActivitiProcessInstanceVar { name = "hr", value = "" });
+                data.variables.Add(new ActivitiProcessInstanceVar { name = "pm", value = "" });
 
                 var result = await AlfrescoActivitiRestApiInvoker.CreateAProcessInstance(data,
                                                                     Constants.ActivitiProcessDefId,
