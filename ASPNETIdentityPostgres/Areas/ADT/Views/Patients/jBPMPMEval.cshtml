@@ -37,8 +37,14 @@
 
                 <div class="form-group">
                     <label asp-for="processData.self" class="control-label">Performance (self notes)</label>
-                    <input asp-for="processData.self" class="form-control" readonly/>
+                    <input asp-for="processData.self" class="form-control" readonly />
                     <span asp-validation-for="processData.self" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="processData.hr" class="control-label">HR comments</label>
+                    <input asp-for="processData.hr" class="form-control" readonly />
+                    <span asp-validation-for="processData.hr" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">

@@ -452,7 +452,7 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Models
 
     public static class Constants
     {
-        public static string jBPMEvalProcessContainerID = "evaluation_1.0";
+        public static string jBPMEvalProcessContainerID = "evaluation_2.0";
         public static string jBPMEvalProcessID = "evaluation";
         public static string ActivitiProcessDefId = "evaluation";
     }

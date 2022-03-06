@@ -42,6 +42,12 @@
                 </div>
 
                 <div class="form-group">
+                    <label asp-for="processData.pm" class="control-label">PM comments</label>
+                    <input asp-for="processData.pm" class="form-control" readonly/>
+                    <span asp-validation-for="processData.pm" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
                     <label asp-for="processData.hr" class="control-label">HR comments</label>
                     <input asp-for="processData.hr" class="form-control" />
                     <span asp-validation-for="processData.hr" class="text-danger"></span>
