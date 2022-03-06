@@ -16,46 +16,88 @@
 }
 <p class="alert-danger">@ViewData["NoConnError"]</p>
 
-<div class="row">
-    <div class="col-md-6">
-        <p class="small">This example uses Camunda RESTful API and the invoice is submitted using that API. Next steps in the invoice approval workflow can be implemented using the same REST API (with different URLs and data as per the step)</p>
-        <p class="small">Camunda Engine must be running for this to work. Please refer to <a href="https://camunda.com/blog/2021/10/start-and-step-through-a-process-with-rest-feat-swaggerui/">this page</a> and follow all the instructions from the pages linked on this page. There are links to download the Camunda BPM Platform and then work with it. </p>
+<div class="modal" tabindex="-1" role="dialog" id="exampleModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Camunda Engine must be running</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="small">This example uses Camunda RESTful API and the invoice is submitted using that API. Next steps in the invoice approval workflow can be implemented using the same REST API (with different URLs and data as per the step)</p>
+                <p class="small">Camunda Engine must be running for this to work. Please refer to <a href="https://camunda.com/blog/2021/10/start-and-step-through-a-process-with-rest-feat-swaggerui/">this page</a> and follow all the instructions from the pages linked on this page. There are links to download the Camunda BPM Platform and then work with it. </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
     </div>
-    <div class="col-md-6">
+</div>
+
+<div class="row">
+
+    <div class="col-md-10">
         <p class="alert-danger">@ViewData["notapprovermsg"]</p>
         @if (bpmRole == "invoice_initiator")
         {
             <p class="alert-info small">You are an invoice poster. You can post/raise invoices. Log on as another user (p@q.com) to approve invoices.</p>
-                if (ViewData["NoConnError"] == null
-                || ViewData["NoConnError"]?.ToString().Length == 0)
-                {
-            <p>
-                <a asp-action="SubmitInvoiceCamunda" class="btn btn-primary">Submit a new invoice</a>
-            </p>
+            if (ViewData["NoConnError"] == null
+            || ViewData["NoConnError"]?.ToString().Length == 0)
+            {
+                <p>
+                    <a asp-action="SubmitInvoiceCamunda" class="btn btn-primary">Submit a new invoice</a>
+                </p>
             }
-            }
-            <div>
+        }
+        <div>
 
-                <hr />
-                <h5>My Invoices</h5>
+            <hr />
+            <h5>My Invoices</h5>
+            @if (bpmRole == "invoice_approver")
+            {
+                <p class="alert-info small">You are an invoice approver. Log on as another user (a@b.com) to raise/post invoices.</p>
+            }
+            
+            @if (Model != null && Model.Count() > 0)
+            {
                 <table class="table">
                     <thead>
                         <tr>
                             <th>
-                                Business Key of the Invoice
+                                Business Key
                             </th>
-
+                            <th>Amount</th>
+                            <th>Invoice Number</th>
+                            <th>Invoice Category</th>
+                            <th>Creditor</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var item in Model)
                         {
+                            var vars = (await ASPNETIdentityPostgres.Areas.ADT.Models.CamundaBPMRestApiInvoker.getProcInstVars(item.id)).Where(v => v.name == "amount"
+                                                                                                         || v.name == "invoiceNumber"
+                                                                                                         || v.name == "invoiceCategory"
+                                                                                                         || v.name == "creditor").ToList();
                             <tr>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.businessKey)
                                 </td>
-
+                                <td>
+                                    @vars.FirstOrDefault(v => v.name == "amount").value
+                                </td>
+                                <td>
+                                    @vars.FirstOrDefault(v => v.name == "invoiceNumber").value
+                                </td>
+                                <td>
+                                    @vars.FirstOrDefault(v => v.name == "invoiceCategory").value
+                                </td>
+                                <td>
+                                    @vars.FirstOrDefault(v => v.name == "creditor").value
+                                </td>
                                 <td>
                                     <a asp-action="CamundaInvoiceDetails" asp-route-id="@item.id">Go To Invoice Details</a>
                                 </td>
@@ -63,8 +105,19 @@
                         }
                     </tbody>
                 </table>
-            </div>
+            }
+            else
+            {
+                <p class="alert-danger">All Invoices have been processed.</p>
+            }
         </div>
+    </div>
+    <div class="col-md-2">
+        <!-- Button trigger modal -->
+
+        <button type="button" class="glyphicon glyphicon-info-sign" data-toggle="modal" data-target="#exampleModal">
+        </button>
+    </div>
 </div>
 
 <p>

@@ -72,6 +72,7 @@ namespace ASPNETIdentityPostgres
 
             getCookies("walter.bates", "bpm").Wait(2000);
             AlfrescoActivitiRestApiInvoker.SetActivitiRestUri(ActivitiRestUri);
+            CamundaBPMRestApiInvoker.SetCamundaRestBaseUri(CamundaRestBaseUri);
 
             // Call background service.
             Task.WaitAll(_HostedService.StartAsync(new System.Threading.CancellationToken()));
@@ -444,12 +445,29 @@ namespace ASPNETIdentityPostgres
                         var post = new ApproveInvoicePost();
                         post.taskId = taskObj.id;
 
-                        post.vars = (await getProcInstVars(taskObj.processInstanceId)).Where(v => v.name == "amount"
-                                                                                                || v.name == "invoiceNumber"
-                                                                                                || v.name == "invoiceCategory"
-                                                                                                || v.name == "creditor").ToList();
+                        try
+                        {
+                            post.vars = (await CamundaBPMRestApiInvoker.getProcInstVars(taskObj.processInstanceId)).Where(v => v.name == "amount"
+                                                                                                    || v.name == "invoiceNumber"
+                                                                                                    || v.name == "invoiceCategory"
+                                                                                                    || v.name == "creditor").ToList();
+                            return View("ApproveInvoiceCamunda", post);
+                        }
+                        catch (Exception ex)
+                        {
+                            if (ex.Message.ToLower().Contains("no connection"))
+                            {
+                                ViewData["NoConnError"] = "No connection to Camunda Engine. Is the Camunda Engine running?";
+                            }
+                            else if (ex.Message.ToLower().Contains("not found"))
+                            {
+                                ViewData["NoConnError"] = "No connection to Camunda Engine. Is the Camunda Engine running? OR the process definition you are referring to doesn't exist.";
+                            }
 
-                        return View("ApproveInvoiceCamunda", post);
+                            invoices = await getInvoices(processDefKey);
+
+                            return View("MyInvoices", invoices);
+                        }
                     }
                     else
                     {
@@ -854,48 +872,7 @@ namespace ASPNETIdentityPostgres
             }
         }
 
-        private async Task<List<CamundaProcessInstVar>> getProcInstVars(string processInstID)
-        {
-            var settings = new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore,
-                MissingMemberHandling = MissingMemberHandling.Ignore
-            };
-
-            var url = new Uri(CamundaRestBaseUri, "variable-instance?processInstanceIdIn=" + processInstID).ToString();
-
-            HttpResponseMessage result = new HttpResponseMessage();
-
-            using (var handler = new HttpClientHandler() { })
-            using (var client = new HttpClient(handler) { BaseAddress = new Uri(url) })
-            {
-                try
-                {
-                    result = await client.GetAsync("");
-
-                    result.EnsureSuccessStatusCode();
-                }
-                catch (Exception ex)
-                {
-                    if (ex.Message.ToLower().Contains("no connection"))
-                    {
-                        ViewData["NoConnError"] = "No connection to Camunda Engine. Is the Camunda Engine running?";
-                    }
-                    else if (ex.Message.ToLower().Contains("not found"))
-                    {
-                        ViewData["NoConnError"] = "No connection to Camunda Engine. Is the Camunda Engine running? OR the process definition you are referring to doesn't exist.";
-                    }
-
-                    return JsonConvert.DeserializeObject<List<CamundaProcessInstVar>>("[]", settings);
-                }
-
-                var content = await result.Content.ReadAsStringAsync();
-
-                var vars = JsonConvert.DeserializeObject<List<CamundaProcessInstVar>>(content, settings);
-
-                return vars;
-            }
-        }
+        
 
         private async Task<List<BonitaSoftTaskDesc>> getUserTasks()
         {

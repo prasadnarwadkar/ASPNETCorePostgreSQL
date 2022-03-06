@@ -60,9 +60,13 @@
 
         @if (bpmRole == "pm" || bpmRole == "hr_admin")
         {
-            <p>
-                <a asp-action="ActivitiStartProcessInstance" class="btn btn-primary"><span class="glyphicon glyphicon-play-circle"></span> New Employee Evaluation</a>
-            </p>
+            @if (Model != null)
+            {
+                <p class="alert-danger small">Alfresco Activiti apps (REST, Admin and Explorer) must be running for this to work. </p>
+                <p>
+                    <a asp-action="ActivitiStartProcessInstance" class="btn btn-primary"><span class="glyphicon glyphicon-play-circle"></span> New Employee Evaluation</a>
+                </p>
+            }
         }
         else
         {

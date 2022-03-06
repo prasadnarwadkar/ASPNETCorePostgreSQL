@@ -37,6 +37,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\img\19197125.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\BusinessLogicLayer\BusinessLogicLayer.csproj" />
     <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj" />
   </ItemGroup>
