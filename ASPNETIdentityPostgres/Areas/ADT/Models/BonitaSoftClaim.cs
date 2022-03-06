@@ -181,6 +181,10 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Models
         public string performance { get; set; }
 
         public string reason { get; set; }
+
+        public string hr { get; set; }
+        public string self { get; set; }
+        public string pm { get; set; }
     }
 
     public class StartDate
