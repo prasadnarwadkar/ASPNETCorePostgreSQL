@@ -25,7 +25,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p class="small">This example uses Camunda RESTful API and the invoice is submitted using that API. Next steps in the invoice approval workflow can be implemented using the same REST API (with different URLs and data as per the step)</p>
+                <p class="small">This example uses Camunda RESTful API and the Employee Evaluation process is executed from within this web app using that API.</p>
                 <p class="small">Camunda Engine must be running for this to work. Please refer to <a href="https://camunda.com/blog/2021/10/start-and-step-through-a-process-with-rest-feat-swaggerui/">this page</a> and follow all the instructions from the pages linked on this page. There are links to download the Camunda BPM Platform and then work with it. </p>
             </div>
             <div class="modal-footer">
@@ -61,11 +61,26 @@
             }
             @if (Model != null && Model.Count() > 0)
             {
+
                 <table class="table">
                     <thead>
                         <tr>
                             <th>
                                 Business Key
+                            </th>
+                            <th>
+                                Employee
+                            </th>
+                            <th>
+                                Self Comments
+                            </th>
+
+                            <th>
+                                HR Comments
+                            </th>
+
+                            <th>
+                                PM Comments
                             </th>
 
                             <th></th>
@@ -74,15 +89,28 @@
                     <tbody>
                         @foreach (var item in Model)
                         {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.businessKey)
-                                </td>
+                            var vars = (await ASPNETIdentityPostgres.Areas.ADT.Models.CamundaBPMRestApiInvoker.getProcInstVars(item.id)).ToList();
 
-                                <td>
-                                    <a asp-action="CamundaProcInstDetails" asp-route-id="@item.id">Go To Employee Evaluation</a>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.businessKey)
+                            </td>
+                            <td>
+                                @vars.FirstOrDefault(v => v.name == "employee").value
+                            </td>
+                            <td>
+                                @vars.FirstOrDefault(v => v.name == "self").value
+                            </td>
+                            <td>
+                                @vars.FirstOrDefault(v => v.name == "hr").value
+                            </td>
+                            <td>
+                                @vars.FirstOrDefault(v => v.name == "pm").value
+                            </td>
+                            <td>
+                                <a asp-action="CamundaProcInstDetails" asp-route-id="@item.id">Go To Employee Evaluation</a>
+                            </td>
+                        </tr>
                         }
                     </tbody>
                 </table>
