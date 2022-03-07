@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<ASPNETIdentityPostgres.Areas.ADT.Models.ProcessInstance>
 
 @{
-    ViewData["Title"] = "My Invoices";
+    ViewData["Title"] = "My Employee Evaluations";
 
     var username = User.Identity.Name;
 
@@ -14,7 +14,6 @@
         bpmRole = mapping.UserRoleOnjBPMEngineOrApp;
     }
 }
-<p class="alert-danger">@ViewData["NoConnError"]</p>
 
 <div class="modal" tabindex="-1" role="dialog" id="exampleModal">
     <div class="modal-dialog" role="document">
@@ -37,29 +36,29 @@
 </div>
 
 <div class="row">
-
     <div class="col-md-10">
         <p class="alert-danger">@ViewData["notapprovermsg"]</p>
-        @if (bpmRole == "invoice_initiator")
+        @if (bpmRole == "pm" && Model != null)
         {
-            <p class="alert-info small">You are an invoice poster. You can post/raise invoices. Log on as another user (p@q.com) to approve invoices.</p>
-            if (ViewData["NoConnError"] == null
-            || ViewData["NoConnError"]?.ToString().Length == 0)
-            {
-                <p>
-                    <a asp-action="SubmitInvoiceCamunda" class="btn btn-primary">Submit a new invoice</a>
-                </p>
-            }
+            <p>
+                <a asp-action="CamundaStartEmpVal" class="btn btn-success"><span class="glyphicon glyphicon-play-circle"></span> New Employee Evaluation</a>
+            </p>
+        }
+        else if (bpmRole != "pm" && Model != null)
+        {
+            <p class="alert-danger">Please login as a@b.com (PM) to start an employee's evaluation.</p>
         }
         <div>
-
-            <hr />
-            <h5>My Invoices</h5>
-            @if (bpmRole == "invoice_approver")
+            @if (Model == null)
             {
-                <p class="alert-info small">You are an invoice approver. Log on as another user (a@b.com) to raise/post invoices.</p>
+                <p class="alert-danger small">Camunda BPM Engine must be running for this to work. Please refer to <a href="https://jbpm.org/learn/gettingStarted.html">this page</a> and follow the simple instructions. There are links to download the Camunda BPM Platform and then work with it.</p>
             }
-            
+            <hr />
+            <h5>My Employee Evaluations (Camunda engine)</h5>
+            @if (Model != null && Model.Count() == 0)
+            {
+                <p>All tasks have been completed. Please login as a PM (a@b.com) to start an evaluation for an employee.</p>
+            }
             @if (Model != null && Model.Count() > 0)
             {
                 <table class="table">
@@ -68,38 +67,20 @@
                             <th>
                                 Business Key
                             </th>
-                            <th>Amount</th>
-                            <th>Invoice Number</th>
-                            <th>Invoice Category</th>
-                            <th>Creditor</th>
+
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var item in Model)
                         {
-                            var vars = (await ASPNETIdentityPostgres.Areas.ADT.Models.CamundaBPMRestApiInvoker.getProcInstVars(item.id)).Where(v => v.name == "amount"
-                                                                                                         || v.name == "invoiceNumber"
-                                                                                                         || v.name == "invoiceCategory"
-                                                                                                         || v.name == "creditor").ToList();
                             <tr>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.businessKey)
                                 </td>
+
                                 <td>
-                                    @vars.FirstOrDefault(v => v.name == "amount").value
-                                </td>
-                                <td>
-                                    @vars.FirstOrDefault(v => v.name == "invoiceNumber").value
-                                </td>
-                                <td>
-                                    @vars.FirstOrDefault(v => v.name == "invoiceCategory").value
-                                </td>
-                                <td>
-                                    @vars.FirstOrDefault(v => v.name == "creditor").value
-                                </td>
-                                <td>
-                                    <a asp-action="CamundaInvoiceDetails" asp-route-id="@item.id">Go To Invoice Details</a>
+                                    <a asp-action="CamundaProcInstDetails" asp-route-id="@item.id">Go To Employee Evaluation</a>
                                 </td>
                             </tr>
                         }
@@ -108,7 +89,7 @@
             }
             else
             {
-                <p class="alert-danger">All Invoices have been processed.</p>
+                <p class="alert-danger">No Evaluations are active.</p>
             }
         </div>
     </div>

@@ -38,7 +38,7 @@ namespace ASPNETIdentityPostgres
         private readonly PatientSyncService _HostedService;
 
         private static IEnumerable<Cookie> _cookies_bonitasoft = new List<Cookie>();
-        private string processDefKey = "invoice:3:d8ca49d6-8b21-11ec-aa22-0a0027000007";
+        private string processDefKey = "evaluation:4:a7af4100-9dd8-11ec-a433-0a0027000007";//"invoice:3:d8ca49d6-8b21-11ec-aa22-0a0027000007";
 
         IConfiguration _iconfiguration;
         private static Uri BonitaBaseUri;
@@ -131,6 +131,13 @@ namespace ASPNETIdentityPostgres
         /// </summary>
         /// <returns></returns>
         public async Task<IActionResult> MyInvoices()
+        {
+            var invoices = await getInvoices(processDefKey);
+
+            return View(invoices);
+        }
+
+        public async Task<IActionResult> CamundaMyEmpEvals()
         {
             var invoices = await getInvoices(processDefKey);
 
@@ -500,7 +507,7 @@ namespace ASPNETIdentityPostgres
 
             return View("MyInvoices", invoices);
         }
-
+                
         public async Task<IActionResult> jBPMProcInstDetails(string id)
         {
             if (id == null)
@@ -541,7 +548,7 @@ namespace ASPNETIdentityPostgres
                         var dataForView = new jBPMSelfEvalTaskData();
                         dataForView.processData = data;
                         dataForView.TaskStatus = taskObj.TaskStatus;
-                        
+
                         dataForView.taskInstanceID = taskObj.TaskId;
                         dataForView.TaskOwner = taskObj.TaskActualOwner;
 
@@ -623,6 +630,120 @@ namespace ASPNETIdentityPostgres
                                                                 passwordBPM);
 
             return View("MyEmpEvals", list.ProcessInstance);
+        }
+        public async Task<IActionResult> CamundaProcInstDetails(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var list = new ProcessInstanceList();
+
+            var processInstances = new List<ProcessInstance>();
+
+            var tasks = await getCamundaUserTasks(id);
+            var username = User.Identity.Name;
+
+            var bpmRole = "";
+
+            var mapping = ASPNETIdentityPostgres.Areas.ADT.Models.WebAppAndBPMUserMap.mappings.FirstOrDefault(m => m.UserNameOnWebApp.ToLower() == username.ToLower());
+
+            if (mapping != null)
+            {
+                bpmRole = mapping.UserRoleOnjBPMEngineOrApp;
+            }
+
+            ViewData["notapprovermsg"] = "";
+
+            foreach (var taskObj in tasks)
+            {
+                if (taskObj.name.Equals("Self Evaluation"))
+                {
+                    if (bpmRole == "employee")
+                    {
+                        var vars = (await ASPNETIdentityPostgres.Areas.ADT.Models.CamundaBPMRestApiInvoker.getProcInstVars(id)).ToList();
+
+                        var dataForView = new CamundaSelfEvalTaskData();
+                        dataForView.processData = new CamundaEmployeeEvalStartProcessData();
+
+                        dataForView.processData.employee = vars.FirstOrDefault(v => v.name == "employee")?.value?.ToString();
+                        dataForView.processData.initiator = vars.FirstOrDefault(v => v.name == "initiator")?.value?.ToString();
+
+                        dataForView.taskInstanceID = taskObj.id;
+                        dataForView.TaskOwner = taskObj.owner?.ToString();
+
+                        return View("CamundaSelfEval", dataForView);
+                    }
+                    else
+                    {
+                        ViewData["notapprovermsg"] = "Please login as an employee (jack@example.com) to evaluate yourself.";
+                        processInstances = await getInvoices(processDefKey);
+
+                        return View("CamundaMyEmpEvals", processInstances);
+                    }
+                }
+                else if (taskObj.name.Equals("PM Evaluation"))
+                {
+                    if (bpmRole == "pm")
+                    {
+                        var vars = (await ASPNETIdentityPostgres.Areas.ADT.Models.CamundaBPMRestApiInvoker.getProcInstVars(id)).ToList();
+
+                        var dataForView = new CamundaPMEvalTaskData();
+                        dataForView.processData = new CamundaEmployeePMEvalProcessData();
+
+                        dataForView.processData.employee = vars.FirstOrDefault(v => v.name == "employee")?.value?.ToString();
+                        dataForView.processData.initiator = vars.FirstOrDefault(v => v.name == "initiator")?.value?.ToString();
+                        dataForView.processData.self = vars.FirstOrDefault(v => v.name == "self")?.value?.ToString();
+                        dataForView.processData.hr = vars.FirstOrDefault(v => v.name == "hr")?.value?.ToString();
+
+                        dataForView.taskInstanceID = taskObj.id;
+                        dataForView.TaskOwner = taskObj.owner?.ToString();
+
+                        return View("CamundaPMEval", dataForView);
+                    }
+                    else
+                    {
+                        ViewData["notapprovermsg"] = "Please login as a PM (a@b.com) to evaluate an employee.";
+                        processInstances = await getInvoices(processDefKey);
+
+                        return View("CamundaMyEmpEvals", processInstances);
+                    }
+                }
+                else if (taskObj.name.Equals("HR Evaluation"))
+                {
+                    if (bpmRole == "hr_admin")
+                    {
+                        var vars = (await ASPNETIdentityPostgres.Areas.ADT.Models.CamundaBPMRestApiInvoker.getProcInstVars(id)).ToList();
+
+                        var dataForView = new CamundaPMEvalTaskData();
+                        dataForView.processData = new CamundaEmployeePMEvalProcessData();
+
+                        dataForView.processData.employee = vars.FirstOrDefault(v => v.name == "employee")?.value?.ToString();
+                        dataForView.processData.initiator = vars.FirstOrDefault(v => v.name == "initiator")?.value?.ToString();
+                        dataForView.processData.self = vars.FirstOrDefault(v => v.name == "self")?.value?.ToString();
+                        dataForView.processData.pm = vars.FirstOrDefault(v => v.name == "pm")?.value?.ToString();
+
+                        dataForView.taskInstanceID = taskObj.id;
+                        dataForView.TaskOwner = taskObj.owner?.ToString();
+
+                        return View("CamundaHREval", dataForView);
+                    }
+                    else
+                    {
+                        ViewData["notapprovermsg"] = "Please login as an HR (p@q.com) to evaluate an employee.";
+                        
+                        processInstances = await getInvoices(processDefKey);
+
+                        return View("CamundaMyEmpEvals", processInstances);
+                    }
+                }
+
+            }
+
+            processInstances = await getInvoices(processDefKey);
+
+            return View("CamundaMyEmpEvals", processInstances);
         }
 
         public async Task<IActionResult> ActivitiProcInstDetails(string id)
@@ -1080,9 +1201,168 @@ namespace ASPNETIdentityPostgres
             }
         }
 
+        private async Task<ProcessInstance> startEmpEval(CamundaEmployeeEvalStartProcessData empEvalDetails)
+        {
+            CamundaEvaluationDetails details = new CamundaEvaluationDetails();
+
+            details.withVariablesInReturn = true;
+            details.businessKey = empEvalDetails.businessKey;
+            details.variables = new CamundaEvaluationVariables();
+
+            details.variables.initiator = new initiator { type = "String", value = empEvalDetails.initiator };
+            details.variables.employee = new employee { type = "String", value = empEvalDetails.employee };
+            details.variables.pm = new pm { type = "String", value = "" };
+            details.variables.performance = new performance { type = "String", value = "" };
+            details.variables.hr = new hr { type = "String", value = "" };
+            details.variables.self = new self { type = "String", value = "" };
+
+            var url = new Uri(CamundaRestBaseUri,
+                    "process-definition/key/evaluation/start").ToString();
+
+            using (var handler = new HttpClientHandler() { })
+            using (var client = new HttpClient(handler) { BaseAddress = new Uri(url) })
+            {
+                var options = new JsonSerializerOptions
+                {
+                    DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+                };
+
+                var post = JsonContent.Create<CamundaEvaluationDetails>(details, null, options);
+
+                var result = await client.PostAsync("", post);
+                var content = await result.Content.ReadAsStringAsync();
+
+                var settings = new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                    MissingMemberHandling = MissingMemberHandling.Ignore
+                };
+
+                var processInstance = JsonConvert.DeserializeObject<ProcessInstance>(content, settings);
+
+                result.EnsureSuccessStatusCode();
+
+                return processInstance;
+            }
+        }
+
+        private async Task<HttpStatusCode> submitSelfEval(CamundaSelfEvalTaskData empEvalDetails)
+        {
+            CamundaTaskCompletionDetails details = new CamundaTaskCompletionDetails();
+
+            details.withVariablesInReturn = true;
+            
+            details.variables = new CamundaEvaluationVariables();
+
+            details.variables.initiator = new initiator { type = "String", value = empEvalDetails.processData.initiator };
+            details.variables.employee = new employee { type = "String", value = empEvalDetails.processData.employee };
+            details.variables.pm = new pm { type = "String", value = empEvalDetails.processData.pm?.Length > 0 ? empEvalDetails.processData.pm : "" };
+            details.variables.performance = new performance { type = "String", value = "" };
+            details.variables.hr = new hr { type = "String", value = "" };
+            details.variables.self = new self { type = "String", value = empEvalDetails.processData.self };
+
+            var url = new Uri(CamundaRestBaseUri,
+                    "task/" + empEvalDetails.taskInstanceID + "/complete").ToString();
+
+            using (var handler = new HttpClientHandler() { })
+            using (var client = new HttpClient(handler) { BaseAddress = new Uri(url) })
+            {
+                var options = new JsonSerializerOptions
+                {
+                    DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+                };
+
+                var post = JsonContent.Create<CamundaTaskCompletionDetails>(details, null, options);
+
+                var result = await client.PostAsync("", post);
+
+                result.EnsureSuccessStatusCode();
+
+                return result.StatusCode;
+            }
+        }
+
+        private async Task<HttpStatusCode> submitPMEval(CamundaPMEvalTaskData empEvalDetails)
+        {
+            CamundaTaskCompletionDetails details = new CamundaTaskCompletionDetails();
+
+            details.withVariablesInReturn = true;
+
+            details.variables = new CamundaEvaluationVariables();
+
+            details.variables.initiator = new initiator { type = "String", value = empEvalDetails.processData.initiator };
+            details.variables.employee = new employee { type = "String", value = empEvalDetails.processData.employee };
+            details.variables.pm = new pm { type = "String", value = empEvalDetails.processData.pm };
+            details.variables.performance = new performance { type = "String", value = "" };
+            details.variables.hr = new hr { type = "String", value = empEvalDetails.processData.hr?.Length > 0? empEvalDetails.processData.hr:""  };
+            details.variables.self = new self { type = "String", value = empEvalDetails.processData.self };
+
+            var url = new Uri(CamundaRestBaseUri,
+                    "task/" + empEvalDetails.taskInstanceID + "/complete").ToString();
+
+            using (var handler = new HttpClientHandler() { })
+            using (var client = new HttpClient(handler) { BaseAddress = new Uri(url) })
+            {
+                var options = new JsonSerializerOptions
+                {
+                    DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+                };
+
+                var post = JsonContent.Create<CamundaTaskCompletionDetails>(details, null, options);
+
+                var result = await client.PostAsync("", post);
+
+                result.EnsureSuccessStatusCode();
+
+                return result.StatusCode;
+            }
+        }
+
+        private async Task<HttpStatusCode> submiHREval(CamundaPMEvalTaskData empEvalDetails)
+        {
+            CamundaTaskCompletionDetails details = new CamundaTaskCompletionDetails();
+
+            details.withVariablesInReturn = true;
+
+            details.variables = new CamundaEvaluationVariables();
+
+            details.variables.initiator = new initiator { type = "String", value = empEvalDetails.processData.initiator };
+            details.variables.employee = new employee { type = "String", value = empEvalDetails.processData.employee };
+            details.variables.pm = new pm { type = "String", value = "" };
+            details.variables.performance = new performance { type = "String", value = "" };
+            details.variables.hr = new hr { type = "String", value = empEvalDetails.processData.hr };
+            details.variables.self = new self { type = "String", value = empEvalDetails.processData.self };
+
+            var url = new Uri(CamundaRestBaseUri,
+                    "task/" + empEvalDetails.taskInstanceID + "/complete").ToString();
+
+            using (var handler = new HttpClientHandler() { })
+            using (var client = new HttpClient(handler) { BaseAddress = new Uri(url) })
+            {
+                var options = new JsonSerializerOptions
+                {
+                    DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+                };
+
+                var post = JsonContent.Create<CamundaTaskCompletionDetails>(details, null, options);
+
+                var result = await client.PostAsync("", post);
+
+                result.EnsureSuccessStatusCode();
+
+                return result.StatusCode;
+            }
+        }
+
         public IActionResult jBPMStartEmpVal()
         {
             
+            return View();
+        }
+
+        public IActionResult CamundaStartEmpVal()
+        {
+
             return View();
         }
 
@@ -1157,6 +1437,33 @@ namespace ASPNETIdentityPostgres
                                                                     passwordBPM);
 
                     return View("MyEmpEvals", list.ProcessInstance);
+                }
+                else
+                {
+                    return View(data);
+                }
+            }
+            else
+            {
+                return View(data);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CamundaStartEmpVal(CamundaEmployeeEvalStartProcessData data)
+        {
+            data.initiator = "demo"; // default camunda user.
+
+            if (data.employee?.Length > 0)
+            {
+                var result = await startEmpEval(data);
+
+                if (result != null && !string.IsNullOrWhiteSpace(result.id))
+                {
+                    var processInstances = await getInvoices(processDefKey);
+
+                    return View("CamundaMyEmpEvals", processInstances);
                 }
                 else
                 {
@@ -1274,6 +1581,60 @@ namespace ASPNETIdentityPostgres
             }
 
             return View("jBPMSelfEval", data);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CamundaSelfEval(CamundaSelfEvalTaskData data)
+        {
+            var result = HttpStatusCode.OK;
+
+            result = await submitSelfEval(data);
+
+            if (result >= HttpStatusCode.OK && result <= HttpStatusCode.Created)
+            {
+                var processInstances = await getInvoices(processDefKey);
+
+                return View("CamundaMyEmpEvals", processInstances);
+            }
+
+            return View("CamundaSelfEval", data);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CamundaPMEval(CamundaPMEvalTaskData data)
+        {
+            var result = HttpStatusCode.OK;
+
+            result = await submitPMEval(data);
+
+            if (result >= HttpStatusCode.OK && result <= HttpStatusCode.Created)
+            {
+                var processInstances = await getInvoices(processDefKey);
+
+                return View("CamundaMyEmpEvals", processInstances);
+            }
+
+            return View("CamundaPMEval", data);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CamundaHREval(CamundaPMEvalTaskData data)
+        {
+            var result = HttpStatusCode.OK;
+
+            result = await submiHREval(data);
+
+            if (result >= HttpStatusCode.OK && result <= HttpStatusCode.Created)
+            {
+                var processInstances = await getInvoices(processDefKey);
+
+                return View("CamundaMyEmpEvals", processInstances);
+            }
+
+            return View("CamundaHREval", data);
         }
 
         [HttpPost]

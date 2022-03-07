@@ -187,6 +187,42 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Models
         public string pm { get; set; }
     }
 
+    /// <summary>
+    /// All the variables needed in the Camunda Employee evaluation
+    /// process example
+    /// </summary>
+    public class CamundaEmployeeEvalStartProcessData
+    {
+        public string initiator { get; set; }
+
+        public string businessKey { get; set; }
+        public string employee { get; set; }
+
+        public string performance { get; set; }
+
+        
+
+        public string hr { get; set; }
+        public string self { get; set; }
+        public string pm { get; set; }
+    }
+
+    public class CamundaEmployeePMEvalProcessData
+    {
+        public string initiator { get; set; }
+
+        public string businessKey { get; set; }
+        public string employee { get; set; }
+
+        public string performance { get; set; }
+
+
+
+        public string hr { get; set; }
+        public string self { get; set; }
+        public string pm { get; set; }
+    }
+
     public class StartDate
     {
         [JsonProperty("java.util.Date")]
@@ -268,6 +304,27 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Models
         public string TaskOwner { get; set; }
     }
 
+    public class CamundaSelfEvalTaskData
+    {
+        public string taskInstanceID { get; set; }
+
+        public CamundaEmployeeEvalStartProcessData processData { get; set; }
+
+        
+
+        public string TaskOwner { get; set; }
+    }
+
+    public class CamundaPMEvalTaskData
+    {
+        public string taskInstanceID { get; set; }
+
+        public CamundaEmployeePMEvalProcessData processData { get; set; }
+
+
+
+        public string TaskOwner { get; set; }
+    }
 
     public class TaskSummary
     {
@@ -611,6 +668,44 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Models
         public string type { get; set; }
     }
 
+    public class initiator
+    {
+        public string value { get; set; }
+        public string type { get; set; }
+    }
+
+    public class self
+    {
+        public string value { get; set; }
+        public string type { get; set; }
+    }
+
+    public class employee
+    {
+        public string value { get; set; }
+        public string type { get; set; }
+    }
+
+    public class hr
+    {
+        public string value { get; set; }
+        public string type { get; set; }
+    }
+
+    public class pm
+    {
+        public string value { get; set; }
+        public string type { get; set; }
+    }
+
+    public class performance
+    {
+        public string value { get; set; }
+        public string type { get; set; }
+    }
+
+    
+
     public class Creditor
     {
         public string value { get; set; }
@@ -635,6 +730,18 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Models
         public Creditor creditor { get; set; }
         public InvoiceCategory invoiceCategory { get; set; }
         public InvoiceNumber invoiceNumber { get; set; }
+    }
+
+    public class CamundaEvaluationVariables
+    {
+        public employee employee { get; set; }
+        public initiator initiator { get; set; }
+        public pm pm { get; set; }
+        public hr hr { get; set; }
+
+        public performance performance { get; set; }
+
+        public self self { get; set; }
     }
 
     public class variables
@@ -664,6 +771,20 @@ namespace ASPNETIdentityPostgres.Areas.ADT.Models
     {
         public Variables variables { get; set; }
         public string businessKey { get; set; }
+        public bool withVariablesInReturn { get; set; }
+    }
+
+    public class CamundaEvaluationDetails
+    {
+        public CamundaEvaluationVariables variables { get; set; }
+        public string businessKey { get; set; }
+        public bool withVariablesInReturn { get; set; }
+    }
+
+    public class CamundaTaskCompletionDetails
+    {
+        public CamundaEvaluationVariables variables { get; set; }
+        
         public bool withVariablesInReturn { get; set; }
     }
 
