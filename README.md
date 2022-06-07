@@ -16,6 +16,15 @@ To use this POC, please feel free to clone the repo on your machine and comment 
 - Entity Framework Core
 - [PostgreSQL Driver for .NET Core](https://www.npgsql.org/)
 - Data Synchroization Background service
+- Using REST APIs for jBPM, Camunda BPM and Alfresco Activiti engine and simuate a business process running in each of these engines through the ASP.NET Core Web application.
+
+## Using BPM platforms via their REST APIs
+- jBPM
+- Alfresco Activiti 
+- Camunda BPM
+- BonitaSoft BPM
+
+Please read detailed documents on how to work with the BPM platforms mentioned above at [knowledge base](https://github.com/prasadnarwadkar/knowledgebase). The business processes from these platforms are run thorugh the web application saved at this repository. 
 
 ## Data Synchroization Background Hosted Service (Example/Proof Of Concept)
 
